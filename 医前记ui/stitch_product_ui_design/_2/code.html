@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>报告 - 医前记</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700;800&amp;family=Public+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-tint": "#006688",
+                    "surface-container": "#eaeef0",
+                    "on-background": "#181c1e",
+                    "on-error": "#ffffff",
+                    "on-tertiary": "#ffffff",
+                    "primary": "#006485",
+                    "error-container": "#ffdad6",
+                    "inverse-on-surface": "#edf1f3",
+                    "surface-container-high": "#e5e9eb",
+                    "primary-fixed-dim": "#86d0f6",
+                    "on-secondary-container": "#4e6876",
+                    "tertiary": "#84500b",
+                    "surface-container-low": "#f0f4f6",
+                    "tertiary-fixed-dim": "#ffb86d",
+                    "inverse-surface": "#2c3133",
+                    "on-tertiary-fixed": "#2c1600",
+                    "error": "#ba1a1a",
+                    "on-surface": "#181c1e",
+                    "outline-variant": "#bfc8ce",
+                    "secondary": "#486270",
+                    "on-tertiary-fixed-variant": "#683c00",
+                    "tertiary-fixed": "#ffdcbc",
+                    "surface-container-lowest": "#ffffff",
+                    "on-primary-container": "#fdfdff",
+                    "primary-container": "#2c7da0",
+                    "on-surface-variant": "#3f484d",
+                    "secondary-fixed-dim": "#afcadb",
+                    "surface-bright": "#f6fafc",
+                    "outline": "#70787e",
+                    "background": "#f6fafc",
+                    "on-primary": "#ffffff",
+                    "on-primary-fixed": "#001e2b",
+                    "secondary-container": "#cbe6f8",
+                    "surface": "#f6fafc",
+                    "surface-variant": "#dfe3e5",
+                    "on-primary-fixed-variant": "#004d67",
+                    "on-error-container": "#93000a",
+                    "surface-container-highest": "#dfe3e5",
+                    "on-secondary-fixed-variant": "#304a58",
+                    "surface-dim": "#d6dbdd",
+                    "primary-fixed": "#c1e8ff",
+                    "inverse-primary": "#86d0f6",
+                    "on-tertiary-container": "#fffbff",
+                    "tertiary-container": "#a16824",
+                    "on-secondary-fixed": "#011e2b",
+                    "secondary-fixed": "#cbe6f8",
+                    "on-secondary": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "2xl": "1rem",
+                    "3xl": "1.5rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Lexend"],
+                    "body": ["Public Sans"],
+                    "label": ["Public Sans"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Public Sans', sans-serif; }
+        h1, h2, h3, .font-headline { font-family: 'Lexend', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .bg-medical-gradient { background: linear-gradient(135deg, #006485 0%, #2C7DA0 100%); }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface-container-low text-on-surface pb-32">
+<!-- TopAppBar -->
+<header class="bg-cyan-50/80 dark:bg-slate-900/80 backdrop-blur-xl fixed top-0 w-full z-50 flex justify-between items-center px-6 py-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-cyan-700 dark:text-cyan-400 text-3xl" data-icon="healing">healing</span>
+<h1 class="text-2xl font-bold text-cyan-800 dark:text-cyan-100">医前记</h1>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-cyan-100/50 transition-transform active:scale-95 duration-150">
+<span class="material-symbols-outlined text-cyan-700" data-icon="notifications">notifications</span>
+</button>
+</header>
+<main class="pt-24 px-5 max-w-4xl mx-auto space-y-8">
+<!-- Header Section -->
+<section>
+<h2 class="text-3xl font-bold text-on-surface tracking-tight mb-2">健康报告</h2>
+<p class="text-on-surface-variant font-medium">最后更新: 2024年5月24日 10:30</p>
+</section>
+<!-- Consultation Summary Card -->
+<div class="bg-surface-container-lowest rounded-3xl overflow-hidden shadow-[0_-8px_32px_rgba(0,102,136,0.06)] relative">
+<div class="absolute top-0 left-0 w-1.5 h-full bg-primary"></div>
+<div class="p-6 md:p-8">
+<div class="flex items-center justify-between mb-6">
+<div class="flex items-center gap-2 px-3 py-1 bg-primary-container/10 rounded-full">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="auto_awesome" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<span class="text-primary font-bold text-xs uppercase tracking-wider">AI Generated</span>
+</div>
+<button class="flex items-center gap-1 text-primary text-sm font-bold hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined text-base" data-icon="content_copy">content_copy</span>
+                        复制全文
+                    </button>
+</div>
+<h3 class="text-xl font-bold mb-4">就诊述求摘要</h3>
+<div class="space-y-4 text-on-surface leading-relaxed text-lg">
+<p>患者近期主要症状为持续性干咳，且在夜间平卧位时症状加重，已持续约两周时间。伴有轻度胸闷感，无明显发热、咽痛或咳痰现象。</p>
+<p>血压监测显示近期略有波动，收缩压维持在135-145mmHg之间，高于日常平均水平。体力活动后感气促时间较以往提前。</p>
+<p>本次咨询核心需求：明确咳嗽是否与当前服用的降压药物（ACEI类）副作用相关，或是否存在心功能不全的早期迹象，并请求调整用药方案建议。</p>
+</div>
+<div class="mt-8 pt-6 border-t border-outline-variant/15">
+<a class="text-primary text-sm font-medium flex items-center gap-1" href="#">
+                        内容不准确？向我们反馈
+                        <span class="material-symbols-outlined text-xs" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+<!-- Vital Trends Card -->
+<div class="bg-surface-container-lowest rounded-3xl p-6 md:p-8 shadow-[0_-8px_32px_rgba(0,102,136,0.06)]">
+<div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+<h3 class="text-xl font-bold">体征趋势 (30天)</h3>
+<div class="flex bg-surface-container-high rounded-2xl p-1 gap-1 overflow-x-auto hide-scrollbar">
+<button class="px-5 py-2 bg-surface-container-lowest text-primary font-bold rounded-xl shadow-sm text-sm whitespace-nowrap">血压</button>
+<button class="px-5 py-2 text-on-surface-variant font-medium rounded-xl hover:bg-surface-container-highest transition-colors text-sm whitespace-nowrap">血糖</button>
+<button class="px-5 py-2 text-on-surface-variant font-medium rounded-xl hover:bg-surface-container-highest transition-colors text-sm whitespace-nowrap">体重</button>
+<button class="px-5 py-2 text-on-surface-variant font-medium rounded-xl hover:bg-surface-container-highest transition-colors text-sm whitespace-nowrap">心率</button>
+</div>
+</div>
+<!-- Fake Line Chart -->
+<div class="relative h-64 w-full bg-surface-container-low/30 rounded-2xl p-4 overflow-hidden">
+<!-- Normal Range Shading -->
+<div class="absolute inset-x-0 top-16 bottom-20 bg-primary/5"></div>
+<!-- Chart Grid Lines -->
+<div class="absolute inset-0 flex flex-col justify-between py-6 px-2">
+<div class="border-b border-outline-variant/20 w-full h-0"></div>
+<div class="border-b border-outline-variant/20 w-full h-0"></div>
+<div class="border-b border-outline-variant/20 w-full h-0"></div>
+<div class="border-b border-outline-variant/20 w-full h-0"></div>
+</div>
+<!-- Data Lines (SVG Simulation) -->
+<svg class="absolute inset-0 w-full h-full overflow-visible" preserveaspectratio="none" viewbox="0 0 100 100">
+<path class="opacity-80" d="M0,50 Q10,45 20,55 T40,40 T60,65 T80,35 T100,50" fill="none" stroke="#006485" stroke-width="2"></path>
+<!-- Anomaly Point -->
+<circle cx="60" cy="65" fill="#ba1a1a" r="3"></circle>
+</svg>
+<!-- Anomaly Label -->
+<div class="absolute left-[58%] top-[68%] bg-error text-on-error text-[10px] px-2 py-1 rounded-full font-bold">
+                    异常: 148/92
+                </div>
+</div>
+<div class="flex justify-between items-center mt-6">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-primary/20"></span>
+<span class="text-xs text-on-surface-variant">正常范围</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-error"></span>
+<span class="text-xs text-on-surface-variant">异常波动</span>
+</div>
+</div>
+<p class="text-sm font-medium text-on-surface">平均值: 132/84 mmHg</p>
+</div>
+</div>
+<!-- Bento Grid: Medication & History -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Medication Status -->
+<div class="bg-surface-container-lowest rounded-3xl p-6 shadow-[0_-8px_32px_rgba(0,102,136,0.06)] border-l-4 border-primary">
+<div class="flex items-center justify-between mb-6">
+<h3 class="text-xl font-bold">用药状况</h3>
+<span class="text-primary font-bold text-2xl">93%</span>
+</div>
+<!-- Compliance Bar -->
+<div class="mb-6">
+<div class="flex justify-between text-xs text-on-surface-variant mb-2">
+<span>本月依从性</span>
+<span>非常优异</span>
+</div>
+<div class="h-3 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full w-[93%]"></div>
+</div>
+</div>
+<ul class="space-y-4">
+<li class="flex items-start gap-4">
+<div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary" data-icon="pill">pill</span>
+</div>
+<div>
+<p class="font-bold">马来酸依那普利片</p>
+<p class="text-sm text-on-surface-variant">每日 10mg / 早餐后</p>
+<span class="inline-block mt-2 text-[10px] bg-secondary-container text-on-secondary-fixed-variant px-2 py-0.5 rounded font-bold">近5日无漏服</span>
+</div>
+</li>
+<li class="flex items-start gap-4">
+<div class="w-10 h-10 rounded-xl bg-tertiary/10 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-tertiary" data-icon="medication">medication</span>
+</div>
+<div>
+<p class="font-bold">阿司匹林肠溶片</p>
+<p class="text-sm text-on-surface-variant">每日 100mg / 睡前</p>
+<p class="text-xs text-error font-medium mt-1">需关注夜间干咳反应</p>
+</div>
+</li>
+</ul>
+</div>
+<!-- Visit History -->
+<div class="bg-surface-container-lowest rounded-3xl p-6 shadow-[0_-8px_32px_rgba(0,102,136,0.06)]">
+<h3 class="text-xl font-bold mb-6">过往病史</h3>
+<div class="space-y-6 relative before:absolute before:left-[19px] before:top-2 before:bottom-2 before:w-px before:bg-outline-variant/30">
+<div class="relative pl-10">
+<div class="absolute left-0 top-1 w-10 h-10 flex items-center justify-center bg-surface-container-lowest">
+<div class="w-2.5 h-2.5 rounded-full bg-primary ring-4 ring-primary/10"></div>
+</div>
+<div>
+<p class="text-xs font-bold text-primary mb-1">2024.03.12</p>
+<p class="font-bold">心血管内科 - 张建国 主任</p>
+<p class="text-sm text-on-surface-variant line-clamp-2 mt-1">诊断：原发性高血压II级，建议低盐饮食，调整依那普利剂量...</p>
+</div>
+</div>
+<div class="relative pl-10">
+<div class="absolute left-0 top-1 w-10 h-10 flex items-center justify-center bg-surface-container-lowest">
+<div class="w-2.5 h-2.5 rounded-full bg-outline-variant"></div>
+</div>
+<div>
+<p class="text-xs font-bold text-on-surface-variant mb-1">2023.11.05</p>
+<p class="font-bold">呼吸内科 - 李明 医师</p>
+<p class="text-sm text-on-surface-variant line-clamp-2 mt-1">诊断：急性支气管炎，给予阿奇霉素及止咳糖浆对症治疗...</p>
+</div>
+</div>
+</div>
+<button class="w-full mt-6 py-3 bg-surface-container-high rounded-xl text-on-surface-variant font-bold text-sm hover:bg-surface-variant transition-colors">
+                    查看全部病史档案
+                </button>
+</div>
+</div>
+<!-- Disclaimer -->
+<footer class="pt-8 pb-12">
+<div class="bg-surface-container-high/50 rounded-2xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-tertiary text-xl" data-icon="info">info</span>
+<span class="font-bold text-on-surface-variant">免责声明</span>
+</div>
+<p class="text-xs text-on-surface-variant leading-relaxed">
+                    本报告由人工智能基于您的输入及历史记录生成，旨在辅助医患沟通。生成内容不代表医疗诊断或处方建议。所有医疗决策必须由执业医师根据实际面诊情况做出。如果您感到严重不适，请立即前往最近的医疗机构就诊或拨打紧急救援电话。
+                </p>
+</div>
+</footer>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl flex justify-around items-center px-4 pb-6 pt-2 rounded-t-3xl shadow-[0_-8px_32px_rgba(0,102,136,0.06)]">
+<a class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 px-6 py-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="text-sm font-bold mt-1">首页</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 px-6 py-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="edit_note">edit_note</span>
+<span class="text-sm font-bold mt-1">记录</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-cyan-100 dark:bg-cyan-900 text-cyan-800 dark:text-cyan-100 rounded-2xl px-6 py-2 scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="analytics" style="font-variation-settings: 'FILL' 1;">analytics</span>
+<span class="text-sm font-bold mt-1">报告</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 px-6 py-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="text-sm font-bold mt-1">我的</span>
+</a>
+</nav>
+</body></html>

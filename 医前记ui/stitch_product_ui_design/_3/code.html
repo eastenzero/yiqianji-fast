@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>医前记 - 今日记录</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700;800&amp;family=Public+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-tint": "#006688",
+                        "surface-container": "#eaeef0",
+                        "on-background": "#181c1e",
+                        "on-error": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "primary": "#006485",
+                        "error-container": "#ffdad6",
+                        "inverse-on-surface": "#edf1f3",
+                        "surface-container-high": "#e5e9eb",
+                        "primary-fixed-dim": "#86d0f6",
+                        "on-secondary-container": "#4e6876",
+                        "tertiary": "#84500b",
+                        "surface-container-low": "#f0f4f6",
+                        "tertiary-fixed-dim": "#ffb86d",
+                        "inverse-surface": "#2c3133",
+                        "on-tertiary-fixed": "#2c1600",
+                        "error": "#ba1a1a",
+                        "on-surface": "#181c1e",
+                        "outline-variant": "#bfc8ce",
+                        "secondary": "#486270",
+                        "on-tertiary-fixed-variant": "#683c00",
+                        "tertiary-fixed": "#ffdcbc",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-container": "#fdfdff",
+                        "primary-container": "#2c7da0",
+                        "on-surface-variant": "#3f484d",
+                        "secondary-fixed-dim": "#afcadb",
+                        "surface-bright": "#f6fafc",
+                        "outline": "#70787e",
+                        "background": "#f6fafc",
+                        "on-primary": "#ffffff",
+                        "on-primary-fixed": "#001e2b",
+                        "secondary-container": "#cbe6f8",
+                        "surface": "#f6fafc",
+                        "surface-variant": "#dfe3e5",
+                        "on-primary-fixed-variant": "#004d67",
+                        "on-error-container": "#93000a",
+                        "surface-container-highest": "#dfe3e5",
+                        "on-secondary-fixed-variant": "#304a58",
+                        "surface-dim": "#d6dbdd",
+                        "primary-fixed": "#c1e8ff",
+                        "inverse-primary": "#86d0f6",
+                        "on-tertiary-container": "#fffbff",
+                        "tertiary-container": "#a16824",
+                        "on-secondary-fixed": "#011e2b",
+                        "secondary-fixed": "#cbe6f8",
+                        "on-secondary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Lexend"],
+                        "body": ["Public Sans"],
+                        "label": ["Public Sans"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Public Sans', sans-serif; }
+        h1, h2, h3 { font-family: 'Lexend', sans-serif; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface pb-32">
+<!-- Top AppBar -->
+<header class="fixed top-0 left-0 w-full z-50 bg-cyan-50/80 backdrop-blur-xl flex justify-between items-center px-6 py-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-cyan-700" style="font-size: 28px;">healing</span>
+<span class="text-2xl font-bold text-cyan-800">医前记</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-cyan-100/50">
+<span class="material-symbols-outlined text-cyan-700">calendar_month</span>
+</button>
+</div>
+</header>
+<main class="mt-20 px-4 space-y-8">
+<!-- Date Selector Section -->
+<section class="space-y-4">
+<div class="flex items-center justify-between">
+<h2 class="text-xl font-bold text-on-surface">选择日期</h2>
+<button class="flex items-center gap-2 px-4 py-2 bg-secondary-container text-on-secondary-fixed-variant rounded-full font-medium text-sm transition-transform active:scale-95">
+<span class="material-symbols-outlined text-sm">history</span>
+                    快速填写 (同昨天)
+                </button>
+</div>
+<div class="flex gap-3 overflow-x-auto no-scrollbar py-2">
+<div class="flex-shrink-0 w-16 h-20 flex flex-col items-center justify-center rounded-2xl bg-surface-container-high text-on-surface-variant">
+<span class="text-xs uppercase">周一</span>
+<span class="text-lg font-bold">18</span>
+</div>
+<div class="flex-shrink-0 w-16 h-20 flex flex-col items-center justify-center rounded-2xl bg-surface-container-high text-on-surface-variant">
+<span class="text-xs uppercase">周二</span>
+<span class="text-lg font-bold">19</span>
+</div>
+<div class="flex-shrink-0 w-16 h-20 flex flex-col items-center justify-center rounded-2xl bg-surface-container-high text-on-surface-variant">
+<span class="text-xs uppercase">周三</span>
+<span class="text-lg font-bold">20</span>
+</div>
+<!-- Today Active -->
+<div class="flex-shrink-0 w-16 h-20 flex flex-col items-center justify-center rounded-2xl bg-primary-container text-on-primary-container shadow-lg shadow-primary/20">
+<span class="text-xs font-bold">今日</span>
+<span class="text-lg font-extrabold">21</span>
+</div>
+<div class="flex-shrink-0 w-16 h-20 flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-outline-variant text-outline">
+<span class="text-xs">周五</span>
+<span class="text-lg font-bold">22</span>
+</div>
+</div>
+</section>
+<!-- Vitals Bento Grid -->
+<section class="space-y-4">
+<h2 class="text-xl font-bold text-on-surface">生命体征</h2>
+<div class="grid grid-cols-2 gap-4">
+<!-- Blood Pressure Card -->
+<div class="bg-surface-container-lowest p-5 rounded-[2rem] shadow-sm flex flex-col gap-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-weight="fill">blood_pressure</span>
+<span class="font-bold text-on-surface-variant">血压</span>
+</div>
+<div class="flex items-end gap-1">
+<input class="w-full text-2xl font-bold border-none p-0 focus:ring-0 bg-transparent text-primary" placeholder="120/80" type="text"/>
+<span class="text-xs text-outline mb-1">mmHg</span>
+</div>
+<div class="pt-2 flex items-center gap-1 text-[11px] text-outline border-t border-surface-container">
+<span class="material-symbols-outlined text-sm">history</span>
+<span>前次: 118/79</span>
+</div>
+</div>
+<!-- Blood Glucose Card -->
+<div class="bg-surface-container-lowest p-5 rounded-[2rem] shadow-sm flex flex-col gap-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary" data-weight="fill">glucose</span>
+<span class="font-bold text-on-surface-variant">血糖</span>
+</div>
+<div class="flex items-end gap-1">
+<input class="w-full text-2xl font-bold border-none p-0 focus:ring-0 bg-transparent text-tertiary" placeholder="5.6" type="text"/>
+<span class="text-xs text-outline mb-1">mmol/L</span>
+</div>
+<div class="pt-2 flex items-center gap-1 text-[11px] text-outline border-t border-surface-container">
+<span class="material-symbols-outlined text-sm">history</span>
+<span>前次: 5.4</span>
+</div>
+</div>
+<!-- Weight Card (Full Width) -->
+<div class="col-span-2 bg-surface-container-lowest p-5 rounded-[2rem] shadow-sm flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="bg-secondary-container p-3 rounded-2xl">
+<span class="material-symbols-outlined text-primary-fixed-dim" style="font-variation-settings: 'FILL' 1;">monitor_weight</span>
+</div>
+<div>
+<p class="font-bold text-on-surface-variant">体重</p>
+<p class="text-xs text-outline">前次记录: 72.5 kg</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<input class="w-20 text-2xl font-bold text-right border-none p-0 focus:ring-0 bg-transparent text-on-surface" placeholder="72.0" type="text"/>
+<span class="font-bold text-outline">kg</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Symptom Logging -->
+<section class="space-y-4">
+<div class="flex items-center justify-between">
+<h2 class="text-xl font-bold text-on-surface">异常症状</h2>
+<button class="bg-primary-container text-on-primary-container px-4 py-2 rounded-full flex items-center gap-2 text-sm font-bold shadow-md active:scale-95 transition-transform">
+<span class="material-symbols-outlined">mic</span>
+                    语音输入
+                </button>
+</div>
+<div class="flex flex-wrap gap-3">
+<button class="h-12 px-6 rounded-full bg-surface-container-highest text-on-surface font-medium flex items-center justify-center border-2 border-transparent">头痛</button>
+<button class="h-12 px-6 rounded-full bg-primary-container text-on-primary-container font-bold flex items-center justify-center border-2 border-primary">咳嗽</button>
+<button class="h-12 px-6 rounded-full bg-surface-container-highest text-on-surface font-medium flex items-center justify-center">乏力</button>
+<button class="h-12 px-6 rounded-full bg-surface-container-highest text-on-surface font-medium flex items-center justify-center">胸闷</button>
+<button class="h-12 px-6 rounded-full bg-surface-container-highest text-on-surface font-medium flex items-center justify-center">失眠</button>
+<button class="h-12 px-6 rounded-full border-2 border-dashed border-outline-variant text-outline flex items-center justify-center px-4">
+<span class="material-symbols-outlined">add</span>
+                    添加更多
+                </button>
+</div>
+<!-- Symptom Detail Card -->
+<div class="bg-surface-container-lowest p-6 rounded-[2rem] border-l-4 border-primary">
+<div class="flex justify-between items-start mb-4">
+<h3 class="font-bold text-lg">咳嗽 详情</h3>
+<span class="text-xs px-3 py-1 bg-surface-container rounded-full text-outline">10:30 AM</span>
+</div>
+<div class="space-y-4">
+<p class="text-sm font-bold text-on-surface-variant">严重程度</p>
+<div class="grid grid-cols-3 gap-2">
+<button class="py-3 rounded-xl bg-surface-container text-on-surface-variant font-medium">轻度</button>
+<button class="py-3 rounded-xl bg-primary-container text-on-primary-container font-bold">中度</button>
+<button class="py-3 rounded-xl bg-surface-container text-on-surface-variant font-medium">重度</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Medication List -->
+<section class="space-y-4">
+<div class="flex items-center justify-between">
+<h2 class="text-xl font-bold text-on-surface">今日用药</h2>
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-high text-primary">
+<span class="material-symbols-outlined">photo_camera</span>
+</button>
+</div>
+<div class="space-y-3">
+<!-- Med Item -->
+<div class="flex items-center justify-between p-5 bg-surface-container-lowest rounded-[2rem]">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-cyan-100 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-cyan-700">pill</span>
+</div>
+<div>
+<p class="font-bold">阿司匹林</p>
+<p class="text-xs text-outline">早餐后 1片</p>
+</div>
+</div>
+<button class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined">check</span>
+</button>
+</div>
+<!-- Med Item 2 -->
+<div class="flex items-center justify-between p-5 bg-surface-container-lowest rounded-[2rem] opacity-60">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-cyan-100 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-cyan-700">medication</span>
+</div>
+<div>
+<p class="font-bold">二甲双胍</p>
+<p class="text-xs text-outline">随餐 2片 (晚餐)</p>
+</div>
+</div>
+<button class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-outline">
+<span class="material-symbols-outlined">circle</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Habit Tracking -->
+<section class="space-y-4">
+<h2 class="text-xl font-bold text-on-surface">生活习惯</h2>
+<div class="grid grid-cols-3 gap-3">
+<div class="bg-surface-container-lowest p-4 rounded-3xl flex flex-col items-center gap-2 border-t-4 border-blue-400">
+<span class="material-symbols-outlined text-blue-500" style="font-variation-settings: 'FILL' 1;">water_drop</span>
+<span class="text-xs font-bold">饮水</span>
+<span class="text-sm font-bold text-primary">6/8 杯</span>
+</div>
+<div class="bg-surface-container-lowest p-4 rounded-3xl flex flex-col items-center gap-2 border-t-4 border-green-400">
+<span class="material-symbols-outlined text-green-500" style="font-variation-settings: 'FILL' 1;">restaurant</span>
+<span class="text-xs font-bold">三餐</span>
+<span class="text-sm font-bold text-primary">2/3 次</span>
+</div>
+<div class="bg-surface-container-lowest p-4 rounded-3xl flex flex-col items-center gap-2 border-t-4 border-amber-400">
+<span class="material-symbols-outlined text-amber-500" style="font-variation-settings: 'FILL' 1;">directions_run</span>
+<span class="text-xs font-bold">运动</span>
+<span class="text-sm font-bold text-outline">未记录</span>
+</div>
+</div>
+</section>
+<!-- Bottom Action Area -->
+<section class="space-y-6 pt-4">
+<div class="space-y-2">
+<div class="flex justify-between text-sm font-bold px-1">
+<span class="text-on-surface-variant">今日完成度</span>
+<span class="text-primary">75%</span>
+</div>
+<div class="w-full h-3 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary w-3/4 rounded-full"></div>
+</div>
+</div>
+<button class="w-full h-16 bg-primary text-on-primary rounded-[2rem] font-bold text-xl shadow-xl shadow-primary/30 flex items-center justify-center gap-3 active:scale-95 duration-150">
+<span class="material-symbols-outlined">save</span>
+                保存今日记录
+            </button>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl flex justify-around items-center px-4 pb-6 pt-2 rounded-t-3xl shadow-[0_-8px_32px_rgba(0,102,136,0.06)]">
+<a class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 px-6 py-2" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="text-sm font-bold font-['Public_Sans']">首页</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-cyan-100 dark:bg-cyan-900 text-cyan-800 dark:text-cyan-100 rounded-2xl px-6 py-2 scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">edit_note</span>
+<span class="text-sm font-bold font-['Public_Sans']">记录</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 px-6 py-2" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="text-sm font-bold font-['Public_Sans']">报告</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 px-6 py-2" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-sm font-bold font-['Public_Sans']">我的</span>
+</a>
+</nav>
+</body></html>

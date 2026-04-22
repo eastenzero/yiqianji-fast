@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed-dim": "#86d0f6",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-fixed-variant": "#304a58",
+                        "error-container": "#ffdad6",
+                        "outline-variant": "#bfc8ce",
+                        "secondary-fixed-dim": "#afcadb",
+                        "tertiary-fixed-dim": "#ffb86d",
+                        "secondary-fixed": "#cbe6f8",
+                        "outline": "#70787e",
+                        "tertiary-container": "#a16824",
+                        "on-tertiary-container": "#fffbff",
+                        "error": "#ba1a1a",
+                        "on-surface-variant": "#3f484d",
+                        "primary-fixed": "#c1e8ff",
+                        "inverse-on-surface": "#f0f1f2",
+                        "background": "#f8f9fa",
+                        "inverse-primary": "#86d0f6",
+                        "tertiary": "#84500b",
+                        "surface-tint": "#006688",
+                        "on-primary": "#ffffff",
+                        "surface-dim": "#d9dadb",
+                        "on-primary-fixed": "#001e2b",
+                        "on-primary-container": "#fdfdff",
+                        "on-tertiary": "#ffffff",
+                        "surface-variant": "#e1e3e4",
+                        "surface-container-high": "#e7e8e9",
+                        "surface-container": "#edeeef",
+                        "secondary": "#486270",
+                        "on-tertiary-fixed-variant": "#683c00",
+                        "on-primary-fixed-variant": "#004d67",
+                        "on-tertiary-fixed": "#2c1600",
+                        "on-background": "#191c1d",
+                        "on-secondary-fixed": "#011e2b",
+                        "secondary-container": "#cbe6f8",
+                        "surface-bright": "#f8f9fa",
+                        "inverse-surface": "#2e3132",
+                        "on-secondary-container": "#4e6876",
+                        "on-error-container": "#93000a",
+                        "on-surface": "#191c1d",
+                        "primary": "#006485",
+                        "on-error": "#ffffff",
+                        "primary-container": "#2c7da0",
+                        "on-secondary": "#ffffff",
+                        "surface-container-highest": "#e1e3e4",
+                        "tertiary-fixed": "#ffdcbc",
+                        "surface-container-low": "#f3f4f5",
+                        "surface": "#f8f9fa"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Public Sans"],
+                        "body": ["Public Sans"],
+                        "label": ["Public Sans"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Public Sans', sans-serif; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="bg-slate-50/80 dark:bg-slate-900/80 backdrop-blur-xl docked full-width top-0 sticky z-50 no-border shadow-sm shadow-[0_4px_20px_-2px_rgba(25,28,29,0.04)]">
+<div class="flex justify-between items-center px-6 py-4 w-full max-w-7xl mx-auto">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden bg-primary-container">
+<img alt="User profile avatar" class="w-full h-full object-cover" data-alt="Close up portrait of a smiling middle-aged doctor or health consultant with a friendly expression in a bright clinical setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBeL3D13u8w92CgYG1brV-RTHrjsaKOSe5dFAgG7qDu7Yb_uYhCtfS2TFN2sGCFk9fD_z8mhmd5aXf_UB6rpkwZ4HT371TIROSm6n3p61BRJfjqxFK-mhcpkAY74GaQB8tYLqJVZihlQ_pFiit7ZsRBTTWVa4LlJ52KiJwOYRJGGBwrN-wzZvTi_01bR_X5n0Xz0sfE3QvA4pdpZT-6id49l-IVifW0H4X3zsbHL194aoVhFHWYWuN1ZZkVMN3hfCgzSlP-ycDKnKsR"/>
+</div>
+<div>
+<h1 class="text-xl font-bold text-cyan-800 dark:text-cyan-300 font-['Public_Sans'] tracking-tight">医前记</h1>
+</div>
+</div>
+<button class="material-symbols-outlined text-cyan-800 dark:text-cyan-400 p-2 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors active:scale-95 duration-200">
+                notifications
+            </button>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-6 py-8 space-y-8">
+<!-- Welcome & Condition Summary Section -->
+<section class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div class="space-y-1">
+<h2 class="text-3xl font-extrabold text-on-surface tracking-tight">您好，王先生</h2>
+<div class="flex items-center gap-2">
+<span class="px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full text-xs font-semibold tracking-wide">高血压二期</span>
+<span class="px-3 py-1 bg-surface-container-high text-secondary rounded-full text-xs font-medium">波动期</span>
+</div>
+</div>
+<div class="bg-white p-4 rounded-xl shadow-[0_12px_32px_-4px_rgba(25,28,29,0.06)] flex items-center gap-4">
+<div class="p-3 bg-primary/10 rounded-lg">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">calendar_today</span>
+</div>
+<div>
+<p class="text-xs text-secondary font-medium uppercase tracking-wider">已连续记录</p>
+<p class="text-2xl font-bold text-primary">14 <span class="text-sm font-medium text-secondary">天</span></p>
+</div>
+</div>
+</section>
+<!-- AI Summary Card (Bento Style) -->
+<section class="grid grid-cols-1 md:grid-cols-12 gap-6">
+<div class="md:col-span-8 relative overflow-hidden bg-gradient-to-br from-primary-container to-primary text-white rounded-xl p-8 shadow-xl">
+<div class="relative z-10 flex flex-col h-full justify-between">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary-fixed-dim">psychology</span>
+<h3 class="text-sm font-bold tracking-widest uppercase opacity-90">Recent 14-day highlight</h3>
+</div>
+<p class="text-xl md:text-2xl font-medium leading-relaxed max-w-2xl">
+                        过去14天，您的血压趋势总体保持平稳，但清晨空腹测值有轻微上升迹象，建议本周注意作息，避免熬夜。
+                    </p>
+</div>
+<!-- Abstract Texture Decor -->
+<div class="absolute -right-16 -top-16 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+<div class="absolute -left-12 -bottom-12 w-48 h-48 bg-primary-fixed-dim/20 rounded-full blur-2xl"></div>
+</div>
+<!-- Mini Highlight -->
+<div class="md:col-span-4 bg-surface-container-lowest rounded-xl p-6 flex flex-col justify-center items-center text-center space-y-3">
+<div class="w-16 h-16 rounded-full border-4 border-primary/20 flex items-center justify-center">
+<span class="text-xl font-bold text-primary">88%</span>
+</div>
+<h4 class="font-bold text-on-surface">目标达成率</h4>
+<p class="text-sm text-secondary px-4">您的饮食管理表现优异，继续保持低钠习惯。</p>
+</div>
+</section>
+<!-- Quick Record Buttons (The Tiles) -->
+<section class="space-y-4">
+<h3 class="text-lg font-bold text-on-surface flex items-center gap-2">
+                快捷记录 <span class="text-xs font-normal text-secondary bg-surface-container px-2 py-0.5 rounded">QUICK ACTION</span>
+</h3>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<button class="group p-6 bg-white rounded-xl text-left transition-all active:scale-95 shadow-[0_4px_20px_-2px_rgba(25,28,29,0.04)] hover:shadow-lg">
+<div class="w-12 h-12 rounded-xl bg-cyan-50 flex items-center justify-center mb-4 group-hover:bg-cyan-100 transition-colors">
+<span class="material-symbols-outlined text-cyan-700" style="font-variation-settings: 'FILL' 1;">monitor_heart</span>
+</div>
+<span class="block text-lg font-bold text-on-surface">测体征</span>
+<span class="text-xs text-secondary mt-1 block">血压、血糖等</span>
+</button>
+<button class="group p-6 bg-white rounded-xl text-left transition-all active:scale-95 shadow-[0_4px_20px_-2px_rgba(25,28,29,0.04)] hover:shadow-lg">
+<div class="w-12 h-12 rounded-xl bg-amber-50 flex items-center justify-center mb-4 group-hover:bg-amber-100 transition-colors">
+<span class="material-symbols-outlined text-amber-700" style="font-variation-settings: 'FILL' 1;">medical_services</span>
+</div>
+<span class="block text-lg font-bold text-on-surface">记症状</span>
+<span class="text-xs text-secondary mt-1 block">身体不适感</span>
+</button>
+<button class="group p-6 bg-white rounded-xl text-left transition-all active:scale-95 shadow-[0_4px_20px_-2px_rgba(25,28,29,0.04)] hover:shadow-lg">
+<div class="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center mb-4 group-hover:bg-emerald-100 transition-colors">
+<span class="material-symbols-outlined text-emerald-700" style="font-variation-settings: 'FILL' 1;">set_meal</span>
+</div>
+<span class="block text-lg font-bold text-on-surface">生活习惯</span>
+<span class="text-xs text-secondary mt-1 block">饮食与运动</span>
+</button>
+<button class="group p-6 bg-white rounded-xl text-left transition-all active:scale-95 shadow-[0_4px_20px_-2px_rgba(25,28,29,0.04)] hover:shadow-lg">
+<div class="w-12 h-12 rounded-xl bg-purple-50 flex items-center justify-center mb-4 group-hover:bg-purple-100 transition-colors">
+<span class="material-symbols-outlined text-purple-700" style="font-variation-settings: 'FILL' 1;">pill</span>
+</div>
+<span class="block text-lg font-bold text-on-surface">记用药</span>
+<span class="text-xs text-secondary mt-1 block">定时提醒打卡</span>
+</button>
+</div>
+</section>
+<!-- Trend Warning Card -->
+<section class="bg-surface-container-low rounded-xl p-8 relative overflow-hidden">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
+<div class="space-y-4 max-w-md">
+<div class="inline-flex items-center gap-2 px-3 py-1 bg-tertiary-fixed text-on-tertiary-fixed rounded-full">
+<span class="material-symbols-outlined text-base">warning</span>
+<span class="text-xs font-bold tracking-wider">PREDICTION ALERT</span>
+</div>
+<h3 class="text-2xl font-bold text-on-surface">血压预测趋势 (3-7天)</h3>
+<p class="text-secondary leading-relaxed">
+                        基于近期数据分析，未来 3-5 天内清晨收缩压可能出现 <span class="text-tertiary font-bold">Possible anomaly</span>。建议提前做好预防措施。
+                    </p>
+</div>
+<div class="w-full md:w-64 bg-white/60 backdrop-blur p-4 rounded-xl shadow-sm border border-white">
+<div class="flex justify-between items-end h-32 gap-2">
+<div class="w-full bg-primary/20 rounded-t-full h-[40%]"></div>
+<div class="w-full bg-primary/20 rounded-t-full h-[55%]"></div>
+<div class="w-full bg-primary/20 rounded-t-full h-[45%]"></div>
+<div class="w-full bg-tertiary/40 rounded-t-full h-[75%] border-t-2 border-tertiary"></div>
+<div class="w-full bg-tertiary/50 rounded-t-full h-[85%] border-t-2 border-tertiary animate-pulse"></div>
+<div class="w-full bg-tertiary/40 rounded-t-full h-[70%]"></div>
+<div class="w-full bg-tertiary/30 rounded-t-full h-[60%]"></div>
+</div>
+<div class="flex justify-between mt-2 px-1 text-[10px] font-bold text-secondary">
+<span>今日</span><span>D+1</span><span>D+2</span><span>D+3</span><span>D+4</span><span>D+5</span><span>D+6</span>
+</div>
+</div>
+</div>
+<!-- Subtle Warning Glow background -->
+<div class="absolute right-0 bottom-0 w-1/2 h-full bg-tertiary/5 blur-3xl pointer-events-none"></div>
+</section>
+<!-- Disclaimer -->
+<footer class="py-12 border-t border-outline-variant/10 text-center">
+<p class="text-sm text-slate-400 font-medium tracking-wide">本工具仅做信息整理，不作诊断建议</p>
+</footer>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full rounded-t-[2rem] z-50 bg-white/90 dark:bg-slate-950/90 backdrop-blur-2xl no-border shadow-2xl">
+<div class="max-w-7xl mx-auto flex justify-around items-center px-4 pb-6 pt-3">
+<a class="flex flex-col items-center justify-center bg-cyan-50 dark:bg-cyan-900/30 text-cyan-800 dark:text-cyan-200 rounded-2xl px-5 py-2 active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="text-[11px] font-medium tracking-wide font-['Public_Sans'] mt-1">首页</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 hover:text-cyan-600 dark:hover:text-cyan-300 transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">edit_note</span>
+<span class="text-[11px] font-medium tracking-wide font-['Public_Sans'] mt-1">记录</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 hover:text-cyan-600 dark:hover:text-cyan-300 transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">description</span>
+<span class="text-[11px] font-medium tracking-wide font-['Public_Sans'] mt-1">报告</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 hover:text-cyan-600 dark:hover:text-cyan-300 transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[11px] font-medium tracking-wide font-['Public_Sans'] mt-1">我的</span>
+</a>
+</div>
+</nav>
+</body></html>

@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700;800&family=Public+Sans:wght@300;400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+/**
+ * Remotion 视频的 Tailwind 入口 · 与 app/src/index.css 保持同步
+ *
+ * 维护原则：
+ *   1. 这里的 @theme 必须和 app/src/index.css 的 @theme 完全一致
+ *   2. 这样真实 app 代码（pages/*, components/pure/*）用的 Tailwind 类
+ *      在视频场景里才能正常渲染
+ *   3. 新增任一 token 后，两边同步更新
+ *
+ * 同时保留旧的 brand-* tokens，供 _archive 下的旧场景继续工作。
+ */
+@theme {
+  /* ========== 品牌色（医疗青） · 与 app/src/index.css 同步 ========== */
+  --color-primary: #006485;
+  --color-primary-container: #2c7da0;
+  --color-on-primary: #ffffff;
+  --color-on-primary-container: #fdfdff;
+  --color-primary-fixed: #cbe6f8;
+  --color-primary-fixed-dim: #86d0f6;
+
+  --color-secondary: #486270;
+  --color-secondary-container: #cbe6f8;
+  --color-secondary-fixed: #cbe6f8;
+  --color-on-secondary-container: #4e6876;
+
+  --color-tertiary: #84500b;
+  --color-tertiary-container: #a16824;
+  --color-on-tertiary-container: #fffbff;
+  --color-tertiary-fixed: #ffdcbc;
+  --color-on-tertiary-fixed: #2c1600;
+
+  --color-error: #ba1a1a;
+  --color-error-container: #ffdad6;
+  --color-on-error: #ffffff;
+
+  /* ========== 表面系 ========== */
+  --color-surface: #f6fafc;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #f0f4f6;
+  --color-surface-container: #eaeef0;
+  --color-surface-container-high: #e5e9eb;
+  --color-surface-container-highest: #dfe3e5;
+
+  --color-on-surface: #181c1e;
+  --color-on-surface-variant: #3f484d;
+
+  --color-outline: #70787e;
+  --color-outline-variant: #bfc8ce;
+
+  /* ========== 字体 ========== */
+  --font-headline: "Lexend", sans-serif;
+  --font-body: "Public Sans", sans-serif;
+  --font-label: "Public Sans", sans-serif;
+
+  /* ========== 兼容层 · 旧 _archive 场景用的 brand-* tokens ========== */
+  --color-brand-primary: #006485;
+  --color-brand-surface: #F6FAFC;
+  --color-brand-ink: #0B3446;
+  --color-brand-mist: #E5EEF3;
+  --color-brand-accent: #F7A072;
+  --color-brand-mint: #7AC7A6;
+  --font-display: "Lexend", "Noto Sans SC", system-ui, sans-serif;
+}
+
+/* Remotion 渲染时默认是黑底，设为品牌 Surface 避免渲染黑边 */
+html, body {
+  background: var(--color-surface);
+  font-family: var(--font-body);
+  margin: 0;
+  padding: 0;
+}
+
+/* ========== 工具类（镜像 app/src/index.css） ========== */
+.hide-scrollbar::-webkit-scrollbar { display: none; }
+.hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+.hidden-scrollbar::-webkit-scrollbar { display: none; }
+.hidden-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+.editorial-shadow {
+  box-shadow:
+    0 12px 32px -4px rgba(25, 28, 29, 0.06),
+    0 2px 6px rgba(25, 28, 29, 0.04);
+}
+
+.bg-gradient-medical {
+  background-image: linear-gradient(135deg, #006485 0%, #2c7da0 100%);
+}

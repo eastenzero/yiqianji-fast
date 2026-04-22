@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>医前记 - 让每一次就诊都更高效</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&amp;family=Public+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface": "#f6fafc",
+                        "secondary-fixed": "#cbe6f8",
+                        "on-primary": "#ffffff",
+                        "surface-container": "#eaeef0",
+                        "outline-variant": "#bfc8ce",
+                        "error-container": "#ffdad6",
+                        "surface-container-high": "#e5e9eb",
+                        "primary-container": "#2c7da0",
+                        "surface-bright": "#f6fafc",
+                        "primary-fixed-dim": "#86d0f6",
+                        "on-primary-fixed": "#001e2b",
+                        "error": "#ba1a1a",
+                        "primary": "#006485",
+                        "inverse-on-surface": "#edf1f3",
+                        "surface-container-lowest": "#ffffff",
+                        "on-background": "#181c1e",
+                        "on-surface": "#181c1e",
+                        "secondary": "#486270",
+                        "on-secondary-fixed": "#011e2b",
+                        "primary-fixed": "#c1e8ff",
+                        "tertiary-fixed-dim": "#ffb86d",
+                        "on-secondary-fixed-variant": "#304a58",
+                        "surface-container-highest": "#dfe3e5",
+                        "surface-tint": "#006688",
+                        "on-tertiary-fixed-variant": "#683c00",
+                        "on-error-container": "#93000a",
+                        "inverse-primary": "#86d0f6",
+                        "tertiary-container": "#a16824",
+                        "surface-variant": "#dfe3e5",
+                        "secondary-fixed-dim": "#afcadb",
+                        "on-error": "#ffffff",
+                        "tertiary-fixed": "#ffdcbc",
+                        "inverse-surface": "#2c3133",
+                        "on-surface-variant": "#3f484d",
+                        "secondary-container": "#cbe6f8",
+                        "on-secondary-container": "#4e6876",
+                        "on-primary-container": "#fdfdff",
+                        "tertiary": "#84500b",
+                        "on-tertiary-container": "#fffbff",
+                        "on-tertiary-fixed": "#2c1600",
+                        "background": "#f6fafc",
+                        "on-primary-fixed-variant": "#004d67",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "surface-container-low": "#f0f4f6",
+                        "surface-dim": "#d6dbdd",
+                        "outline": "#70787e"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Lexend"],
+                        "body": ["Public Sans"],
+                        "label": ["Public Sans"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Public Sans', sans-serif; }
+        h1, h2, h3, .font-lexend { font-family: 'Lexend', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+<style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen flex flex-col overflow-hidden">
+<!-- Top Navigation Area -->
+<header class="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-6 py-6 bg-transparent">
+<div class="flex items-center gap-2">
+<span class="text-xl font-bold text-[#2C7DA0] font-headline tracking-tight">Health Guardian</span>
+</div>
+<button class="text-slate-500 hover:text-[#2C7DA0] transition-colors font-medium text-sm px-4 py-2 rounded-full hover:bg-slate-200/50">
+            Skip
+        </button>
+</header>
+<main class="flex-1 flex flex-col items-center justify-center px-10 relative">
+<!-- Content Section: Text-Centric Focus -->
+<div class="text-center max-w-lg">
+<div class="mb-8 inline-flex items-center justify-center w-16 h-16 rounded-3xl bg-secondary-container/30 text-[#2C7DA0]">
+<span class="material-symbols-outlined text-4xl">medical_services</span>
+</div>
+<h1 class="text-4xl sm:text-5xl font-headline font-bold text-on-surface leading-[1.2] tracking-tight mb-8">
+                让每一次就诊都<br/><span class="text-[#2C7DA0]">更高效</span>
+</h1>
+<p class="text-lg sm:text-xl text-on-surface-variant font-body leading-relaxed opacity-90 max-w-md mx-auto">
+                诊前信息整理与沟通辅助系统，帮助您在医生面前清晰表达需求，不错过任何细节。
+            </p>
+</div>
+</main>
+<!-- Footer Controls -->
+<footer class="w-full px-8 pb-16 flex flex-col items-center">
+<!-- Pagination Indicator -->
+<div class="flex gap-3 mb-12">
+<div class="w-10 h-2.5 rounded-full bg-[#2C7DA0] transition-all duration-300"></div>
+<div class="w-2.5 h-2.5 rounded-full bg-outline-variant hover:bg-[#2C7DA0]/50 cursor-pointer transition-colors"></div>
+<div class="w-2.5 h-2.5 rounded-full bg-outline-variant hover:bg-[#2C7DA0]/50 cursor-pointer transition-colors"></div>
+<div class="w-2.5 h-2.5 rounded-full bg-outline-variant hover:bg-[#2C7DA0]/50 cursor-pointer transition-colors"></div>
+</div>
+<!-- Primary Action -->
+<button class="w-full max-w-md h-16 bg-[#2C7DA0] text-white rounded-2xl font-headline font-semibold text-lg flex items-center justify-center gap-2 shadow-xl shadow-[#2C7DA0]/20 active:scale-95 transition-all">
+            下一步
+            <span class="material-symbols-outlined text-xl">arrow_forward</span>
+</button>
+<!-- Semantic Hint -->
+<p class="mt-6 text-sm text-outline font-medium tracking-wide">开始您的智能健康之旅</p>
+</footer>
+<!-- Subtle Decorative Background Gradients (Non-image) -->
+<div class="fixed top-1/4 -left-32 w-96 h-96 bg-[#2C7DA0]/5 rounded-full blur-[100px] pointer-events-none"></div>
+<div class="fixed bottom-1/4 -right-32 w-96 h-96 bg-secondary-fixed/10 rounded-full blur-[100px] pointer-events-none"></div>
+</body></html>

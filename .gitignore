@@ -1,0 +1,37 @@
+# secrets
+.env.local
+.env.*.local
+
+# AI generated illustrations (large files, regenerable)
+app/illustrations/
+
+# build artifacts
+ppt_build/
+node_modules/
+
+# Large files / outputs
+app/out/
+app/public/audio/
+app/public/screenshots/
+app/public/ppt/
+app/screenshots/
+archive/
+submission/
+docs/
+preview/
+zip (8)/
+zip (9)/
+4C2026参赛作品提交要求（含赛事咨询联系方式）/
+答辩视频.mp4
+zip (8).zip
+zip (9).zip
+
+# Nested projects
+ppt-master/
+
+# Video archive scenes
+app/video/scenes/_archive/
+
+# OS
+Thumbs.db
+.DS_Store

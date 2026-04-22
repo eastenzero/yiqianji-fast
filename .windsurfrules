@@ -1,0 +1,28 @@
+---
+
+## Remotion 编码陷阱清单（`app/video/` 下工作时必读）
+
+每次改 `app/video/**` 前，先确认以下约束：
+
+### 动画 API
+- **`interpolate` 的 `inputRange` 必须严格单调递增**，任何相邻两值必须 `a < b`。任何时候写多段曲线 `[A, A+f, B-f, B]` 都要确保 `B - A > 2f`，否则运行时抛错 `inputRange must be strictly monotonically increasing`
+- **`spring` 的 `from === to`** 会抛错，要动就用 `interpolate`
+- **动画组件接收外部 `from/to/fadeFrames` props 时要加防御式 early return**，避免未来调用者传 0/0 之类的边界值踩炸
+- **Scene 内 `useCurrentFrame()` 返回的是"scene 局部帧"**（从 0 开始），不是全局帧。需要全局帧时用 `useCurrentFrame()` 配合 `<Sequence from={...}>` 的偏移计算
+
+### 资源引用
+- **`<Img />` / `<Audio />` / `<Video />` 必须 `import from 'remotion'`**，不能用原生 HTML 标签，否则 staticFile 路径失效、渲染器无法收集资源
+- **静态资源放 `app/public/`** 或 `app/video/assets/`，用 `staticFile('path.png')` 引用
+
+### 复用现有 React 代码
+- **避免 import 用了 `react-router-dom` 的组件**（BrowserRouter 需要浏览器环境，Remotion 渲染不兼容）
+- **避免 import 用了 `Dexie` / IndexedDB 的组件**（Remotion 渲染在 headless Chrome 里有限制）
+- **推荐做法**：把真正要复用的展示层抽成 `app/src/components/pure/` 下的无状态组件（props in / JSX out）
+
+### 版本与构建
+- **所有 `@remotion/*` 包版本必须严格一致**，混用 4.0.448 + 4.0.450 会报 React context / hooks 不工作。Phase 3 前需统一 pin
+- **Tailwind v4 通过 `@remotion/tailwind-v4` 的 `enableTailwind` webpack override 集成**，不要试图复用 Vite 的 `@tailwindcss/vite` 插件
+
+### 调试优先级
+- Studio 报错时先点 **Retry**；仍有问题再看堆栈、看代码位置
+- 陷阱新增时务必同步更新 `app/video/REMOTION_NOTES.md` field notes

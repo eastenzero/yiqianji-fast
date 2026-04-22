@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700;800&family=Public+Sans:wght@300;400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  /* ========== 品牌色（医疗青） ========== */
+  --color-primary: #006485;
+  --color-primary-container: #2c7da0;
+  --color-on-primary: #ffffff;
+  --color-on-primary-container: #fdfdff;
+  --color-primary-fixed: #cbe6f8;
+  --color-primary-fixed-dim: #86d0f6;
+
+  --color-secondary: #486270;
+  --color-secondary-container: #cbe6f8;
+  --color-secondary-fixed: #cbe6f8;
+  --color-on-secondary-container: #4e6876;
+
+  --color-tertiary: #84500b;
+  --color-tertiary-container: #a16824;
+  --color-on-tertiary-container: #fffbff;
+  --color-tertiary-fixed: #ffdcbc;
+  --color-on-tertiary-fixed: #2c1600;
+
+  --color-error: #ba1a1a;
+  --color-error-container: #ffdad6;
+  --color-on-error: #ffffff;
+
+  /* ========== 表面系 ========== */
+  --color-surface: #f6fafc;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #f0f4f6;
+  --color-surface-container: #eaeef0;
+  --color-surface-container-high: #e5e9eb;
+  --color-surface-container-highest: #dfe3e5;
+
+  --color-on-surface: #181c1e;
+  --color-on-surface-variant: #3f484d;
+
+  --color-outline: #70787e;
+  --color-outline-variant: #bfc8ce;
+
+  /* ========== 字体 ========== */
+  --font-headline: "Lexend", sans-serif;
+  --font-body: "Public Sans", sans-serif;
+  --font-label: "Public Sans", sans-serif;
+
+  /* ========== 动效 ========== */
+  --animate-pulse: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@layer base {
+  html, body, #root {
+    height: 100%;
+  }
+  body {
+    @apply bg-surface text-on-surface font-body antialiased;
+    -webkit-tap-highlight-color: transparent;
+  }
+  h1, h2, h3, h4, h5, h6, .font-headline {
+    @apply font-headline;
+  }
+  input, button, textarea, select {
+    font: inherit;
+  }
+}
+
+/* ========== 工具类 ========== */
+.hide-scrollbar::-webkit-scrollbar { display: none; }
+.hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+.hidden-scrollbar::-webkit-scrollbar { display: none; }
+.hidden-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+.editorial-shadow {
+  box-shadow:
+    0 12px 32px -4px rgba(25, 28, 29, 0.06),
+    0 2px 6px rgba(25, 28, 29, 0.04);
+}
+
+.bg-gradient-medical {
+  background-image: linear-gradient(135deg, #006485 0%, #2c7da0 100%);
+}

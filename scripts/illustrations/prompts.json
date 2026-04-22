@@ -1,0 +1,70 @@
+{
+  "model": "wan2.6-t2i",
+  "globalNegative": "低分辨率，低画质，肢体畸形，手指畸形，画面过饱和，蜡像感，人脸无细节，过度光滑，AI 感，构图混乱，文字模糊，扭曲，额外手指，多余肢体，非亚洲面孔，水印，logo，任何文字字幕，英文单词，中文字符，杂乱背景",
+  "prompts": [
+    {
+      "id": "cover-hero",
+      "priority": "P0",
+      "usage": "P1 封面主视觉 / P18 结语备用",
+      "size": "1696*960",
+      "seed": 42,
+      "text": "An editorial illustration, middle-aged Chinese person gently looking at a smartphone with health data glowing softly, warm natural light, minimal composition, layered translucent medical documents floating in soft cyan and white palette, serene and trustworthy atmosphere, flat illustration with subtle paper texture, clean negative space, premium health journal aesthetic, no text, no logos"
+    },
+    {
+      "id": "tech-abstract",
+      "priority": "P0",
+      "usage": "P8 技术优势 / P9 架构章节底图",
+      "size": "1696*960",
+      "seed": 101,
+      "text": "Editorial tech illustration on a clean #F6FAFC paper background: a stylized horizontal ECG heartbeat waveform crossing the frame, overlaid with faint 30-day trend contour lines, a cluster of abstract data nodes connected by thin elegant threads suggesting a neural network, three abstract bar chart shapes fading into mist on the right, minimal scattered dots as data points, deep medical cyan (#006485) as the primary line color, a single warm beige (#84500B) accent dot highlighting an anomaly, flat vector illustration with subtle paper grain, lots of negative space, premium health journal aesthetic, no human figures, no readable text, no numbers, no labels"
+    },
+    {
+      "id": "user-50-chronic",
+      "priority": "P0",
+      "usage": "P11 慢病患者画像",
+      "size": "1104*1472",
+      "seed": 201,
+      "text": "Editorial portrait illustration of a Chinese man aged 50, softly smiling, holding a smartphone showing health data, warm natural side light from the left, medical cyan subtle palette, flat illustration with paper texture, simplified facial features, chest-up framing, premium health journal aesthetic, clean off-white background, no text"
+    },
+    {
+      "id": "user-60-followup",
+      "priority": "P0",
+      "usage": "P11 复诊人群画像",
+      "size": "1104*1472",
+      "seed": 222,
+      "text": "Editorial portrait illustration of a Chinese woman aged 60 with elegant short gray-white hair, sitting on a simple wooden bench in front of a plain solid off-white wall with absolutely no signs or posters or any written characters, calmly holding a smartphone with both hands, warm natural window light from the left, soft medical cyan palette, flat illustration with paper texture, simplified facial features, chest-up framing, serene confident expression, premium health journal aesthetic, clean empty minimal background, no billboards, no signage, no wall text, no Chinese characters, no English letters"
+    },
+    {
+      "id": "user-65-multi",
+      "priority": "P0",
+      "usage": "P11 多病共存者画像",
+      "size": "1104*1472",
+      "seed": 203,
+      "text": "Editorial portrait illustration of a Chinese man aged 65 wearing glasses, sitting at home with a pill organizer and a smartphone displaying a health timeline, soft window light from the right, medical cyan palette, flat illustration, simplified facial features, premium editorial feel, chest-up framing, no text"
+    },
+    {
+      "id": "pain-before",
+      "priority": "P1",
+      "usage": "P3 痛点页左侧装饰（可选）",
+      "size": "1216*1520",
+      "seed": 301,
+      "text": "A flat editorial illustration depicting the chaos of medical documents before a hospital visit: scattered paper reports, pill bottles, handwritten notes, CT scan films, and a stressed middle-aged Chinese man sitting at a kitchen table, one hand on his forehead. Muted cyan and off-white color palette with one accent red dot indicating urgency. Clean lines, layered paper aesthetic, soft shadows, no sharp outlines, premium editorial style, no text, no logos"
+    },
+    {
+      "id": "solution-clinic",
+      "priority": "P1",
+      "usage": "P4 解决方案页辅图（可选）",
+      "size": "1216*1520",
+      "seed": 401,
+      "text": "Editorial illustration, side-view composition in a sunlit clinic: on the left a middle-aged Chinese patient in casual beige sweater holding up a smartphone, on the right a Chinese doctor in a clean white coat with a stethoscope around the neck, leaning in to read the phone screen with a calm focused expression. The phone screen shows a neatly organized health summary card with abstract chart lines and timeline dots, no readable text, no numbers. A few translucent paper documents fade softly in the background. Medical cyan (#2C7DA0) dominant palette, warm natural window light, flat illustration with subtle paper grain, premium health editorial aesthetic, three-quarter body framing, clean composition, no text anywhere, no logos"
+    },
+    {
+      "id": "doctor-tablet",
+      "priority": "P2",
+      "usage": "P17 社会价值配图（可选）",
+      "size": "1696*960",
+      "seed": 501,
+      "text": "Editorial illustration, Chinese doctor in white coat reading a tablet showing a neatly organized patient health summary, soft hospital daylight, medical cyan dominant, patient sitting across in soft focus, layered paper aesthetic, warm professional tone, flat illustration, chest-up framing, no text"
+    }
+  ]
+}

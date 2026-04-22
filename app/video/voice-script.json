@@ -1,0 +1,86 @@
+{
+  "meta": {
+    "provider": "volcengine",
+    "api": "https://openspeech.bytedance.com/api/v1/tts",
+    "defaultVoice": "zh_female_cancan_uranus_bigtts",
+    "defaultSpeed": 1.0,
+    "voiceNotes": {
+      "zh_female_cancan_uranus_bigtts": "灿灿 · 女声 · 温暖亲和（豆包大模型 · 医疗首选）",
+      "zh_female_xiaohe_uranus_bigtts": "小何 · 女声 · 清爽年轻（豆包大模型 · 备选）"
+    },
+    "totalFrames": 2700,
+    "fps": 30
+  },
+  "segments": [
+    {
+      "id": "s2-problem",
+      "scene": 2,
+      "sceneName": "Problem",
+      "startFrame": 170,
+      "text": "中国有高血压患者 2.45 亿，糖尿病患者 1.18 亿。三甲医院平均问诊时长，只有 3 到 5 分钟。患者带着一整年病史匆匆而去，医生听得云里雾里。"
+    },
+    {
+      "id": "s3-reveal",
+      "scene": 3,
+      "sceneName": "Reveal",
+      "startFrame": 615,
+      "text": "医前记，改变这一切。"
+    },
+    {
+      "id": "s4a-demo-record",
+      "scene": 4,
+      "sceneName": "ProductDemo · 记录",
+      "startFrame": 700,
+      "text": "每天 30 秒，记录血压、症状、用药情况。"
+    },
+    {
+      "id": "s4b-demo-ai",
+      "scene": 4,
+      "sceneName": "ProductDemo · AI",
+      "startFrame": 920,
+      "text": "AI 自动整理，识别异常趋势。"
+    },
+    {
+      "id": "s4c-demo-summary",
+      "scene": 4,
+      "sceneName": "ProductDemo · 摘要",
+      "startFrame": 1150,
+      "text": "生成一份医生秒懂的就诊摘要。"
+    },
+    {
+      "id": "s5-ai-summary",
+      "scene": 5,
+      "sceneName": "AiSummary",
+      "startFrame": 1320,
+      "text": "一份专业摘要，让医生 30 秒掌握你的全部病史。已有 2400 多位医生正在使用。"
+    },
+    {
+      "id": "s6-technology",
+      "scene": 6,
+      "sceneName": "Technology",
+      "startFrame": 1670,
+      "text": "多模态 AI，轻量化部署。数据完全在你手中，隐私无忧。"
+    },
+    {
+      "id": "s7-business",
+      "scene": 7,
+      "sceneName": "Business",
+      "startFrame": 1980,
+      "text": "五年内，我们将服务 100 万用户，实现 800 万年营收。"
+    },
+    {
+      "id": "s8-team",
+      "scene": 8,
+      "sceneName": "Team",
+      "startFrame": 2330,
+      "text": "团队来自山东第一医科大学，医学与人工智能的交叉研究者。"
+    },
+    {
+      "id": "s9-ending",
+      "scene": 9,
+      "sceneName": "Ending",
+      "startFrame": 2595,
+      "text": "医前记，让每一次就诊都更高效。"
+    }
+  ]
+}
