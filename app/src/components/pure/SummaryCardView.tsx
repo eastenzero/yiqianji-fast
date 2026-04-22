@@ -62,10 +62,47 @@ export interface SummaryCardViewProps {
    */
   revealedSections?: Set<SummarySection>;
   /**
+   * 流式打字进度（0-1） · Remotion 视频场景驱动 · undefined/1 = 完整显示无光标
+   *   - 只对 chiefComplaint 和 focusPoints 生效（核心信息 · 最吸引注意力）
+   *   - 其它 section 用 revealedSections 简单浮入
+   */
+  typingProgress?: {
+    chiefComplaint?: number;
+    /** 数组索引对齐 summary.focusPoints */
+    focusPoints?: number[];
+  };
+  /**
    * 强制移动端布局 · 详见 HomeView 的同名 prop 说明
    * Remotion 视频场景放在手机 PhoneFrame 里时必须传 true
    */
   forceMobile?: boolean;
+}
+
+/** 按进度截断文字 + 光标 · 0-1 */
+function sliceByProgress(text: string, progress: number): {
+  text: string;
+  showCursor: boolean;
+} {
+  if (progress >= 1) return { text, showCursor: false };
+  if (progress <= 0) return { text: '', showCursor: true };
+  const charCount = Math.max(1, Math.floor(text.length * progress));
+  return { text: text.slice(0, charCount), showCursor: true };
+}
+
+/** 光标组件 · CSS 闪烁 */
+function TypingCursor() {
+  return (
+    <span
+      className="inline-block align-middle"
+      style={{
+        width: 2,
+        height: '1em',
+        marginLeft: 2,
+        background: 'currentColor',
+        animation: 'yq-typing-blink 0.6s steps(1) infinite',
+      }}
+    />
+  );
 }
 
 export function SummaryCardView({
@@ -75,10 +112,22 @@ export function SummaryCardView({
   coverageLabel,
   idTail,
   revealedSections,
+  typingProgress,
   forceMobile = false,
 }: SummaryCardViewProps) {
   const visible = (k: SummarySection) =>
     !revealedSections || revealedSections.has(k);
+
+  // 核心主诉打字 · progress undefined = 完整显示 · <1 = 截取并显示光标
+  const chiefTyping = sliceByProgress(
+    summary.chiefComplaint ?? '',
+    typingProgress?.chiefComplaint ?? 1,
+  );
+
+  // focus points 每项独立打字 · 缺失进度值默认 1 (完整显示)
+  const focusTyping = (summary.focusPoints ?? []).map((p, i) =>
+    sliceByProgress(p, typingProgress?.focusPoints?.[i] ?? 1),
+  );
 
   const detailsGrid = forceMobile
     ? 'grid grid-cols-1 gap-4'
@@ -119,14 +168,15 @@ export function SummaryCardView({
         </header>
       )}
 
-      {/* === 核心主诉 · accent 样式 === */}
+      {/* === 核心主诉 · accent 样式 · 支持流式打字 === */}
       {summary.chiefComplaint && visible('chiefComplaint') && (
         <Section title="核心主诉" accent>
-          {summary.chiefComplaint}
+          {chiefTyping.text}
+          {chiefTyping.showCursor && <TypingCursor />}
         </Section>
       )}
 
-      {/* === 重点关注 · 编号列表 === */}
+      {/* === 重点关注 · 编号列表 · 每项支持独立流式打字 === */}
       {summary.focusPoints &&
         summary.focusPoints.length > 0 &&
         visible('focusPoints') && (
@@ -136,15 +186,16 @@ export function SummaryCardView({
             </h3>
             {variant === 'doctor' ? (
               <ol className="space-y-2 list-decimal list-inside">
-                {summary.focusPoints.map((p, i) => (
+                {focusTyping.map((t, i) => (
                   <li key={i} className="text-sm text-on-surface">
-                    {p}
+                    {t.text}
+                    {t.showCursor && <TypingCursor />}
                   </li>
                 ))}
               </ol>
             ) : (
               <ul className="space-y-2">
-                {summary.focusPoints.map((p, i) => (
+                {focusTyping.map((t, i) => (
                   <li
                     key={i}
                     className="flex items-start gap-2 text-sm text-on-surface bg-primary-fixed/30 rounded-lg px-3 py-2"
@@ -152,7 +203,10 @@ export function SummaryCardView({
                     <span className="text-primary font-bold shrink-0">
                       {i + 1}.
                     </span>
-                    {p}
+                    <span className="flex-1">
+                      {t.text}
+                      {t.showCursor && <TypingCursor />}
+                    </span>
                   </li>
                 ))}
               </ul>

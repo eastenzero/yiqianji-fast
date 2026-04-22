@@ -73,26 +73,26 @@ const SUMMARY_SECTIONS: SummarySection[] = [
   'lifestyle',
 ];
 
-// 每个 section 的出现帧（从 Summary 屏进入后开始累加）
+// 每个 section 的出现帧（从 Summary 屏进入后开始累加）· A2 重整后（1800→1260 帧 · 0.7x）
 const SECTION_REVEAL_FRAMES: Record<SummarySection, number> = {
-  chiefComplaint: 970,
-  focusPoints: 1080,
-  symptoms: 1200,
-  vitalsTrend: 1310,
-  medications: 1420,
-  lifestyle: 1520,
+  chiefComplaint: 679,
+  focusPoints: 756,
+  symptoms: 840,
+  vitalsTrend: 917,
+  medications: 994,
+  lifestyle: 1064,
   reportHighlights: 9999, // 本场景不显示
 };
 
 export const D2AiSummary: React.FC = () => {
   const frame = useCurrentFrame();
 
-  // 手机入场 / 退场
-  const phoneEnter = interpolate(frame, [0, 40], [0, 1], {
+  // 手机入场 / 退场（A2 · 1800→1260 帧缩放）
+  const phoneEnter = interpolate(frame, [0, 28], [0, 1], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
-  const phoneExit = interpolate(frame, [1740, 1800], [1, 0], {
+  const phoneExit = interpolate(frame, [1218, 1260], [1, 0], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
@@ -100,33 +100,33 @@ export const D2AiSummary: React.FC = () => {
   const phoneScale = 0.94 + phoneEnter * 0.06;
   const phoneOpacity = phoneEnter * phoneExit;
 
-  // 三屏 opacity：Home → Loading → Summary
-  const homeOpacity = interpolate(frame, [380, 450], [1, 0], {
+  // 三屏 opacity：Home → Loading → Summary（A2 0.7x）
+  const homeOpacity = interpolate(frame, [266, 315], [1, 0], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
   const loadingOpacity =
-    interpolate(frame, [380, 450], [0, 1], {
+    interpolate(frame, [266, 315], [0, 1], {
       extrapolateLeft: 'clamp',
       extrapolateRight: 'clamp',
     }) *
-    interpolate(frame, [870, 950], [1, 0], {
+    interpolate(frame, [609, 665], [1, 0], {
       extrapolateLeft: 'clamp',
       extrapolateRight: 'clamp',
     });
-  const summaryOpacity = interpolate(frame, [870, 950], [0, 1], {
+  const summaryOpacity = interpolate(frame, [609, 665], [0, 1], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
 
-  // Home 滚动 · 0-380 帧滚向 Summary 卡（约 Home 顶部 ~350px 处）
-  const homeScrollY = interpolate(frame, [50, 380], [0, -260], {
+  // Home 滚动 · 35-266 帧滚向 Summary 卡（A2 · 原 [50,380] · 0.7x）
+  const homeScrollY = interpolate(frame, [35, 266], [0, -260], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
 
-  // Summary 滚动 · 950 开始从顶部，逐节滚向底部
-  const summaryScrollY = interpolate(frame, [950, 1700], [0, -340], {
+  // Summary 滚动 · 665 开始从顶部，逐节滚向底部（A2 · 原 [950,1700] · 0.7x）
+  const summaryScrollY = interpolate(frame, [665, 1190], [0, -340], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
@@ -135,55 +135,82 @@ export const D2AiSummary: React.FC = () => {
   const spinAngle = ((frame % 45) / 45) * 360;
   const loadingPulse = 0.85 + 0.15 * Math.sin((frame / 30) * Math.PI);
 
-  // AI 进度条 · 450-860 帧 0→1
-  const aiProgress = interpolate(frame, [450, 860], [0, 1], {
+  // AI 进度条 · 315-602 帧 0→1（A2 · 原 [450,860] · 0.7x）
+  const aiProgress = interpolate(frame, [315, 602], [0, 1], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
 
-  // 逐节浮入集合
+  // 逐节浮入集合（section 何时"出现"）
   const revealedSet = new Set<SummarySection>();
   SUMMARY_SECTIONS.forEach((k) => {
     if (frame >= SECTION_REVEAL_FRAMES[k]) revealedSet.add(k);
   });
 
-  // 右侧 5 段注释淡入淡出
+  // V3 · 核心主诉 + 3 条 focusPoints 流式打字（A2 · 原 [970,1320] 区间 · 0.7x）
+  //   chiefComplaint: 680 → 735   （~2s）
+  //   focusPoints[0]: 756 → 812   （~1.9s）
+  //   focusPoints[1]: 819 → 868   （~1.6s）
+  //   focusPoints[2]: 875 → 924   （~1.6s）
+  //   其余 4 栏（症状/体征/用药/生活）保持浮入不打字
+  const typingProgress = {
+    chiefComplaint: interpolate(frame, [680, 735], [0, 1], {
+      extrapolateLeft: 'clamp',
+      extrapolateRight: 'clamp',
+    }),
+    focusPoints: [
+      interpolate(frame, [756, 812], [0, 1], {
+        extrapolateLeft: 'clamp',
+        extrapolateRight: 'clamp',
+      }),
+      interpolate(frame, [819, 868], [0, 1], {
+        extrapolateLeft: 'clamp',
+        extrapolateRight: 'clamp',
+      }),
+      interpolate(frame, [875, 924], [0, 1], {
+        extrapolateLeft: 'clamp',
+        extrapolateRight: 'clamp',
+      }),
+    ],
+  };
+
+  // 右侧 5 段注释淡入淡出（A2 · 原 1800 帧区间 · 0.7x）
   const annotationConfigs = [
     {
-      range: [90, 160, 340, 410],
-      tx: [90, 160],
+      range: [63, 112, 238, 287],
+      tx: [63, 112],
       label: 'STEP 01',
       title: '在首页\n一键生成',
       sub: '打开 App · 顶部 Summary 卡\n点击「立即生成」',
       color: COLORS.muted,
     },
     {
-      range: [480, 560, 820, 890],
-      tx: [480, 560],
+      range: [336, 392, 574, 623],
+      tx: [336, 392],
       label: 'STEP 02',
       title: 'AI 3–5 秒\n结构化处理',
       sub: '多模态时序建模\n通义千问 / 豆包 · 国产大模型',
       color: COLORS.muted,
     },
     {
-      range: [970, 1050, 1220, 1290],
-      tx: [970, 1050],
+      range: [679, 735, 854, 903],
+      tx: [679, 735],
       label: 'STEP 03',
       title: '核心主诉 + 建议',
       sub: 'AI 提炼患者当前最值得关注的问题\n给医生的 3 条焦点建议',
       color: COLORS.accent,
     },
     {
-      range: [1290, 1370, 1540, 1600],
-      tx: [1290, 1370],
+      range: [903, 959, 1078, 1120],
+      tx: [903, 959],
       label: 'STEP 04',
       title: '症状 / 体征 / 用药 /\n生活 四栏结构化',
       sub: '零散记录自动分类 + 去重 + 提炼',
       color: COLORS.accent,
     },
     {
-      range: [1580, 1660, 1740, 1800],
-      tx: [1580, 1660],
+      range: [1106, 1162, 1218, 1260],
+      tx: [1106, 1162],
       label: 'STEP 05',
       title: '30 秒\n读完半年病史',
       sub: '医生扫码即看 · 零安装\n患者数据完全本地',
@@ -323,7 +350,7 @@ export const D2AiSummary: React.FC = () => {
           </div>
         )}
 
-        {/* Summary 屏 · 真实 SummaryCardView · 分节浮入 */}
+        {/* Summary 屏 · 真实 SummaryCardView · 核心主诉+3条 focusPoints 流式打字 · 其余 4 栏浮入+滚动 */}
         <PhoneContent scrollY={summaryScrollY} opacity={summaryOpacity}>
           <SummaryCardView
             forceMobile
@@ -331,6 +358,7 @@ export const D2AiSummary: React.FC = () => {
             summary={SUMMARY_DATA}
             coverageLabel="生成于今天 09:15 · 覆盖近 14 天"
             revealedSections={revealedSet}
+            typingProgress={typingProgress}
           />
         </PhoneContent>
 
@@ -338,7 +366,7 @@ export const D2AiSummary: React.FC = () => {
         <TouchRipple
           x={RIPPLE_GENERATE.x}
           y={RIPPLE_GENERATE.y}
-          triggerFrame={360}
+          triggerFrame={252}
           maxRadius={110}
           durationFrames={36}
           color={COLORS.accent}
@@ -348,7 +376,7 @@ export const D2AiSummary: React.FC = () => {
         <TouchRipple
           x={RIPPLE_SHARE.x}
           y={RIPPLE_SHARE.y}
-          triggerFrame={1680}
+          triggerFrame={1176}
           maxRadius={80}
           durationFrames={32}
           color={COLORS.primary}
@@ -423,27 +451,61 @@ export const D2AiSummary: React.FC = () => {
           );
         })}
 
-        {/* 底部小金句 */}
+        {/* 左侧小金句 · 和右侧 Step 注释对称平衡 · 避免和手机重叠 */}
         <div
           style={{
             position: 'absolute',
-            left: 0,
-            right: 0,
-            bottom: 80,
-            textAlign: 'center',
+            left: 140,
+            top: 780,
+            width: 460,
+            textAlign: 'left',
           }}
         >
-          {frame >= 1100 && frame <= 1760 && (
-            <TextReveal
-              text="30 秒记录 · AI 整理 · 医生秒懂"
-              startFrame={1100}
-              durationFrames={80}
-              fontSize={28}
-              fontWeight={500}
-              color={COLORS.primary}
-              letterSpacing="0.2em"
-              style={{ opacity: 0.75 }}
-            />
+          {frame >= 770 && frame <= 1232 && (
+            <>
+              <div
+                style={{
+                  fontSize: 14,
+                  fontWeight: 600,
+                  letterSpacing: '0.3em',
+                  color: COLORS.accent,
+                  marginBottom: 14,
+                  textTransform: 'uppercase',
+                }}
+              >
+                CORE EXPERIENCE
+              </div>
+              <TextReveal
+                text="30 秒记录"
+                startFrame={770}
+                durationFrames={42}
+                fontSize={44}
+                fontWeight={700}
+                color={COLORS.ink}
+                letterSpacing="0.02em"
+                style={{ display: 'block', marginBottom: 6 }}
+              />
+              <TextReveal
+                text="AI 整理"
+                startFrame={805}
+                durationFrames={42}
+                fontSize={44}
+                fontWeight={700}
+                color={COLORS.ink}
+                letterSpacing="0.02em"
+                style={{ display: 'block', marginBottom: 6 }}
+              />
+              <TextReveal
+                text="医生秒懂"
+                startFrame={840}
+                durationFrames={42}
+                fontSize={44}
+                fontWeight={700}
+                color={COLORS.accent}
+                letterSpacing="0.02em"
+                style={{ display: 'block' }}
+              />
+            </>
           )}
         </div>
       </AbsoluteFill>

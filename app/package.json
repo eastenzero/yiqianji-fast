@@ -18,7 +18,9 @@
     "video:render:v2:novoice": "remotion render video/index.ts YiqianjiV2NoVoice out/yiqianji-v2-novoice.mp4",
     "video:still:v2": "remotion still video/index.ts YiqianjiV2 out/yiqianji-v2-poster.jpg --frame=45",
     "voice:generate": "node --env-file=.env.local scripts/generate-voice.mjs",
-    "voice:generate:v2": "node --env-file=.env.local scripts/generate-voice.mjs --script video/voice-script-v2.json --out public/audio/voice-v2"
+    "voice:generate:v2": "node --env-file=.env.local scripts/generate-voice.mjs --script video/voice-script-v2.json --out public/audio/voice-v2",
+    "voice:durations:v2": "node scripts/measure-voice-durations.mjs",
+    "voice:subtitles:preview:v2": "node scripts/preview-subtitle-cues.mjs"
   },
   "dependencies": {
     "@remotion/bundler": "^4.0.450",

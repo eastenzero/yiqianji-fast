@@ -39,8 +39,12 @@ const { values } = parseArgs({
   options: {
     script: { type: 'string', default: 'video/voice-script.json' },
     out: { type: 'string', default: 'public/audio/voice' },
+    only: { type: 'string' }, // 只生成指定 segment id（逗号分隔支持多个）· 用于 A1 单段试音
+    voice: { type: 'string' }, // 覆盖 meta.defaultVoice · 用于 A1 快速 A/B 测试
   },
 });
+
+const onlyIds = values.only ? new Set(values.only.split(',').map((s) => s.trim()).filter(Boolean)) : null;
 
 const TTS_ENDPOINT = 'https://openspeech.bytedance.com/api/v1/tts';
 // 路径相对于 app/ 根目录（因为 npm scripts cwd 在 app/）
@@ -103,24 +107,37 @@ async function main() {
   const script = JSON.parse(await readFile(SCRIPT_PATH, 'utf8'));
   await mkdir(OUTPUT_DIR, { recursive: true });
 
+  // CLI --voice 覆盖 meta.defaultVoice（A1 音色快速试听时方便）
+  const effectiveDefaultVoice = values.voice || script.meta.defaultVoice;
+
+  // 过滤 segments · CLI --only p01-cover / --only p01-cover,p02-background
+  const allSegments = script.segments;
+  const segments = onlyIds ? allSegments.filter((s) => onlyIds.has(s.id)) : allSegments;
+
+  if (onlyIds && segments.length === 0) {
+    console.error(`❌ --only 过滤后没有匹配的 segment: ${[...onlyIds].join(', ')}`);
+    console.error(`   可用 IDs: ${allSegments.map((s) => s.id).join(', ')}`);
+    process.exit(1);
+  }
+
   console.log('📢 火山引擎 TTS · 批量配音生成');
   console.log('───────────────────────────────────');
   console.log(`   API:    ${TTS_ENDPOINT}`);
   console.log(`   AppID:  ${APPID.substring(0, 4)}****`);
   console.log(`   Script: ${values.script}`);
   console.log(`   Out:    ${values.out}/`);
-  console.log(`   Voice:  ${script.meta.defaultVoice}`);
-  console.log(`   段数:   ${script.segments.length}`);
+  console.log(`   Voice:  ${effectiveDefaultVoice}${values.voice ? ' (CLI 覆盖)' : ''}`);
+  console.log(`   段数:   ${segments.length}${onlyIds ? ` / ${allSegments.length} (--only)` : ''}`);
   console.log('───────────────────────────────────\n');
 
   let totalChars = 0;
   let successCount = 0;
   let failCount = 0;
 
-  for (const seg of script.segments) {
+  for (const seg of segments) {
     const chars = [...seg.text].length;
     totalChars += chars;
-    const voice = seg.voice || script.meta.defaultVoice;
+    const voice = seg.voice || effectiveDefaultVoice;
     const speed = seg.speed || script.meta.defaultSpeed;
 
     console.log(`🎙  [${seg.id}]  Scene ${seg.scene} · ${seg.sceneName}`);

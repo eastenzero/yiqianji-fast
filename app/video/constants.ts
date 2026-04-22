@@ -73,28 +73,33 @@ export const BGM_VOLUME = 0.22;
 export const VOICE_ENABLED = true;
 
 // ============================================================================
-// V2 · 计赛答辩版时间轴（新版 · 对应 REMOTION_V2_PLAN.md）
+// V2 · 计赛答辩版时间轴（新版 · 对应 REMOTION_V2_PLAN.md + Phase 5 · A2）
 // ============================================================================
 //
-// 12 段 · 总约 7:40 = 13800 帧 @30fps
+// 12 段 · 总 6:09 = 11070 帧 @30fps（Phase 5 · A2 重整后）
 // 结构：9 页 PPT (P01-P09) + 3 段穿插演示 (D1-D3)
+// 原则：每段时长 = 配音时长 + 0.5-2s 呼吸 · 去除空镜
 // 对应 PPT 项目：ppt-master/projects/yiqianji-defense_ppt169_20260422
 // ============================================================================
 
-/** V2 · 12 段帧时长 */
+/** V2 · 12 段帧时长 · A3 重整后（P03 / D1 去静默）
+ *  - P03 配音 14.5s + 0.5s 呼吸 = 15s（原 22s · 砍 7s / 210 帧尾段静默）
+ *  - D1 配音 24.85s + 5s 呼吸（末端手机退场 + 数据展示缓冲）= 30s（原 38s · 砍 8s / 240 帧尾段静默）
+ *  - 累积左移 450 帧（15s）· D1 及其后 voice startFrame 全部 -450
+ */
 export const V2_SCENE_DURATIONS = {
-  p01_cover: sec(15),          // 0:00 - 0:15  · 封面
-  p02_background: sec(50),     // 0:15 - 1:05  · 项目背景
-  p03_positioning: sec(25),    // 1:05 - 1:30  · 产品定位
-  d1_recordFlow: sec(55),      // 1:30 - 2:25  · 演示1 · 记录流程
-  p04_features: sec(35),       // 2:25 - 3:00  · 核心功能
-  p05_recordOrganize: sec(25), // 3:00 - 3:25  · 记录与整理
-  d2_aiSummary: sec(60),       // 3:25 - 4:25  · 演示2 · AI 摘要生成
-  p06_summarySharing: sec(30), // 4:25 - 4:55  · AI 摘要分享
-  d3_doctorScan: sec(40),      // 4:55 - 5:35  · 演示3 · 医生端扫码
-  p07_architecture: sec(45),   // 5:35 - 6:20  · 技术架构
-  p08_security: sec(45),       // 6:20 - 7:05  · 安全与创新
-  p09_team: sec(35),           // 7:05 - 7:40  · 团队与展望
+  p01_cover: sec(14),          // 0:00 - 0:14  · 封面
+  p02_background: sec(43),     // 0:14 - 0:57  · 项目背景（配音 30.9s + 呼吸）
+  p03_positioning: sec(15),    // 0:57 - 1:12  · 产品定位（配音 14.5s + 0.5s 呼吸 · A3 去静默）
+  d1_recordFlow: sec(30),      // 1:12 - 1:42  · 演示1 · 记录流程（配音 24.85s + 5s 尾段呼吸 · A3 去静默）
+  p04_features: sec(26),       // 1:42 - 2:08  · 核心功能（配音 18.7s + 呼吸）
+  p05_recordOrganize: sec(22), // 2:08 - 2:30  · 记录与整理（配音 16.7s + 呼吸）
+  d2_aiSummary: sec(42),       // 2:30 - 3:12  · 演示2 · AI 摘要（配音 28.7s + 呼吸）
+  p06_summarySharing: sec(20), // 3:12 - 3:32  · AI 摘要分享（配音 13.7s + 呼吸）
+  d3_doctorScan: sec(35),      // 3:32 - 4:07  · 演示3 · 医生端扫码（配音 25.3s + 呼吸）
+  p07_architecture: sec(44),   // 4:07 - 4:51  · 技术架构（配音 27.1s + 呼吸）
+  p08_security: sec(35),       // 4:51 - 5:26  · 安全与创新（配音 27.9s + 呼吸）
+  p09_team: sec(28),           // 5:26 - 5:54  · 团队与展望（配音 14.7s + 余音 slogan）
 } as const;
 
 export const V2_TOTAL_FRAMES = Object.values(V2_SCENE_DURATIONS).reduce(
