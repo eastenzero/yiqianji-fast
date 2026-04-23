@@ -114,13 +114,13 @@ export const P05RecordOrganize: React.FC = () => {
             }}
           >
             <Highlight
+              mode="colorShift"
+              colorShiftMaxAlpha={0.22}
               color={feat.color}
               startFrame={feat.startFrame}
               pulsePeriod={45}
               pulseCount={feat.pulseCount}
               retainAfter={feat.retain}
-              maxGlowSize={42}
-              maxSpread={4}
               display="block"
               borderRadius={FEAT_RADIUS}
               style={{ width: '100%', height: '100%' }}
@@ -150,12 +150,12 @@ export const P05RecordOrganize: React.FC = () => {
             }}
           >
             <Highlight
+              mode="colorShift"
+              colorShiftMaxAlpha={0.30}
               color={tag.color}
               startFrame={580 + i * 30}
               pulsePeriod={28}
               pulseCount={2}
-              maxGlowSize={26}
-              maxSpread={2}
               display="block"
               borderRadius={MODE_TAG_RADIUS}
               style={{ width: '100%', height: '100%' }}

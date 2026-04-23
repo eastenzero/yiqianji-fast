@@ -2,17 +2,19 @@
   "meta": {
     "provider": "volcengine",
     "api": "https://openspeech.bytedance.com/api/v1/tts",
-    "defaultVoice": "zh_female_xiaohe_uranus_bigtts",
-    "defaultSpeed": 1.0,
+    "defaultVoice": "zh_female_zhixingnv_uranus_bigtts",
+    "defaultSpeed": 1,
     "voiceNotes": {
-      "zh_female_cancan_uranus_bigtts": "灿灿 · 女声 · 温暖亲和（豆包大模型 · 医疗感）",
-      "zh_female_xiaohe_uranus_bigtts": "小何 · 女声 · 清爽年轻（豆包大模型 · 年轻活力 · 面对评委 · V2 首选）",
-      "zh_female_shuangkuaisisi_moon_bigtts": "爽快思思 · 女声 · 活泼有能量（豆包大模型 · 备选）"
+      "zh_female_zhixingnv_uranus_bigtts": "知性女 · 中性理性新闻感（Uranus/Seed-TTS 2.0 大模型 · A1 推荐 · 2026-04-23）",
+      "zh_female_vv_uranus_bigtts": "Vivi · 标准女声（Uranus 大模型 · 已知可用 · 备选 fallback 1）",
+      "zh_female_cancan_uranus_bigtts": "灿灿 · 温暖亲和（已知可用 · 备选 fallback 2）",
+      "zh_female_xiaohe_uranus_bigtts": "小何 · 带台湾腔（已淘汰）",
+      "zh_female_shuangkuaisisi_moon_bigtts": "爽快思思 · 活泼有能量（Moon 大模型 · 备选）"
     },
-    "totalFrames": 13800,
+    "totalFrames": 10620,
     "fps": 30,
     "outputDir": "app/public/audio/voice-v2/",
-    "note": "V2 · 基于 ppt-master notes/total.md 精缩至 7:40 · 含 D1/D2/D3 演示段原创台词"
+    "note": "V2 · A1 音色 + A3 重整 · 总时长 5:54 = 10620 帧 · 知性女 Uranus 2.0 · P03 砍 210 帧尾静默 · D1 砍 240 帧尾静默 · D1 及其后 startFrame 全部 -450"
   },
   "segments": [
     {
@@ -20,84 +22,108 @@
       "scene": 1,
       "sceneName": "P01 Cover",
       "startFrame": 45,
-      "text": "各位老师好。我们是山东第一医科大学医前记团队。今天带来一款诊前信息整理与沟通辅助系统。"
+      "text": "各位老师好。我们是山东第一医科大学医前记团队。今天带来一款诊前信息整理与沟通辅助系统。",
+      "durationSeconds": 8.688,
+      "durationFrames": 261
     },
     {
       "id": "p02-background",
       "scene": 2,
       "sceneName": "P02 Background",
-      "startFrame": 510,
-      "text": "先看三组数字——2.45 亿高血压患者、1.18 亿糖尿病患者、2.20 亿 65 岁以上老年人口。他们每次就诊，都要面对三件头疼事：第一，资料散落，纸质报告、手机备忘、微信群，看病前找报告比看病还累。第二，话到嘴边讲不清，精确的时间和剂量全凭记忆。第三，三甲医院平均问诊只有 3 到 5 分钟，医生只能获取碎片化信息。"
+      "startFrame": 480,
+      "text": "先看三组数字——2.45 亿高血压患者、1.18 亿糖尿病患者、2.20 亿 65 岁以上老年人口。他们每次就诊，都要面对三件头疼事：第一，资料散落，纸质报告、手机备忘、微信群，看病前找报告比看病还累。第二，话到嘴边讲不清，精确的时间和剂量全凭记忆。第三，三甲医院平均问诊只有 3 到 5 分钟，医生只能获取碎片化信息。",
+      "durationSeconds": 30.888,
+      "durationFrames": 927
     },
     {
       "id": "p03-positioning",
       "scene": 3,
       "sceneName": "P03 Positioning",
-      "startFrame": 1980,
-      "text": "医前记的思路很直接：把患者散乱的记录，整理成医生秒懂的专业摘要。30 秒记录、AI 整理、医生 30 秒读完半年病史。我们坚持一条底线——辅助医生而不替代医生。"
+      "startFrame": 1740,
+      "text": "医前记的思路很直接：把患者散乱的记录，整理成医生秒懂的专业摘要。30 秒记录、AI 整理、医生 30 秒读完半年病史。我们坚持一条底线——辅助医生而不替代医生。",
+      "durationSeconds": 14.472,
+      "durationFrames": 434
     },
     {
       "id": "d1-record-flow",
       "scene": 4,
       "sceneName": "D1 Record Flow",
-      "startFrame": 2760,
-      "text": "一起看真实使用。首页，用户王先生已经连续记录 13 天。今天再记一次血压——点击「测体征」，输入收缩压 135、舒张压 90，保存。回到首页，连续记录变成 14 天，血压趋势图自动更新——这根新柱子因为超过 135 变成了红色，BP ALERT 自动触发。"
+      "startFrame": 2220,
+      "text": "一起看真实使用。首页，用户王先生已经连续记录 13 天。今天再记一次血压——点击「测体征」，输入收缩压 135、舒张压 90，保存。回到首页，连续记录变成 14 天，血压趋势图自动更新——这根新柱子因为超过 135 变成了红色，BP ALERT 自动触发。",
+      "durationSeconds": 24.84,
+      "durationFrames": 745
     },
     {
       "id": "p04-features",
       "scene": 5,
       "sceneName": "P04 Features",
-      "startFrame": 4410,
-      "text": "医前记围绕四步闭环——记录、整理、摘要、分享。每天 30 秒日常记录；智能整理自动按时间轴归档；AI 摘要一键生成结构化病历；最后通过二维码分享给医生，零安装。四步串起一次完整的就诊周期。"
+      "startFrame": 3120,
+      "text": "医前记围绕四步闭环——记录、整理、摘要、分享。每天 30 秒日常记录；智能整理自动按时间轴归档；AI 摘要一键生成结构化病历；最后通过二维码分享给医生，零安装。四步串起一次完整的就诊周期。",
+      "durationSeconds": 18.72,
+      "durationFrames": 562
     },
     {
       "id": "p05-record-organize",
       "scene": 6,
       "sceneName": "P05 Record & Organize",
-      "startFrame": 5460,
-      "text": "记录支持四种入口——测体征、记症状、生活习惯、记用药。检查报告拍照 OCR 识别，自动提取关键指标。时间轴让同一症状的多条记录自动关联，形成清晰的健康时间线。"
+      "startFrame": 3900,
+      "text": "记录支持四种入口——测体征、记症状、生活习惯、记用药。检查报告拍照 OCR 识别，自动提取关键指标。时间轴让同一症状的多条记录自动关联，形成清晰的健康时间线。",
+      "durationSeconds": 16.68,
+      "durationFrames": 500
     },
     {
       "id": "d2-ai-summary",
       "scene": 7,
       "sceneName": "D2 AI Summary",
-      "startFrame": 6210,
-      "text": "看 AI 如何工作。首页 AI 摘要卡点一下——3 到 5 秒，通义千问在后台完成多模态时序建模。看结果：核心主诉一句话，近 7 天晨起血压偏高伴偶发头晕；接下来 3 条给医生的建议焦点——晨峰血压、单药控制不足、头晕时间点；随后是症状、体征、用药、生活四栏结构化数据。整份摘要医生 30 秒读完。"
+      "startFrame": 4560,
+      "text": "看 AI 如何工作。首页 AI 摘要卡点一下——3 到 5 秒，通义千问在后台完成多模态时序建模。看结果：核心主诉一句话，近 7 天晨起血压偏高伴偶发头晕；接下来 3 条给医生的建议焦点——晨峰血压、单药控制不足、头晕时间点；随后是症状、体征、用药、生活四栏结构化数据。整份摘要医生 30 秒读完。",
+      "durationSeconds": 28.704,
+      "durationFrames": 861
     },
     {
       "id": "p06-summary-sharing",
       "scene": 8,
       "sceneName": "P06 Summary Sharing",
-      "startFrame": 8010,
-      "text": "医生端不用装任何 App——患者生成二维码，医生扫码即可在浏览器查看摘要。支持有效期设置、到期自动失效。患者和医生之间，只需要一张码的距离。"
+      "startFrame": 5820,
+      "text": "医生端不用装任何 App——患者生成二维码，医生扫码即可在浏览器查看摘要。支持有效期设置、到期自动失效。患者和医生之间，只需要一张码的距离。",
+      "durationSeconds": 13.656,
+      "durationFrames": 410
     },
     {
       "id": "d3-doctor-scan",
       "scene": 9,
       "sceneName": "D3 Doctor Scan",
-      "startFrame": 8910,
-      "text": "看分享环节。患者点「分享给医生」，生成加密二维码，有效期 24 小时可控。医生扫码，浏览器直接打开——这就是医生看到的页面：患者姓名、就诊日期、核心主诉、3 条建议焦点、症状体征用药生活四栏一目了然。异常指标红色高亮，医生 30 秒读完进入有效问诊。"
+      "startFrame": 6420,
+      "text": "看分享环节。患者点「分享给医生」，生成加密二维码，有效期 24 小时可控。医生扫码，浏览器直接打开——这就是医生看到的页面：患者姓名、就诊日期、核心主诉、3 条建议焦点、症状体征用药生活四栏一目了然。异常指标红色高亮，医生 30 秒读完进入有效问诊。",
+      "durationSeconds": 25.272,
+      "durationFrames": 758
     },
     {
       "id": "p07-architecture",
       "scene": 10,
       "sceneName": "P07 Architecture",
-      "startFrame": 10110,
-      "text": "技术架构分四层——最上面展示层，React 19 加 TypeScript 加 Vite，全 PWA 兼容；第二层应用逻辑层，Zustand 管状态；第三层本地数据层，IndexedDB 存储患者全部数据，离线可用；最下面 AI 能力层，我们适配了通义千问、DeepSeek 等 6 家国产大模型，多模态时序建模是这一层的核心创新。"
+      "startFrame": 7470,
+      "text": "技术架构分四层——最上面展示层，React 19 加 TypeScript 加 Vite，全 PWA 兼容；第二层应用逻辑层，Zustand 管状态；第三层本地数据层，IndexedDB 存储患者全部数据，离线可用；最下面 AI 能力层，我们适配了通义千问、DeepSeek 等 6 家国产大模型，多模态时序建模是这一层的核心创新。",
+      "durationSeconds": 27.144,
+      "durationFrames": 814
     },
     {
       "id": "p08-security",
       "scene": 11,
       "sceneName": "P08 Security",
-      "startFrame": 11460,
-      "text": "安全是底线——数据本地优先，不上云；端到端加密传输；权限细粒度可控；优先使用国产大模型，数据不出境。项目四大首创——首创面向诊前场景的多模态时序建模、首创患者 AI 医生三屏串联闭环、首创多供应商 AI 灵活切换、首创 PWA 零安装跨平台。每一条，都有代码为证。"
+      "startFrame": 8790,
+      "text": "安全是底线——数据本地优先，不上云；端到端加密传输；权限细粒度可控；优先使用国产大模型，数据不出境。项目四大首创——首创面向诊前场景的多模态时序建模、首创患者 AI 医生三屏串联闭环、首创多供应商 AI 灵活切换、首创 PWA 零安装跨平台。每一条，都有代码为证。",
+      "durationSeconds": 27.888,
+      "durationFrames": 837
     },
     {
       "id": "p09-team",
       "scene": 12,
       "sceneName": "P09 Team & Vision",
-      "startFrame": 12810,
-      "text": "最后介绍团队。我们六人来自山东第一医科大学医学信息与人工智能学院，指导教师冯敏老师。医前记的愿景很简单——让每一次就诊都有充分的准备。谢谢各位老师聆听。"
+      "startFrame": 9840,
+      "text": "最后介绍团队。我们六人来自山东第一医科大学医学信息与人工智能学院，指导教师冯敏老师。医前记的愿景很简单——让每一次就诊都有充分的准备。谢谢各位老师聆听。",
+      "durationSeconds": 14.712,
+      "durationFrames": 441
     }
   ]
 }

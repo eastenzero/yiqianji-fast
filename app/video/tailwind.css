@@ -66,7 +66,8 @@
 }
 
 /* Remotion 渲染时默认是黑底，设为品牌 Surface 避免渲染黑边 */
-html, body {
+html,
+body {
   background: var(--color-surface);
   font-family: var(--font-body);
   margin: 0;
@@ -74,11 +75,23 @@ html, body {
 }
 
 /* ========== 工具类（镜像 app/src/index.css） ========== */
-.hide-scrollbar::-webkit-scrollbar { display: none; }
-.hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
 
-.hidden-scrollbar::-webkit-scrollbar { display: none; }
-.hidden-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hidden-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hidden-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
 
 .editorial-shadow {
   box-shadow:
@@ -88,4 +101,18 @@ html, body {
 
 .bg-gradient-medical {
   background-image: linear-gradient(135deg, #006485 0%, #2c7da0 100%);
+}
+
+/* V3 · SummaryCardView 流式打字光标闪烁（D2 场景用） */
+@keyframes yq-typing-blink {
+
+  0%,
+  49% {
+    opacity: 1;
+  }
+
+  50%,
+  100% {
+    opacity: 0;
+  }
 }

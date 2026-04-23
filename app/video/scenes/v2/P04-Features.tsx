@@ -85,8 +85,8 @@ export const P04Features: React.FC = () => {
         >
           <Sweep
             direction="ltr"
-            startFrame={40}
-            durationFrames={120}
+            startFrame={30}
+            durationFrames={89}
             color="#FFFFFF"
             intensity={0.42}
             beamWidthPercent={22}
@@ -109,7 +109,7 @@ export const P04Features: React.FC = () => {
         >
           <Highlight
             color={COLORS.primary}
-            startFrame={180}
+            startFrame={134}
             pulsePeriod={45}
             pulseCount={2}
             maxGlowSize={44}
@@ -142,7 +142,7 @@ export const P04Features: React.FC = () => {
         >
           <Highlight
             color="#2C7DA0"
-            startFrame={300}
+            startFrame={223}
             pulsePeriod={45}
             pulseCount={2}
             maxGlowSize={44}
@@ -175,7 +175,7 @@ export const P04Features: React.FC = () => {
         >
           <Highlight
             color={COLORS.accent}
-            startFrame={420}
+            startFrame={312}
             pulsePeriod={55}
             pulseCount={3}
             retainAfter
@@ -209,7 +209,7 @@ export const P04Features: React.FC = () => {
         >
           <Highlight
             color={COLORS.primary}
-            startFrame={600}
+            startFrame={446}
             pulsePeriod={45}
             pulseCount={2}
             maxGlowSize={44}
@@ -243,8 +243,8 @@ export const P04Features: React.FC = () => {
         >
           <Sweep
             direction="ltr"
-            startFrame={800}
-            durationFrames={100}
+            startFrame={594}
+            durationFrames={74}
             color={COLORS.accent}
             intensity={0.38}
             beamWidthPercent={20}

@@ -89,8 +89,8 @@ export const P06SummarySharing: React.FC = () => {
         >
           <Sweep
             direction="ttb"
-            startFrame={40}
-            durationFrames={80}
+            startFrame={27}
+            durationFrames={54}
             color="#FFFFFF"
             intensity={0.36}
             beamWidthPercent={40}
@@ -98,12 +98,12 @@ export const P06SummarySharing: React.FC = () => {
         </div>
       </AbsoluteFill>
 
-      {/* 4 feature cards */}
+      {/* 4 feature cards（A2 · 900→600 帧 · 0.667x）*/}
       {[
-        { color: COLORS.accent, startFrame: 150, pulseCount: 3, retain: true },
-        { color: COLORS.primary, startFrame: 240, pulseCount: 2 },
-        { color: '#2C7DA0', startFrame: 330, pulseCount: 2 },
-        { color: COLORS.primary, startFrame: 420, pulseCount: 2 },
+        { color: COLORS.accent, startFrame: 100, pulseCount: 3, retain: true },
+        { color: COLORS.primary, startFrame: 160, pulseCount: 2 },
+        { color: '#2C7DA0', startFrame: 220, pulseCount: 2 },
+        { color: COLORS.primary, startFrame: 280, pulseCount: 2 },
       ].map((feat, i) => (
         <AbsoluteFill key={i} style={{ pointerEvents: 'none' }}>
           <div
@@ -153,7 +153,7 @@ export const P06SummarySharing: React.FC = () => {
         >
           <Highlight
             color={COLORS.primary}
-            startFrame={540}
+            startFrame={360}
             pulsePeriod={35}
             pulseCount={2}
             maxGlowSize={30}
@@ -173,7 +173,7 @@ export const P06SummarySharing: React.FC = () => {
         </div>
       </AbsoluteFill>
 
-      {/* QR card · 核心 · 橙色 3 脉冲 */}
+      {/* QR card · 核心 · 橙色 3 脉冲（A2 · 0.667x）*/}
       <AbsoluteFill style={{ pointerEvents: 'none' }}>
         <div
           style={{
@@ -186,7 +186,7 @@ export const P06SummarySharing: React.FC = () => {
         >
           <Highlight
             color={COLORS.accent}
-            startFrame={570}
+            startFrame={380}
             pulsePeriod={45}
             pulseCount={3}
             retainAfter
@@ -220,7 +220,7 @@ export const P06SummarySharing: React.FC = () => {
         >
           <Highlight
             color="#2C7DA0"
-            startFrame={620}
+            startFrame={413}
             pulsePeriod={35}
             pulseCount={2}
             maxGlowSize={30}
@@ -240,12 +240,12 @@ export const P06SummarySharing: React.FC = () => {
         </div>
       </AbsoluteFill>
 
-      {/* 收尾 diagonal Sweep */}
+      {/* 收尾 diagonal Sweep（A2 0.667x）*/}
       <Sweep
         direction="diagonal"
         angle={-18}
-        startFrame={760}
-        durationFrames={100}
+        startFrame={507}
+        durationFrames={67}
         color={COLORS.accent}
         intensity={0.32}
         beamWidthPercent={16}

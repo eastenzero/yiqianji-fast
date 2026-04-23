@@ -10,7 +10,7 @@ import {
 } from '../../../src/components/pure/RecordVitalView';
 
 /**
- * Scene D1 · 演示 · 记录流程（55s · 1650 帧 · 1:30-2:25）
+ * Scene D1 · 演示 · 记录流程（30s · 900 帧 · 1:12-1:42 · A3 重整后）
  *
  * 【Phase 3.5 真实化改造】放弃截图 + KenBurns 平移方案，
  * 改用真实 app 代码（pure 组件 HomeView / RecordVitalView）渲染，
@@ -28,22 +28,27 @@ import {
  * 左右浮动文案：
  *   A1 · 左侧 · "每日 30 秒记录 · 四入口"
  *   A2 · 右侧 · "收缩压 135 · 超阈值自动标红"
- *   A3 · 右侧 · "新记录自动入档 · BP ALERT 触发"
+ *   A3 · 右侧 · "新记录自动入档 · BP ALERT 触发"（贴合 Cue 6）
+ *
+ * A3 重整：1140→900 帧 · 砍 240 帧尾段静默
+ *   - Home V2 scroll 从 [815,1140] → [815,880] · 滚动幅度从 240 → 120px（轻推）
+ *   - A3 文案从 [843,1105] → [790,870] · 贴 Cue 6 "BP ALERT 自动触发"
+ *   - 手机退场 [1119,1140] → [879,900]
  */
 
 // PhoneFrame 内部屏幕可视区
 const PHONE_SCREEN_WIDTH = 408;
 const PHONE_SCREEN_HEIGHT = 820;
 
-// 关键帧
-const HOME1_FADE_OUT_START = 390;
-const HOME1_FADE_OUT_END = 460;
-const RECORD_FADE_IN_START = 390;
-const RECORD_FADE_IN_END = 460;
-const RECORD_FADE_OUT_START = 1100;
-const RECORD_FADE_OUT_END = 1180;
-const HOME2_FADE_IN_START = 1100;
-const HOME2_FADE_IN_END = 1180;
+// 关键帧 · A2 重整后（1650→1140 帧 · 0.69x）
+const HOME1_FADE_OUT_START = 269;
+const HOME1_FADE_OUT_END = 318;
+const RECORD_FADE_IN_START = 269;
+const RECORD_FADE_IN_END = 318;
+const RECORD_FADE_OUT_START = 760;
+const RECORD_FADE_OUT_END = 815;
+const HOME2_FADE_IN_START = 760;
+const HOME2_FADE_IN_END = 815;
 
 // "测体征" Quick Card 点击位置（滚动后 Quick Cards 出现在屏幕中下部）
 const RIPPLE_VITAL = { x: PHONE_SCREEN_WIDTH * 0.25, y: PHONE_SCREEN_HEIGHT * 0.62 };
@@ -85,12 +90,12 @@ function typeInto(
 export const D1RecordFlow: React.FC = () => {
   const frame = useCurrentFrame();
 
-  // === 手机入场 / 退场 ===
-  const phoneEnter = interpolate(frame, [0, 30], [0, 1], {
+  // === 手机入场 / 退场（A2 · 0.69x）===
+  const phoneEnter = interpolate(frame, [0, 21], [0, 1], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
-  const phoneExit = interpolate(frame, [1620, 1650], [1, 0], {
+  const phoneExit = interpolate(frame, [879, 900], [1, 0], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
@@ -121,56 +126,57 @@ export const D1RecordFlow: React.FC = () => {
     { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' },
   );
 
-  // === 滚动（Home V1） · 0-350 帧从顶部滚到 QuickCards ===
-  const home1ScrollY = interpolate(frame, [50, 350], [0, -360], {
+  // === 滚动（Home V1） · 35-242 帧从顶部滚到 QuickCards（A2 0.69x） ===
+  const home1ScrollY = interpolate(frame, [35, 242], [0, -360], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
 
-  // === 滚动（Home V2） · 1180 帧起从 BP 卡附近开始，轻推到底 ===
-  const home2ScrollY = interpolate(frame, [1180, 1650], [-280, -520], {
+  // === 滚动（Home V2） · 815 帧起从 BP 卡附近开始，轻推 120px · A3 压缩后 815-880 ===
+  const home2ScrollY = interpolate(frame, [815, 880], [-280, -400], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
 
-  // === 滚动（Record） · 跟随输入位置让 BP 输入框保持可见 ===
-  const recordScrollY = interpolate(frame, [460, 1000], [0, -120], {
+  // === 滚动（Record） · 跟随输入位置让 BP 输入框保持可见（A2 · 原 [460,1000] 0.69x）===
+  const recordScrollY = interpolate(frame, [318, 691], [0, -120], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
 
-  // === 输入"打字"效果（收缩压 135 / 舒张压 90）===
-  // 收缩压 520-680：每秒 1.8 字符
-  const systolic = typeInto('135', frame, 520, 1.8);
-  // 舒张压 720-850：每秒 1.8 字符
-  const diastolic = typeInto('90', frame, 720, 1.8);
-  // saving 状态 · 900-1050
-  const saving = frame >= 900 && frame < 1060;
+  // === 输入“打字”效果（收缩压 135 / 舒张压 90）· A2 0.69x ===
+  // 收缩压 359-460：每秒 2.6 字符（加速以适应短 duration）
+  const systolic = typeInto('135', frame, 359, 2.6);
+  // 舒张压 497-575：每秒 2.6 字符
+  const diastolic = typeInto('90', frame, 497, 2.6);
+  // saving 状态 · 622-732
+  const saving = frame >= 622 && frame < 732;
 
-  // === 左右浮动文案 ===
-  const a1Opacity = interpolate(frame, [60, 130, 360, 430], [0, 1, 1, 0], {
+  // === 左右浮动文案（A2 · 0.69x）===
+  const a1Opacity = interpolate(frame, [41, 90, 249, 297], [0, 1, 1, 0], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
-  const a1Tx = interpolate(frame, [60, 130], [-40, 0], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
-
-  const a2Opacity = interpolate(frame, [520, 600, 1050, 1120], [0, 1, 1, 0], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
-  const a2Tx = interpolate(frame, [520, 600], [40, 0], {
+  const a1Tx = interpolate(frame, [41, 90], [-40, 0], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
 
-  const a3Opacity = interpolate(frame, [1220, 1300, 1520, 1600], [0, 1, 1, 0], {
+  const a2Opacity = interpolate(frame, [359, 414, 725, 774], [0, 1, 1, 0], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
-  const a3Tx = interpolate(frame, [1220, 1300], [40, 0], {
+  const a2Tx = interpolate(frame, [359, 414], [40, 0], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
+
+  // A3 文案 · 贴合 Cue 6 "BP ALERT 自动触发"（Cue 6 scene 626-805）
+  const a3Opacity = interpolate(frame, [790, 810, 850, 870], [0, 1, 1, 0], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
+  const a3Tx = interpolate(frame, [790, 810], [40, 0], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
@@ -237,7 +243,7 @@ export const D1RecordFlow: React.FC = () => {
         <TouchRipple
           x={RIPPLE_VITAL.x}
           y={RIPPLE_VITAL.y}
-          triggerFrame={380}
+          triggerFrame={263}
           maxRadius={90}
           durationFrames={30}
           color={COLORS.primary}
@@ -247,7 +253,7 @@ export const D1RecordFlow: React.FC = () => {
         <TouchRipple
           x={RIPPLE_SAVE.x}
           y={RIPPLE_SAVE.y}
-          triggerFrame={880}
+          triggerFrame={608}
           maxRadius={110}
           durationFrames={34}
           color={COLORS.accent}

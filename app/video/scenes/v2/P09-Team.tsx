@@ -26,16 +26,16 @@ import { COLORS } from '../../constants';
  *   900-1020   静止停留 · 让 slogan 最后烙印
  *   1020-1050  SceneTransition 退出（zoom-out fade，作全片终点）
  *
- * Video 坐标（1.5x）：
- *   Row 1: y=195-345, 3 cards at x=(84, 255)/(675, 255)/(1266, 255)
- *     m1: (84, 195, 555, 150)
- *     m2: (675, 195, 555, 150)
- *     m3: (1266, 195, 555, 150)
- *   Row 2: y=375-525
- *     m4: (84, 375, 555, 150)
- *     m5: (675, 375, 555, 150)
- *     m6: (1266, 375, 555, 150)
- *   Advisor: (697.5, 577.5, 525, 82)
+ * Video 坐标（1.5x · V7 调整后）：
+ *   Advisor（独占最上方）: x=504, y=195, width=912, height=142.5（SVG 336-944, 130-225）
+ *   Row 1: y=375-525（SVG 250-350 · transform +120）
+ *     m1: (84, 375, 555, 150)
+ *     m2: (675, 375, 555, 150)
+ *     m3: (1266, 375, 555, 150)
+ *   Row 2: y=555-705（SVG 370-470）
+ *     m4: (84, 555, 555, 150)
+ *     m5: (675, 555, 555, 150)
+ *     m6: (1266, 555, 555, 150)
  *   Vision pill: (360, 765, 1200, 120)
  */
 
@@ -44,22 +44,23 @@ const MEMBER_HEIGHT = 150;
 const MEMBER_RADIUS = 18;
 
 const MEMBERS = [
-  // Row 1
-  { left: 84, top: 195, color: COLORS.primary, startFrame: 60 },
-  { left: 675, top: 195, color: '#2C7DA0', startFrame: 120 },
-  { left: 1266, top: 195, color: COLORS.accent, startFrame: 180 },
-  // Row 2
-  { left: 84, top: 375, color: COLORS.primary, startFrame: 240 },
-  { left: 675, top: 375, color: '#2C7DA0', startFrame: 300 },
-  { left: 1266, top: 375, color: COLORS.accent, startFrame: 360 },
+  // Row 1 · y=375 · A2 · 1050→840 · 0.8x
+  { left: 84, top: 375, color: COLORS.primary, startFrame: 48 },
+  { left: 675, top: 375, color: '#2C7DA0', startFrame: 96 },
+  { left: 1266, top: 375, color: COLORS.accent, startFrame: 144 },
+  // Row 2 · y=555
+  { left: 84, top: 555, color: COLORS.primary, startFrame: 192 },
+  { left: 675, top: 555, color: '#2C7DA0', startFrame: 240 },
+  { left: 1266, top: 555, color: COLORS.accent, startFrame: 288 },
 ];
 
+// Advisor 独占最上方（V7 · 放大 · 视觉焦点）· 尺寸 912×142.5
 const ADVISOR = {
-  left: 697.5,
-  top: 577.5,
-  width: 525,
-  height: 82,
-  radius: 40,
+  left: 504,
+  top: 195,
+  width: 912,
+  height: 142.5,
+  radius: 36,
 };
 
 const VISION = {
@@ -124,7 +125,7 @@ export const P09Team: React.FC = () => {
         </AbsoluteFill>
       ))}
 
-      {/* 指导教师「冯敏」卡 · 蓝色温和脉冲 */}
+      {/* 指导教师「冯敏」卡 · 橙色温和脉冲（放大后的视觉焦点 · V7 方案 C） */}
       <AbsoluteFill style={{ pointerEvents: 'none' }}>
         <div
           style={{
@@ -136,13 +137,13 @@ export const P09Team: React.FC = () => {
           }}
         >
           <Highlight
-            color={COLORS.primary}
-            startFrame={480}
-            pulsePeriod={40}
+            color={COLORS.accent}
+            startFrame={384}
+            pulsePeriod={45}
             pulseCount={2}
             retainAfter
-            maxGlowSize={36}
-            maxSpread={3}
+            maxGlowSize={54}
+            maxSpread={6}
             display="block"
             borderRadius={ADVISOR.radius}
             style={{ width: '100%', height: '100%' }}
@@ -158,11 +159,11 @@ export const P09Team: React.FC = () => {
         </div>
       </AbsoluteFill>
 
-      {/* 学校署名上 Sweep 扫过（集体感） */}
+      {/* 学校署名上 Sweep 扫过（集体感 · A2 0.8x） */}
       <Sweep
         direction="ltr"
-        startFrame={620}
-        durationFrames={100}
+        startFrame={496}
+        durationFrames={80}
         color="#FFFFFF"
         intensity={0.32}
         beamWidthPercent={30}
@@ -181,7 +182,7 @@ export const P09Team: React.FC = () => {
         >
           <Highlight
             color={COLORS.accent}
-            startFrame={760}
+            startFrame={608}
             pulsePeriod={50}
             pulseCount={3}
             retainAfter

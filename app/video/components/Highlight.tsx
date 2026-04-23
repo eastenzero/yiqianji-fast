@@ -44,6 +44,19 @@ interface HighlightProps {
   maxSpread?: number;
   /** 静态模式 · 不脉冲，持续发光 */
   staticGlow?: boolean;
+  /**
+   * 强调模式
+   *   - 'pulse'（默认）· box-shadow blur+spread 脉冲（老效果 · 易抖）
+   *   - 'colorShift' · 覆盖层颜色淡入淡出 · 不改变 shadow · **不抖**
+   *   - 'breathing'  · 覆盖层"呼吸"持续循环 · 柔和不尖锐 · **更温和**
+   */
+  mode?: 'pulse' | 'colorShift' | 'breathing';
+  /** colorShift 模式下覆盖层最大不透明度 · 默认 0.22 */
+  colorShiftMaxAlpha?: number;
+  /** breathing 模式下单次呼吸周期（帧） · 默认 90（@30fps = 3s 一次呼吸） */
+  breathingPeriod?: number;
+  /** breathing 模式下覆盖层最大不透明度 · 默认 0.14（比 colorShift 更淡） */
+  breathingMaxAlpha?: number;
   /** 包装器 display · 默认 inline-block */
   display?: 'inline-block' | 'block' | 'inline-flex' | 'flex';
   /** 包装器 borderRadius · 默认 'inherit'（跟随 child） */
@@ -68,6 +81,10 @@ export const Highlight: React.FC<HighlightProps> = ({
   maxGlowSize = 40,
   maxSpread = 6,
   staticGlow = false,
+  mode = 'pulse',
+  colorShiftMaxAlpha = 0.22,
+  breathingPeriod = 90,
+  breathingMaxAlpha = 0.14,
   display = 'inline-block',
   borderRadius = 'inherit',
   style,
@@ -75,7 +92,7 @@ export const Highlight: React.FC<HighlightProps> = ({
   const frame = useCurrentFrame();
   const localFrame = frame - startFrame;
 
-  // 计算 glow 强度 [0, 1]
+  // 计算强度 [0, 1]（pulse 模式下 = 光晕强度；colorShift 模式下 = 覆盖层不透明度）
   let intensity: number;
 
   if (staticGlow) {
@@ -96,16 +113,72 @@ export const Highlight: React.FC<HighlightProps> = ({
     }
   }
 
+  // === colorShift 模式 · 仅叠一个半透明色块 · 无 box-shadow · 不抖 ===
+  if (mode === 'colorShift') {
+    const overlayAlpha = colorShiftMaxAlpha * intensity;
+    return (
+      <div
+        style={{
+          display,
+          position: 'relative',
+          borderRadius,
+          ...style,
+        }}
+      >
+        {children}
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            borderRadius,
+            background: `${color}${alphaHex(overlayAlpha)}`,
+            pointerEvents: 'none',
+          }}
+        />
+      </div>
+    );
+  }
+
+  // === breathing 模式 · 持续循环的柔和呼吸 · 比 colorShift 更温和 ===
+  //   intensity 用 (1 - cos) / 2 曲线 · 0 → 1 → 0 一个完整周期 · 两端导数为 0（比 sin 更平）
+  //   不受 startFrame/pulseCount 约束 · 从 scene 局部 frame=0 开始一直循环
+  if (mode === 'breathing') {
+    const breathPhase = (frame / breathingPeriod) * 2 * Math.PI;
+    const breath = 0.5 * (1 - Math.cos(breathPhase)); // 0..1..0 per cycle, smooth at both ends
+    const overlayAlpha = breathingMaxAlpha * breath;
+    return (
+      <div
+        style={{
+          display,
+          position: 'relative',
+          borderRadius,
+          ...style,
+        }}
+      >
+        {children}
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            borderRadius,
+            background: `${color}${alphaHex(overlayAlpha)}`,
+            pointerEvents: 'none',
+          }}
+        />
+      </div>
+    );
+  }
+
+  // === pulse 模式（默认） · box-shadow 双层阴影 ===
   const glowBlur = maxGlowSize * intensity;
   const glowSpread = maxSpread * intensity;
   const glowAlpha = 0.7 * intensity;
   const outerGlowAlpha = 0.35 * intensity;
 
-  // 双层阴影 · 内层亮 · 外层散（更柔和的晕染）
   const shadow =
     intensity > 0
       ? `0 0 ${glowBlur}px ${glowSpread}px ${color}${alphaHex(glowAlpha)}, ` +
-        `0 0 ${glowBlur * 2}px ${glowSpread * 1.5}px ${color}${alphaHex(outerGlowAlpha)}`
+      `0 0 ${glowBlur * 2}px ${glowSpread * 1.5}px ${color}${alphaHex(outerGlowAlpha)}`
       : 'none';
 
   return (

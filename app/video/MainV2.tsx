@@ -20,6 +20,7 @@ import { D3DoctorScan } from './scenes/v2/D3-DoctorScan';
 import { P07Architecture } from './scenes/v2/P07-Architecture';
 import { P08Security } from './scenes/v2/P08-Security';
 import { P09Team } from './scenes/v2/P09-Team';
+import { SubtitleTrack } from './components/SubtitleTrack';
 
 /**
  * V2 主视频组合 · 计赛答辩版
@@ -38,10 +39,13 @@ const V2_VOICE_DIR = 'audio/voice-v2';
 
 type MainV2BodyProps = {
   withVoice: boolean;
+  /** 是否渲染字幕层（默认跟随 withVoice · 有配音版自带字幕，无配音版默认无字幕留给现场讲解） */
+  withSubtitles?: boolean;
 };
 
-const MainV2Body: React.FC<MainV2BodyProps> = ({ withVoice }) => {
+const MainV2Body: React.FC<MainV2BodyProps> = ({ withVoice, withSubtitles }) => {
   const bgmVolume = withVoice ? V2_BGM_VOLUME_WITH_VOICE : V2_BGM_VOLUME_NO_VOICE;
+  const showSubtitles = withSubtitles ?? withVoice;
 
   return (
     <AbsoluteFill className="bg-[#F6FAFC]">
@@ -151,12 +155,21 @@ const MainV2Body: React.FC<MainV2BodyProps> = ({ withVoice }) => {
           <P09Team />
         </Series.Sequence>
       </Series>
+
+      {/* ============ 全局字幕层 · 基于 voice-script-v2.json 的 cue 分帧 ============ */}
+      {/* 必须在 <Series> 之外 · 以拿到"全局帧" · scene 内的 useCurrentFrame 返回的是 scene 局部帧 */}
+      {showSubtitles && <SubtitleTrack />}
     </AbsoluteFill>
   );
 };
 
-/** 配音版 · 提交给评委的主版本 */
+/** 配音版 · 提交给评委的主版本 · 默认带字幕 */
 export const MainV2: React.FC = () => <MainV2Body withVoice={true} />;
 
-/** 无配音版 · 备用 · 现场答辩人自己讲 */
+/** 无配音版 · 现场答辩人自己讲 · 默认不挂字幕 */
 export const MainV2NoVoice: React.FC = () => <MainV2Body withVoice={false} />;
+
+/** 无配音但带字幕版 · 适合静音预览 / 无人讲解场合 */
+export const MainV2NoVoiceWithSubtitles: React.FC = () => (
+  <MainV2Body withVoice={false} withSubtitles={true} />
+);

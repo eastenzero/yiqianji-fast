@@ -50,11 +50,11 @@ const SEC_HEIGHT = 138;
 const SEC_RADIUS = 12;
 
 const SECURITY_LAYERS = [
-  // Core 最先点亮（由内向外）
-  { top: 727.5, color: COLORS.primary, startFrame: 60, pulseCount: 2 },
-  { top: 570, color: '#2C7DA0', startFrame: 180, pulseCount: 2 },       // L1
-  { top: 412.5, color: COLORS.primary, startFrame: 300, pulseCount: 2 }, // L2
-  { top: 255, color: COLORS.accent, startFrame: 420, pulseCount: 3, retain: true }, // L3 国产 AI 合规
+  // Core 最先点亮（由内向外）· A2 · 1350→1050 帧 · 0.778x
+  { top: 727.5, color: COLORS.primary, startFrame: 47, pulseCount: 2 },
+  { top: 570, color: '#2C7DA0', startFrame: 140, pulseCount: 2 },       // L1
+  { top: 412.5, color: COLORS.primary, startFrame: 233, pulseCount: 2 }, // L2
+  { top: 255, color: COLORS.accent, startFrame: 327, pulseCount: 3, retain: true }, // L3 国产 AI 合规
 ];
 
 // 右栏 · 4 个创新卡
@@ -64,10 +64,11 @@ const INNOV_HEIGHT = 162;
 const INNOV_RADIUS = 18;
 
 const INNOVATIONS = [
-  { top: 210, color: COLORS.accent, startFrame: 180, pulseCount: 3, retain: true }, // 首创
-  { top: 390, color: COLORS.primary, startFrame: 340, pulseCount: 2 },
-  { top: 570, color: '#2C7DA0', startFrame: 500, pulseCount: 2 },
-  { top: 750, color: COLORS.primary, startFrame: 660, pulseCount: 2 },
+  // A2 · 0.778x 缩放
+  { top: 210, color: COLORS.accent, startFrame: 140, pulseCount: 3, retain: true }, // 首创
+  { top: 390, color: COLORS.primary, startFrame: 265, pulseCount: 2 },
+  { top: 570, color: '#2C7DA0', startFrame: 389, pulseCount: 2 },
+  { top: 750, color: COLORS.primary, startFrame: 513, pulseCount: 2 },
 ];
 
 export const P08Security: React.FC = () => {
@@ -161,11 +162,11 @@ export const P08Security: React.FC = () => {
         </AbsoluteFill>
       ))}
 
-      {/* 末尾全屏 ltr Sweep · 总结感 */}
+      {/* 末尾全屏 ltr Sweep · 总结感（A2 0.778x） */}
       <Sweep
         direction="ltr"
-        startFrame={900}
-        durationFrames={150}
+        startFrame={700}
+        durationFrames={117}
         color="#FFFFFF"
         intensity={0.3}
         beamWidthPercent={22}

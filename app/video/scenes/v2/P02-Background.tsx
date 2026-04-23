@@ -55,9 +55,10 @@ const KPI_BAR = {
 };
 
 // 单个 KPI 数字覆盖区（用于精确脉冲）
+// 收紧后的数值：文字 baseline 717 · fontSize 54 · 藥丸纵向贴紧数字、不大副标「高血压患者」（y=762+）
 const KPI_NUM_WIDTH = 220;
-const KPI_NUM_HEIGHT = 62;
-const KPI_NUM_TOP = 685; // 贴近数字 y-baseline 717 - 32 余量
+const KPI_NUM_HEIGHT = 56;
+const KPI_NUM_TOP = 672;
 
 export const P02Background: React.FC = () => {
   return (
@@ -94,12 +95,12 @@ export const P02Background: React.FC = () => {
           }}
         >
           <Highlight
+            mode="colorShift"
+            colorShiftMaxAlpha={0.22}
             color={COLORS.primary}
-            startFrame={45}
+            startFrame={39}
             pulsePeriod={40}
             pulseCount={2}
-            maxGlowSize={38}
-            maxSpread={4}
             display="block"
             borderRadius={PAIN_CARD.radius}
             style={{ width: '100%', height: '100%' }}
@@ -127,12 +128,12 @@ export const P02Background: React.FC = () => {
           }}
         >
           <Highlight
+            mode="colorShift"
+            colorShiftMaxAlpha={0.22}
             color="#2C7DA0"
-            startFrame={170}
+            startFrame={146}
             pulsePeriod={40}
             pulseCount={2}
-            maxGlowSize={38}
-            maxSpread={4}
             display="block"
             borderRadius={PAIN_CARD.radius}
             style={{ width: '100%', height: '100%' }}
@@ -160,13 +161,13 @@ export const P02Background: React.FC = () => {
           }}
         >
           <Highlight
+            mode="colorShift"
+            colorShiftMaxAlpha={0.32}
             color="#BA1A1A"
-            startFrame={295}
+            startFrame={254}
             pulsePeriod={56}
             pulseCount={3}
             retainAfter
-            maxGlowSize={64}
-            maxSpread={8}
             display="block"
             borderRadius={PAIN_CARD.radius}
             style={{ width: '100%', height: '100%' }}
@@ -185,8 +186,8 @@ export const P02Background: React.FC = () => {
       {/* ============ 情绪切换扫光（痛点 → 数据） ============ */}
       <Sweep
         direction="ltr"
-        startFrame={510}
-        durationFrames={70}
+        startFrame={439}
+        durationFrames={60}
         color="#FFFFFF"
         intensity={0.32}
         beamWidthPercent={22}
@@ -206,12 +207,12 @@ export const P02Background: React.FC = () => {
           }}
         >
           <Highlight
+            mode="colorShift"
+            colorShiftMaxAlpha={0.14}
             color="#FFFFFF"
-            startFrame={620}
+            startFrame={533}
             pulsePeriod={60}
             pulseCount={2}
-            maxGlowSize={44}
-            maxSpread={3}
             display="block"
             borderRadius={KPI_BAR.radius}
             style={{ width: '100%', height: '100%' }}
@@ -240,12 +241,12 @@ export const P02Background: React.FC = () => {
           }}
         >
           <Highlight
+            mode="colorShift"
+            colorShiftMaxAlpha={0.38}
             color="#F7A072"
-            startFrame={870}
+            startFrame={748}
             pulsePeriod={40}
             pulseCount={2}
-            maxGlowSize={38}
-            maxSpread={4}
             display="block"
             borderRadius={12}
             style={{ width: '100%', height: '100%' }}
@@ -268,12 +269,12 @@ export const P02Background: React.FC = () => {
           }}
         >
           <Highlight
+            mode="colorShift"
+            colorShiftMaxAlpha={0.38}
             color="#F7A072"
-            startFrame={1020}
+            startFrame={877}
             pulsePeriod={40}
             pulseCount={2}
-            maxGlowSize={38}
-            maxSpread={4}
             display="block"
             borderRadius={12}
             style={{ width: '100%', height: '100%' }}
@@ -287,8 +288,8 @@ export const P02Background: React.FC = () => {
       <Sweep
         direction="diagonal"
         angle={-18}
-        startFrame={1180}
-        durationFrames={80}
+        startFrame={1015}
+        durationFrames={69}
         color="#FFFFFF"
         intensity={0.22}
         beamWidthPercent={16}

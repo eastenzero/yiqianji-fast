@@ -30,11 +30,22 @@ import { SummaryCardView } from '../../../src/components/pure/SummaryCardView';
 const PHONE_SCREEN_WIDTH = 408;
 const PHONE_SCREEN_HEIGHT = 818;
 
-// QR 码伪造位置（video 坐标，在手机右边）
+/**
+ * QR 码飞行路径（避免和手机重叠 · 并制造"从患者飞到医生"的叙事感）：
+ *   Phase 1  · 180-320  · 从手机右侧展开（scale 0.4 → 1 · 固定位置）
+ *   Phase 2  · 320-700  · 静止 · 扫描线 · 成功闪绿
+ *   Phase 3  · 700-860  · 飞向右侧医生浏览器（位置 + scale 插值 · opacity 1 → 0）
+ *   Phase 4  · 860-1200 · 消失（浏览器成为主体）
+ */
 const QR = {
   size: 260,
-  left: 960 - 130, // 画面中上方中心
-  top: 180,
+  // 起始位置 · 在手机右侧外 20px 处 · 不和手机重叠
+  startLeft: 1050,
+  startTop: 200,
+  // 飞行终点 · 浏览器 chrome 附近
+  endLeft: 1350,
+  endTop: 140,
+  endScale: 0.35,
 };
 
 // 医生端浏览器 mockup 位置
@@ -66,8 +77,8 @@ const PATIENT_SUMMARY = {
 export const D3DoctorScan: React.FC = () => {
   const frame = useCurrentFrame();
 
-  // 手机入场
-  const phoneEnter = interpolate(frame, [0, 30], [0, 1], {
+  // 手机入场（A2 · 1200→1050 帧 · 0.875x）
+  const phoneEnter = interpolate(frame, [0, 26], [0, 1], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
@@ -75,53 +86,65 @@ export const D3DoctorScan: React.FC = () => {
   const phoneScale = 0.7 + phoneEnter * 0.08;
   const phoneOpacity = phoneEnter * interpolate(
     frame,
-    [1150, 1200],
+    [1006, 1050],
     [1, 0],
     { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' },
   );
 
-  // QR 出现（180-280）+ 保持 + 收尾
-  const qrOpacity = interpolate(frame, [180, 280, 1100, 1200], [0, 1, 1, 0], {
+  // QR 出现 · 静止 · 飞行 · 消失（A2 · 0.875x · 原关键点 180/320/700/860）
+  //   158-280 · 展开（scale 0.4 → 1 · 固定 startLeft/startTop）
+  //   280-613 · 静止（扫描 · 成功）
+  //   613-753 · 飞向浏览器 chrome（startLeft → endLeft · scale 1 → 0.35 · opacity 1 → 0）
+  //   753+    · 消失
+  const qrOpacity = interpolate(frame, [158, 245, 613, 753], [0, 1, 1, 0], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
-  const qrScale = interpolate(frame, [180, 320], [0.6, 1], {
+  const qrScale = interpolate(frame, [158, 280, 613, 753], [0.4, 1, 1, QR.endScale], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
+  const qrLeft = interpolate(frame, [613, 753], [QR.startLeft, QR.endLeft], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
+  const qrTop = interpolate(frame, [613, 753], [QR.startTop, QR.endTop], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
 
-  // 扫描线（400-600 从顶到底）
-  const scanProgress = interpolate(frame, [400, 600], [0, 1], {
+  // 扫描线（350-525 从顶到底 · A2 0.875x）
+  const scanProgress = interpolate(frame, [350, 525], [0, 1], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
-  const scanVisible = frame >= 400 && frame <= 610;
+  const scanVisible = frame >= 350 && frame <= 534;
 
-  // QR 成功闪烁（600-700）
+  // QR 成功闪烁（525-630 · A2）
   const successFlash = interpolate(
     frame,
-    [600, 630, 680, 720],
+    [525, 551, 595, 630],
     [0, 1, 1, 0],
     { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' },
   );
 
-  // 医生端浏览器入场（680-860）
-  const doctorEnter = interpolate(frame, [680, 860], [0, 1], {
+  // 医生端浏览器入场（595-753 · A2）
+  const doctorEnter = interpolate(frame, [595, 753], [0, 1], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
   const doctorTx = (1 - doctorEnter) * 440;
   const doctorOpacity =
     doctorEnter *
-    interpolate(frame, [1150, 1200], [1, 0], {
+    interpolate(frame, [1006, 1050], [1, 0], {
       extrapolateLeft: 'clamp',
       extrapolateRight: 'clamp',
     });
 
-  // "医生扫码即看" 标语 (500-1100)
+  // "医生扫码即看" 标语 (438-1006 · A2)
   const sloganOpacity = interpolate(
     frame,
-    [500, 600, 1080, 1150],
+    [438, 525, 945, 1006],
     [0, 1, 1, 0],
     { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' },
   );
@@ -155,7 +178,7 @@ export const D3DoctorScan: React.FC = () => {
             style={{
               transform: `translateY(${interpolate(
                 frame,
-                [0, 1100],
+                [0, 963],
                 [0, -200],
                 { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' },
               )}px)`,
@@ -172,13 +195,13 @@ export const D3DoctorScan: React.FC = () => {
         </div>
       </PhoneFrame>
 
-      {/* 中间：QR 码 · 从"手机飞出"的感觉（用 scale + 位置完成） */}
+      {/* 中间：QR 码 · 从"手机飞出"的感觉 + 飞向医生浏览器 · 避免和手机重叠 */}
       <AbsoluteFill style={{ pointerEvents: 'none' }}>
         <div
           style={{
             position: 'absolute',
-            left: QR.left,
-            top: QR.top,
+            left: qrLeft,
+            top: qrTop,
             width: QR.size,
             height: QR.size,
             opacity: qrOpacity,
@@ -188,7 +211,7 @@ export const D3DoctorScan: React.FC = () => {
         >
           <Highlight
             color={successFlash > 0.1 ? '#386A20' : COLORS.accent}
-            startFrame={200}
+            startFrame={175}
             pulsePeriod={50}
             pulseCount={2}
             retainAfter
@@ -380,11 +403,11 @@ export const D3DoctorScan: React.FC = () => {
           >
             Doctor Side · Zero Install
           </div>
-          {frame >= 600 && (
+          {frame >= 525 && (
             <TextReveal
               text="医生扫码即看 · 30 秒读完半年病史"
-              startFrame={600}
-              durationFrames={70}
+              startFrame={525}
+              durationFrames={60}
               fontSize={44}
               fontWeight={700}
               color={COLORS.ink}
