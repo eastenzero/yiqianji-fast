@@ -59,6 +59,12 @@ interface KenBurnsProps {
   imgStyle?: React.CSSProperties;
   /** transform-origin · 默认 center center */
   transformOrigin?: string;
+  /**
+   * 子元素会被放在与 Img 同一个 transform 容器内，
+   * 从而自动跟随 KenBurns 的 scale/translate 动画。
+   * 适合放 Highlight 遮罩等需要与图片精确对齐的 overlay。
+   */
+  children?: React.ReactNode;
 }
 
 /** 常用缓动：easeInOut（S-curve，电影感更强） */
@@ -85,6 +91,7 @@ export const KenBurns: React.FC<KenBurnsProps> = ({
   style,
   imgStyle,
   transformOrigin = 'center center',
+  children,
 }) => {
   const frame = useCurrentFrame();
   const { durationInFrames } = useVideoConfig();
@@ -125,18 +132,27 @@ export const KenBurns: React.FC<KenBurnsProps> = ({
       className={className}
       style={{ overflow: 'hidden', ...style }}
     >
-      <Img
-        src={src}
+      <div
         style={{
           width: '100%',
           height: '100%',
-          objectFit: fit,
           transform: `translate(${x}px, ${y}px) scale(${scale})`,
           transformOrigin,
           opacity,
-          ...imgStyle,
+          position: 'relative',
         }}
-      />
+      >
+        <Img
+          src={src}
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: fit,
+            ...imgStyle,
+          }}
+        />
+        {children}
+      </div>
     </AbsoluteFill>
   );
 };

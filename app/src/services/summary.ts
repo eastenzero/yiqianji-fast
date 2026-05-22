@@ -8,6 +8,7 @@ import type {
   Patient,
 } from '@/types';
 import { getAIProvider } from './ai';
+import type { IAIProvider } from './ai';
 import { getRepositories } from './storage';
 import { uid } from '@/lib/utils';
 
@@ -24,10 +25,11 @@ import { uid } from '@/lib/utils';
 const SYSTEM_PROMPT = `你是一名专业的医学信息整理助手。请根据用户提供的个人健康记录，生成一份结构化的"就诊前摘要"，供医生在几十秒内阅读。
 
 必须遵守：
-1. 严格基于用户数据，不臆测、不诊断、不给治疗建议。
-2. 只做信息整理与趋势描述，不做结论判断。
+1. 严格基于用户提供的数据，不补充未出现的信息，不推断病因，不诊断，不给治疗建议。
+2. 只做事实归纳、时间线整理、频次统计和趋势描述；涉及异常时仅描述"记录显示/报告标注/用户自述"，不做医学结论判断。
 3. 输出两部分：先 JSON，再 --- 分隔，后接 Markdown。
 4. 语言简洁、专业、中立。
+5. 如果数据不足，请明确写"当前记录不足以判断趋势"，不要为了完整而编造。
 
 输出格式：
 {
@@ -36,8 +38,8 @@ const SYSTEM_PROMPT = `你是一名专业的医学信息整理助手。请根据
   "vitalsTrend": "体征趋势（血压/血糖等，最近一周/两周变化）",
   "medications": "用药情况（药名、剂量、频次、依从性）",
   "lifestyle": "生活习惯概要（饮食、运动、睡眠）",
-  "reportHighlights": "最近检查报告异常点",
-  "focusPoints": ["建议医生重点关注的事项1", "事项2", "事项3"]
+  "reportHighlights": "最近检查报告中已标注或可客观读取的异常点",
+  "focusPoints": ["供医生核对的信息1", "信息2", "信息3"]
 }
 ---
 # 就诊前摘要
@@ -66,12 +68,13 @@ export interface GenerateSummaryOptions {
   /** 默认覆盖过去 14 天 */
   days?: number;
   signal?: AbortSignal;
+  aiProvider?: IAIProvider;
 }
 
 export async function generateConsultationSummary(
   options: GenerateSummaryOptions,
 ): Promise<ConsultationSummary> {
-  const { patientId, days = 14, signal } = options;
+  const { patientId, days = 14, signal, aiProvider } = options;
   const repo = getRepositories();
   const to = Date.now();
   const from = to - days * 24 * 60 * 60 * 1000;
@@ -87,7 +90,7 @@ export async function generateConsultationSummary(
 
   const context = buildContextPrompt(patient, vitals, symptoms, medications, lifestyles, reports, days);
 
-  const ai = getAIProvider();
+  const ai = aiProvider ?? getAIProvider();
   const raw = await ai.complete(
     [
       { role: 'system', content: SYSTEM_PROMPT },

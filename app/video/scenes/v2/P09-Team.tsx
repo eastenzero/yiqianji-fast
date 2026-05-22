@@ -1,4 +1,4 @@
-import { AbsoluteFill, staticFile } from 'remotion';
+import { staticFile } from 'remotion';
 import { AmbientBackground } from '../../components/AmbientBackground';
 import { Highlight } from '../../components/Highlight';
 import { KenBurns } from '../../components/KenBurns';
@@ -44,14 +44,14 @@ const MEMBER_HEIGHT = 150;
 const MEMBER_RADIUS = 18;
 
 const MEMBERS = [
-  // Row 1 · y=375 · A2 · 1050→840 · 0.8x
-  { left: 84, top: 375, color: COLORS.primary, startFrame: 48 },
-  { left: 675, top: 375, color: '#2C7DA0', startFrame: 96 },
-  { left: 1266, top: 375, color: COLORS.accent, startFrame: 144 },
+  // Row 1 · y=375 · Cue 2 f102 "六人来自" · 25f spacing · single pulse 24f
+  { left: 84, top: 375, color: COLORS.primary, startFrame: 102 },
+  { left: 675, top: 375, color: '#2C7DA0', startFrame: 127 },
+  { left: 1266, top: 375, color: COLORS.accent, startFrame: 152 },
   // Row 2 · y=555
-  { left: 84, top: 555, color: COLORS.primary, startFrame: 192 },
-  { left: 675, top: 555, color: '#2C7DA0', startFrame: 240 },
-  { left: 1266, top: 555, color: COLORS.accent, startFrame: 288 },
+  { left: 84, top: 555, color: COLORS.primary, startFrame: 177 },
+  { left: 675, top: 555, color: '#2C7DA0', startFrame: 202 },
+  { left: 1266, top: 555, color: COLORS.accent, startFrame: 227 },
 ];
 
 // Advisor 独占最上方（V7 · 放大 · 视觉焦点）· 尺寸 912×142.5
@@ -88,25 +88,25 @@ export const P09Team: React.FC = () => {
         from={{ scale: 1.0, x: 0, y: 0 }}
         to={{ scale: 1.04, x: 0, y: -6 }}
         fit="cover"
-      />
-
-      {/* 6 位成员依次脉冲 */}
-      {MEMBERS.map((m, i) => (
-        <AbsoluteFill key={`m-${i}`} style={{ pointerEvents: 'none' }}>
+      >
+        {/* 6 位成员依次脉冲（Cue 1-2） */}
+        {MEMBERS.map((m, i) => (
           <div
+            key={`m-${i}`}
             style={{
               position: 'absolute',
               left: m.left,
               top: m.top,
               width: MEMBER_WIDTH,
               height: MEMBER_HEIGHT,
+              pointerEvents: 'none',
             }}
           >
             <Highlight
               color={m.color}
               startFrame={m.startFrame}
-              pulsePeriod={35}
-              pulseCount={2}
+              pulsePeriod={24}
+              pulseCount={1}
               maxGlowSize={38}
               maxSpread={4}
               display="block"
@@ -122,11 +122,9 @@ export const P09Team: React.FC = () => {
               />
             </Highlight>
           </div>
-        </AbsoluteFill>
-      ))}
+        ))}
 
-      {/* 指导教师「冯敏」卡 · 橙色温和脉冲（放大后的视觉焦点 · V7 方案 C） */}
-      <AbsoluteFill style={{ pointerEvents: 'none' }}>
+        {/* 指导教师「冯敏」卡（Cue 3 f252 "冯敏老师"） */}
         <div
           style={{
             position: 'absolute',
@@ -134,12 +132,13 @@ export const P09Team: React.FC = () => {
             top: ADVISOR.top,
             width: ADVISOR.width,
             height: ADVISOR.height,
+            pointerEvents: 'none',
           }}
         >
           <Highlight
             color={COLORS.accent}
-            startFrame={384}
-            pulsePeriod={45}
+            startFrame={258}
+            pulsePeriod={40}
             pulseCount={2}
             retainAfter
             maxGlowSize={54}
@@ -157,20 +156,8 @@ export const P09Team: React.FC = () => {
             />
           </Highlight>
         </div>
-      </AbsoluteFill>
 
-      {/* 学校署名上 Sweep 扫过（集体感 · A2 0.8x） */}
-      <Sweep
-        direction="ltr"
-        startFrame={496}
-        durationFrames={80}
-        color="#FFFFFF"
-        intensity={0.32}
-        beamWidthPercent={30}
-      />
-
-      {/* Vision 大字 slogan · ORANGE 3 脉冲 + 保留 */}
-      <AbsoluteFill style={{ pointerEvents: 'none' }}>
+        {/* Vision 大字 slogan（Cue 4 f303 "让每一次就诊都有充分的准备"） */}
         <div
           style={{
             position: 'absolute',
@@ -178,12 +165,13 @@ export const P09Team: React.FC = () => {
             top: VISION.top,
             width: VISION.width,
             height: VISION.height,
+            pointerEvents: 'none',
           }}
         >
           <Highlight
             color={COLORS.accent}
-            startFrame={608}
-            pulsePeriod={50}
+            startFrame={345}
+            pulsePeriod={45}
             pulseCount={3}
             retainAfter
             maxGlowSize={72}
@@ -201,7 +189,17 @@ export const P09Team: React.FC = () => {
             />
           </Highlight>
         </div>
-      </AbsoluteFill>
+      </KenBurns>
+
+      {/* Sweep（Cue 3→4 过渡 f290） */}
+      <Sweep
+        direction="ltr"
+        startFrame={310}
+        durationFrames={60}
+        color="#FFFFFF"
+        intensity={0.32}
+        beamWidthPercent={30}
+      />
     </SceneTransition>
   );
 };

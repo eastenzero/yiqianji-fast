@@ -1,4 +1,4 @@
-import { AbsoluteFill, staticFile } from 'remotion';
+import { staticFile } from 'remotion';
 import { AmbientBackground } from '../../components/AmbientBackground';
 import { Highlight } from '../../components/Highlight';
 import { KenBurns } from '../../components/KenBurns';
@@ -69,10 +69,8 @@ export const P04Features: React.FC = () => {
         from={{ scale: 1.0, x: 0, y: 0 }}
         to={{ scale: 1.03, x: 0, y: 0 }}
         fit="cover"
-      />
-
-      {/* ============ Chevron 流程条·首次扫光（progressive reveal） ============ */}
-      <AbsoluteFill style={{ pointerEvents: 'none', overflow: 'hidden' }}>
+      >
+        {/* ============ Chevron 流程条·首次扫光（Cue 1 f60 "四步闭环"） ============ */}
         <div
           style={{
             position: 'absolute',
@@ -81,23 +79,22 @@ export const P04Features: React.FC = () => {
             width: CHEVRON.width,
             height: CHEVRON.height,
             overflow: 'hidden',
+            pointerEvents: 'none',
           }}
         >
           <Sweep
             direction="ltr"
-            startFrame={30}
+            startFrame={60}
             durationFrames={89}
             color="#FFFFFF"
             intensity={0.42}
             beamWidthPercent={22}
           />
         </div>
-      </AbsoluteFill>
 
-      {/* ============ 四张功能卡 · 依次脉冲 ============ */}
+        {/* ============ 四张功能卡 · 依次脉冲 ============ */}
 
-      {/* Card 1 · 日常记录 · 蓝色 */}
-      <AbsoluteFill style={{ pointerEvents: 'none' }}>
+        {/* Card 1 · 日常记录 · 蓝色（Cue 2 f198） */}
         <div
           style={{
             position: 'absolute',
@@ -105,11 +102,12 @@ export const P04Features: React.FC = () => {
             top: CARD.top,
             width: CARD.width,
             height: CARD.height,
+            pointerEvents: 'none',
           }}
         >
           <Highlight
             color={COLORS.primary}
-            startFrame={134}
+            startFrame={198}
             pulsePeriod={45}
             pulseCount={2}
             maxGlowSize={44}
@@ -127,10 +125,8 @@ export const P04Features: React.FC = () => {
             />
           </Highlight>
         </div>
-      </AbsoluteFill>
 
-      {/* Card 2 · 智能整理 · 次蓝 */}
-      <AbsoluteFill style={{ pointerEvents: 'none' }}>
+        {/* Card 2 · 智能整理 · 次蓝（Cue 2 mid f273） */}
         <div
           style={{
             position: 'absolute',
@@ -138,11 +134,12 @@ export const P04Features: React.FC = () => {
             top: CARD.top,
             width: CARD.width,
             height: CARD.height,
+            pointerEvents: 'none',
           }}
         >
           <Highlight
             color="#2C7DA0"
-            startFrame={223}
+            startFrame={282}
             pulsePeriod={45}
             pulseCount={2}
             maxGlowSize={44}
@@ -160,10 +157,8 @@ export const P04Features: React.FC = () => {
             />
           </Highlight>
         </div>
-      </AbsoluteFill>
 
-      {/* Card 3 · AI 摘要 · ORANGE · 3 次脉冲（全片 AI 核心） */}
-      <AbsoluteFill style={{ pointerEvents: 'none' }}>
+        {/* Card 3 · AI 摘要 · ORANGE（Cue 3 f348） */}
         <div
           style={{
             position: 'absolute',
@@ -171,12 +166,13 @@ export const P04Features: React.FC = () => {
             top: CARD.top,
             width: CARD.width,
             height: CARD.height,
+            pointerEvents: 'none',
           }}
         >
           <Highlight
             color={COLORS.accent}
-            startFrame={312}
-            pulsePeriod={55}
+            startFrame={366}
+            pulsePeriod={45}
             pulseCount={3}
             retainAfter
             maxGlowSize={60}
@@ -194,10 +190,8 @@ export const P04Features: React.FC = () => {
             />
           </Highlight>
         </div>
-      </AbsoluteFill>
 
-      {/* Card 4 · 便捷分享 · 蓝色 */}
-      <AbsoluteFill style={{ pointerEvents: 'none' }}>
+        {/* Card 4 · 便捷分享 · 蓝色（Cue 3 mid f440） */}
         <div
           style={{
             position: 'absolute',
@@ -205,11 +199,12 @@ export const P04Features: React.FC = () => {
             top: CARD.top,
             width: CARD.width,
             height: CARD.height,
+            pointerEvents: 'none',
           }}
         >
           <Highlight
             color={COLORS.primary}
-            startFrame={446}
+            startFrame={506}
             pulsePeriod={45}
             pulseCount={2}
             maxGlowSize={44}
@@ -227,10 +222,8 @@ export const P04Features: React.FC = () => {
             />
           </Highlight>
         </div>
-      </AbsoluteFill>
 
-      {/* ============ Chevron 流程条·末尾再扫一次（总结感） ============ */}
-      <AbsoluteFill style={{ pointerEvents: 'none' }}>
+        {/* ============ Chevron 流程条·末尾再扫（Cue 4 f537 "四步串起"） ============ */}
         <div
           style={{
             position: 'absolute',
@@ -239,11 +232,12 @@ export const P04Features: React.FC = () => {
             width: CHEVRON.width,
             height: CHEVRON.height,
             overflow: 'hidden',
+            pointerEvents: 'none',
           }}
         >
           <Sweep
             direction="ltr"
-            startFrame={594}
+            startFrame={537}
             durationFrames={74}
             color={COLORS.accent}
             intensity={0.38}
@@ -251,7 +245,7 @@ export const P04Features: React.FC = () => {
             blendMode="screen"
           />
         </div>
-      </AbsoluteFill>
+      </KenBurns>
     </SceneTransition>
   );
 };

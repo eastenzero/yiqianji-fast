@@ -1,4 +1,4 @@
-import { AbsoluteFill, staticFile } from 'remotion';
+import { staticFile } from 'remotion';
 import { AmbientBackground } from '../../components/AmbientBackground';
 import { Highlight } from '../../components/Highlight';
 import { KenBurns } from '../../components/KenBurns';
@@ -37,10 +37,10 @@ const LAYER_HEIGHT = 172;
 const LAYER_RADIUS = 15;
 
 const LAYERS = [
-  { top: 150, color: '#2C7DA0', startFrame: 60, pulseCount: 2 },
-  { top: 360, color: '#2C7DA0', startFrame: 240, pulseCount: 2 },
-  { top: 570, color: COLORS.primary, startFrame: 420, pulseCount: 2 },
-  { top: 780, color: COLORS.accent, startFrame: 600, pulseCount: 3, retain: true },
+  { top: 150, color: '#2C7DA0', startFrame: 60, pulseCount: 2 },      // Cue 1 "展示层"
+  { top: 360, color: '#2C7DA0', startFrame: 279, pulseCount: 2 },     // Cue 3 "应用逻辑层"
+  { top: 570, color: COLORS.primary, startFrame: 426, pulseCount: 2 },// Cue 4 "本地数据层"
+  { top: 780, color: COLORS.accent, startFrame: 564, pulseCount: 3, retain: true }, // Cue 5 "AI 能力层"
 ];
 
 export const P07Architecture: React.FC = () => {
@@ -60,18 +60,18 @@ export const P07Architecture: React.FC = () => {
         from={{ scale: 1.0, x: 0, y: 0 }}
         to={{ scale: 1.03, x: 0, y: 0 }}
         fit="cover"
-      />
-
-      {/* 4 层架构依次脉冲 */}
-      {LAYERS.map((layer, i) => (
-        <AbsoluteFill key={i} style={{ pointerEvents: 'none' }}>
+      >
+        {/* 4 层架构依次脉冲（对齐 Cue 1/3/4/5） */}
+        {LAYERS.map((layer, i) => (
           <div
+            key={i}
             style={{
               position: 'absolute',
               left: LAYER_LEFT,
               top: layer.top,
               width: LAYER_WIDTH,
               height: LAYER_HEIGHT,
+              pointerEvents: 'none',
             }}
           >
             <Highlight
@@ -95,14 +95,14 @@ export const P07Architecture: React.FC = () => {
               />
             </Highlight>
           </div>
-        </AbsoluteFill>
-      ))}
+        ))}
+      </KenBurns>
 
-      {/* 末尾全屏 btt（从下到上）Sweep · "层层联动"感 */}
+      {/* btt Sweep（Cue 7 f789 "核心创新"） */}
       <Sweep
         direction="btt"
-        startFrame={900}
-        durationFrames={150}
+        startFrame={789}
+        durationFrames={120}
         color={COLORS.accent}
         intensity={0.26}
         beamWidthPercent={26}

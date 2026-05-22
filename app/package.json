@@ -3,12 +3,15 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "医前记 - 诊前信息整理与沟通辅助系统（纯本地化版本）",
+  "description": "医前记 - 诊前信息整理与沟通辅助系统（本地优先版本）",
   "scripts": {
     "dev": "vite --port=3000 --host=0.0.0.0",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview --port=3000 --host=0.0.0.0",
     "lint": "tsc --noEmit",
+    "android:add": "cap add android",
+    "android:sync": "npm run build && cap sync android",
+    "android:apk:debug": "node scripts/package-android-apk.mjs",
     "video:studio": "remotion studio video/index.ts",
     "video:render": "remotion render video/index.ts YiqianjiMain out/yiqianji-90s.mp4",
     "video:render:4k": "remotion render video/index.ts YiqianjiMain out/yiqianji-90s-4k.mp4 --scale=2",
@@ -23,6 +26,9 @@
     "voice:subtitles:preview:v2": "node scripts/preview-subtitle-cues.mjs"
   },
   "dependencies": {
+    "@capacitor/android": "^8.3.4",
+    "@capacitor/core": "^8.3.4",
+    "@netlify/blobs": "^10.7.8",
     "@remotion/bundler": "^4.0.450",
     "@remotion/cli": "^4.0.450",
     "@remotion/compositor-win32-x64-msvc": "^4.0.450",
@@ -46,6 +52,7 @@
     "qrcode.react": "^4.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-is": "^19.2.6",
     "react-router-dom": "^7.14.1",
     "recharts": "^3.8.1",
     "remotion": "4.0.450",
@@ -53,6 +60,7 @@
     "zustand": "^5.0.2"
   },
   "devDependencies": {
+    "@capacitor/cli": "^8.3.4",
     "@tailwindcss/vite": "^4.1.14",
     "@types/node": "^22.14.0",
     "@types/react": "^19.0.0",

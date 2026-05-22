@@ -5,6 +5,8 @@
  */
 
 const LS_KEY = 'yiqianji.config.v1';
+const TRIAL_LS_KEY = 'yiqianji.trial.v1';
+const TRIAL_TOTAL = 5;
 
 /** Provider 标识 */
 export type ProviderKey =
@@ -70,8 +72,8 @@ export const PROVIDERS: Record<ProviderKey, ProviderMeta> = {
     name: 'DeepSeek',
     tagline: '国产开源代表 · 长上下文 · 超高性价比',
     baseUrl: 'https://api.deepseek.com/v1',
-    defaultTextModel: 'deepseek-chat',
-    textModelOptions: ['deepseek-chat', 'deepseek-reasoner'],
+    defaultTextModel: 'deepseek-v4-flash',
+    textModelOptions: ['deepseek-v4-flash', 'deepseek-chat', 'deepseek-reasoner'],
     keyPrefix: 'sk-',
     docsUrl: 'https://platform.deepseek.com/api_keys',
     logoColor: 'from-[#4d6bfe] to-[#3054e3]',
@@ -163,6 +165,7 @@ function readEnv(): Partial<RuntimeConfig> {
   // Vite 注入的 env 变量
   const env = (import.meta as unknown as { env: Record<string, string | undefined> }).env || {};
   return {
+    provider: env.VITE_AI_PROVIDER as ProviderKey | undefined,
     qwenApiKey: env.VITE_QWEN_API_KEY,
     qwenBaseUrl: env.VITE_QWEN_BASE_URL,
     qwenTextModel: env.VITE_QWEN_TEXT_MODEL,
@@ -170,10 +173,15 @@ function readEnv(): Partial<RuntimeConfig> {
   };
 }
 
+function readEnvValue(key: string): string {
+  const env = (import.meta as unknown as { env: Record<string, string | undefined> }).env || {};
+  return env[key] || '';
+}
+
 export function getRuntimeConfig(): RuntimeConfig {
   const env = readEnv();
   const ls = readLocalStorage();
-  const provider = (ls.provider as ProviderKey) || DEFAULTS.provider;
+  const provider = (ls.provider as ProviderKey) || (env.provider as ProviderKey) || DEFAULTS.provider;
   const providerMeta = PROVIDERS[provider];
 
   return {
@@ -216,6 +224,55 @@ export function hasValidAPIKey(): boolean {
   if (!cfg.qwenApiKey) return false;
   if (meta.keyPrefix && !cfg.qwenApiKey.startsWith(meta.keyPrefix)) return false;
   return true;
+}
+
+export function hasValidUserAPIKey(): boolean {
+  const ls = readLocalStorage();
+  const provider = (ls.provider as ProviderKey) || DEFAULTS.provider;
+  const meta = PROVIDERS[provider];
+  if (!meta.needsApiKey) return true;
+  if (!ls.qwenApiKey) return false;
+  if (meta.keyPrefix && !ls.qwenApiKey.startsWith(meta.keyPrefix)) return false;
+  return true;
+}
+
+export function getPlatformTrialTotal(): number {
+  return TRIAL_TOTAL;
+}
+
+export function getPlatformTrialUsed(): number {
+  if (typeof localStorage === 'undefined') return 0;
+  const raw = Number(localStorage.getItem(TRIAL_LS_KEY) || '0');
+  return Number.isFinite(raw) ? Math.max(0, Math.min(TRIAL_TOTAL, raw)) : 0;
+}
+
+export function getPlatformTrialRemaining(): number {
+  return Math.max(0, TRIAL_TOTAL - getPlatformTrialUsed());
+}
+
+export function hasPlatformTrialKey(): boolean {
+  const key = readEnvValue('VITE_TRIAL_QWEN_API_KEY') || readEnvValue('VITE_QWEN_API_KEY');
+  return !!key && key.startsWith('sk-');
+}
+
+export function canUsePlatformTrial(): boolean {
+  return !hasValidUserAPIKey() && hasPlatformTrialKey() && getPlatformTrialRemaining() > 0;
+}
+
+export function consumePlatformTrial(): number {
+  const used = getPlatformTrialUsed();
+  const next = Math.min(TRIAL_TOTAL, used + 1);
+  localStorage.setItem(TRIAL_LS_KEY, String(next));
+  return Math.max(0, TRIAL_TOTAL - next);
+}
+
+export function getPlatformTrialAIConfig(): Pick<RuntimeConfig, 'qwenApiKey' | 'qwenBaseUrl' | 'qwenTextModel'> {
+  return {
+    qwenApiKey: readEnvValue('VITE_TRIAL_QWEN_API_KEY') || readEnvValue('VITE_QWEN_API_KEY'),
+    qwenBaseUrl: readEnvValue('VITE_TRIAL_QWEN_BASE_URL') || readEnvValue('VITE_QWEN_BASE_URL') || PROVIDERS.qwen.baseUrl,
+    qwenTextModel:
+      readEnvValue('VITE_TRIAL_QWEN_TEXT_MODEL') || readEnvValue('VITE_QWEN_TEXT_MODEL') || PROVIDERS.qwen.defaultTextModel,
+  };
 }
 
 /** OCR 需要的通义 VL Key（可能独立，也可能复用主 Key） */

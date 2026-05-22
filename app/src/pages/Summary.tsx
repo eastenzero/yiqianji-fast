@@ -5,7 +5,17 @@ import { Sparkles, Loader2, AlertCircle, Share2, Clock, KeyRound, RefreshCw } fr
 import { db } from '@/services/storage';
 import { useAppStore } from '@/stores/app-store';
 import { generateConsultationSummary } from '@/services/summary';
-import { hasValidAPIKey } from '@/lib/config';
+import { QwenProvider } from '@/services/ai';
+import {
+  canUsePlatformTrial,
+  consumePlatformTrial,
+  getPlatformTrialAIConfig,
+  getPlatformTrialRemaining,
+  getPlatformTrialTotal,
+  hasPlatformTrialKey,
+  hasValidAPIKey,
+  hasValidUserAPIKey,
+} from '@/lib/config';
 import { formatFriendlyDate } from '@/lib/utils';
 
 export default function Summary() {
@@ -20,16 +30,35 @@ export default function Summary() {
 
   const [generating, setGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [trialRemaining, setTrialRemaining] = useState(getPlatformTrialRemaining());
+
+  const userKeyOk = hasValidUserAPIKey();
+  const platformTrialReady = !userKeyOk && hasPlatformTrialKey();
 
   const handleGenerate = async () => {
-    if (!hasValidAPIKey()) {
+    const useTrial = canUsePlatformTrial();
+    if (!hasValidAPIKey() && !useTrial) {
       setError('请先在"设置"页填入通义千问 API Key');
       return;
     }
     setError(null);
     setGenerating(true);
     try {
-      await generateConsultationSummary({ patientId, days: 14 });
+      if (useTrial) {
+        const cfg = getPlatformTrialAIConfig();
+        await generateConsultationSummary({
+          patientId,
+          days: 14,
+          aiProvider: new QwenProvider({
+            apiKey: cfg.qwenApiKey,
+            baseUrl: cfg.qwenBaseUrl,
+            model: cfg.qwenTextModel,
+          }),
+        });
+        setTrialRemaining(consumePlatformTrial());
+      } else {
+        await generateConsultationSummary({ patientId, days: 14 });
+      }
     } catch (e) {
       setError(e instanceof Error ? e.message : '生成失败');
     } finally {
@@ -70,17 +99,32 @@ export default function Summary() {
         </button>
       </header>
 
-      {!hasValidAPIKey() && (
+      {!userKeyOk && (
         <Link
           to="/settings"
           className="flex items-center gap-3 rounded-xl bg-tertiary-fixed/80 text-on-tertiary-fixed px-5 py-4 border border-tertiary/20 hover:bg-tertiary-fixed transition"
         >
           <KeyRound className="w-5 h-5 text-tertiary" />
           <div className="flex-1">
-            <div className="font-bold text-sm">先填入通义千问 API Key</div>
+            <div className="font-bold text-sm">先填入 API Key</div>
             <div className="text-xs opacity-80">生成摘要需要调用 AI</div>
           </div>
         </Link>
+      )}
+
+      {platformTrialReady && (
+        <div className="flex items-center gap-3 rounded-xl bg-primary-fixed/80 text-primary px-5 py-4 border border-primary/10">
+          <Sparkles className="w-5 h-5" />
+          <div className="flex-1">
+            <div className="font-bold text-sm">
+              免费试用 {getPlatformTrialTotal()} 次
+              {trialRemaining < getPlatformTrialTotal() ? ` · 剩余 ${trialRemaining} 次` : ''}
+            </div>
+            <div className="text-xs opacity-80">
+              未填 API Key 仍可免费生成摘要，试用后需自行配置
+            </div>
+          </div>
+        </div>
       )}
 
       {error && (
@@ -130,7 +174,7 @@ export default function Summary() {
           {latest.focusPoints?.length > 0 && (
             <div>
               <h3 className="text-xs font-bold text-primary-container mb-2 uppercase tracking-widest">
-                建议医生重点关注
+                供医生核对的信息
               </h3>
               <ul className="space-y-2">
                 {latest.focusPoints.map((p, i) => (
@@ -164,9 +208,7 @@ export default function Summary() {
               <summary className="cursor-pointer text-sm font-semibold text-outline hover:text-primary">
                 查看 AI 原始摘要
               </summary>
-              <pre className="mt-3 whitespace-pre-wrap font-body text-sm bg-surface-container-low rounded-lg p-4 text-on-surface-variant max-h-96 overflow-auto">
-                {latest.markdown}
-              </pre>
+              <MarkdownPreview source={latest.markdown} />
             </details>
           )}
 
@@ -204,4 +246,83 @@ function Section({
       </p>
     </section>
   );
+}
+
+function MarkdownPreview({ source }: { source: string }) {
+  const elements: React.ReactNode[] = [];
+  let listItems: React.ReactNode[] = [];
+
+  const flushList = (key: string) => {
+    if (!listItems.length) return;
+    elements.push(
+      <ul key={key} className="space-y-1.5 list-disc pl-5 text-sm leading-relaxed text-on-surface-variant">
+        {listItems}
+      </ul>,
+    );
+    listItems = [];
+  };
+
+  source.split(/\r?\n/).forEach((raw, index) => {
+    const line = raw.trim();
+    if (!line) {
+      flushList(`list-${index}`);
+      return;
+    }
+
+    const heading = line.match(/^(#{1,4})\s+(.+)$/);
+    if (heading) {
+      flushList(`list-${index}`);
+      const level = heading[1].length;
+      const text = heading[2];
+      if (level === 1) {
+        elements.push(
+          <h3 key={index} className="text-base font-extrabold text-on-surface mt-1">
+            {renderInlineMarkdown(text)}
+          </h3>,
+        );
+      } else {
+        elements.push(
+          <h4 key={index} className="text-sm font-bold text-primary-container mt-3">
+            {renderInlineMarkdown(text)}
+          </h4>,
+        );
+      }
+      return;
+    }
+
+    const item = line.match(/^[-*]\s*(.+)$/) ?? line.match(/^\d+[.)]\s+(.+)$/);
+    if (item) {
+      listItems.push(<li key={index}>{renderInlineMarkdown(item[1])}</li>);
+      return;
+    }
+
+    flushList(`list-${index}`);
+    elements.push(
+      <p key={index} className="text-sm leading-relaxed text-on-surface-variant">
+        {renderInlineMarkdown(line)}
+      </p>,
+    );
+  });
+
+  flushList('list-end');
+
+  return (
+    <div className="mt-3 max-h-96 overflow-auto rounded-xl border border-surface-container-high bg-surface-container-low p-4 space-y-2">
+      {elements}
+    </div>
+  );
+}
+
+function renderInlineMarkdown(text: string): React.ReactNode {
+  const parts = text.split(/(\*\*[^*]+\*\*)/g).filter(Boolean);
+  return parts.map((part, index) => {
+    if (part.startsWith('**') && part.endsWith('**')) {
+      return (
+        <strong key={index} className="font-bold text-on-surface">
+          {part.slice(2, -2)}
+        </strong>
+      );
+    }
+    return <span key={index}>{part}</span>;
+  });
 }

@@ -1,6 +1,6 @@
 # 医前记 · Yiqianji
 
-> 诊前信息整理与沟通辅助系统 —— **纯本地化版本**
+> 诊前信息整理与沟通辅助系统 —— **本地优先版本**
 
 ## 技术栈
 
@@ -17,6 +17,7 @@
 | 二维码 | qrcode.react |
 | PWA | vite-plugin-pwa |
 | AI | 阿里通义千问（OpenAI 兼容接口） |
+| 分享短链 | Netlify Functions + Netlify Blobs |
 
 ## 目录结构
 
@@ -39,7 +40,10 @@ app/
 │   └── index.css
 ├── public/
 │   └── favicon.svg
+├── netlify/
+│   └── functions/     # 医生短链分享 API
 ├── package.json
+├── netlify.toml       # Netlify 构建、函数与 SPA 回退配置
 ├── vite.config.ts
 ├── tsconfig.json
 ├── .env.example        # 环境变量示例
@@ -90,7 +94,7 @@ npm run build
 npm run preview
 ```
 
-构建产物在 `dist/`，可直接托管到任何静态服务器（Netlify / Vercel / Nginx / GitHub Pages …）。
+构建产物在 `dist/`。如果需要使用医生短链二维码，请部署到支持 `/api/share-summary` 的环境；当前默认配置为 Netlify Functions + Netlify Blobs。
 
 ## 核心演示路径
 
@@ -99,8 +103,8 @@ npm run preview
 3. 首页：问候语 + AI 摘要入口 + 快捷记录 + 血压趋势迷你图
 4. **记录** 页：切换 Tab 可录入"体征 / 症状 / 用药 / 生活"
 5. **报告** 页：点拍照上传 → 通义 VL 模型 OCR → 自动结构化展示
-6. **摘要** 页：一键调 AI 生成"就诊前摘要"→ 医生扫码查看
-7. **DoctorView**：`/doctor-view/:summaryId` 独立页面，全屏展示摘要
+6. **摘要** 页：一键调 AI 生成"就诊前摘要"→ 生成短链二维码给医生扫码查看
+7. **DoctorView**：`/doctor-view/:summaryId` 独立页面，全屏展示摘要；`/s/:shareToken` 为医生短链入口
 8. **设置**：切换 API Key / 清除数据 / 重看引导
 
 ## 架构抽象：未来迁回服务端的路径
@@ -128,15 +132,19 @@ class ServerAIProxy implements IAIProvider { ... }
 
 ## 数据安全
 
-- 所有数据保存在浏览器 IndexedDB 中，不上传任何服务器
+- 默认数据保存在浏览器 IndexedDB 中
+- 用户主动点击"生成短链二维码"时，会上传本次医生视图所需的精简摘要字段到临时分享存储
+- 短链分享不上传原始报告图片、完整本地数据库或 AI 原始 Markdown，有效期为 7 天
 - API Key 仅存在浏览器 localStorage（配置时），调 API 时直接从浏览器 → 通义千问
 - **提示：** 纯前端场景下 API Key 会被用户设备看到。生产上线前应改为 BFF 代理调用。
 
 ## 注意事项
 
-1. **同源限制**：PWA / 本地化演示时，"医生端二维码"指向本机地址，仅在同一网络下有效。实际使用时建议截图/打印摘要。
-2. **浏览器兼容**：需支持 IndexedDB + ES2022。Chrome / Edge / Firefox / Safari 近 2 年版本均可。
-3. **通义千问费用**：按 token 计费，演示级调用基本可忽略（单次摘要 < 0.01 元）。可在阿里云控制台查看用量。
+1. **短链部署**：默认短链接口为同源 `/api/share-summary`。Netlify 部署会由 `netlify.toml` 转发到函数；非 Netlify 环境需提供等价后端，并通过 `VITE_DOCTOR_SHARE_API_BASE` 配置地址。
+2. **本地开发**：纯 `vite dev` 不提供 Netlify Functions；需要完整测试短链时请使用 `netlify dev` 或部署后测试。
+3. **离线兜底**：医生视图仍保留折叠的离线备用链接，可在无后端时使用，但二维码不再默认承载整份摘要。
+4. **浏览器兼容**：需支持 IndexedDB + ES2022。Chrome / Edge / Firefox / Safari 近 2 年版本均可。
+5. **通义千问费用**：按 token 计费，演示级调用基本可忽略（单次摘要 < 0.01 元）。可在阿里云控制台查看用量。
 
 ## 许可证
 

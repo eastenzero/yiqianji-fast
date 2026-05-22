@@ -1,4 +1,4 @@
-import { AbsoluteFill, staticFile } from 'remotion';
+import { staticFile } from 'remotion';
 import { AmbientBackground } from '../../components/AmbientBackground';
 import { Highlight } from '../../components/Highlight';
 import { KenBurns } from '../../components/KenBurns';
@@ -71,10 +71,8 @@ export const P05RecordOrganize: React.FC = () => {
         from={{ scale: 1.0, x: 0, y: 0 }}
         to={{ scale: 1.03, x: 0, y: 0 }}
         fit="cover"
-      />
-
-      {/* 左侧手机区 ltr Sweep（承接 D1 实操） */}
-      <AbsoluteFill style={{ pointerEvents: 'none' }}>
+      >
+        {/* 左侧手机区 ltr Sweep（承接 D1 实操） */}
         <div
           style={{
             position: 'absolute',
@@ -83,6 +81,7 @@ export const P05RecordOrganize: React.FC = () => {
             width: PHONE_AREA.width,
             height: PHONE_AREA.height,
             overflow: 'hidden',
+            pointerEvents: 'none',
           }}
         >
           <Sweep
@@ -94,23 +93,23 @@ export const P05RecordOrganize: React.FC = () => {
             beamWidthPercent={30}
           />
         </div>
-      </AbsoluteFill>
 
-      {/* 4 个 feature 卡 · 依次脉冲 */}
-      {[
-        { color: COLORS.primary, startFrame: 150, pulseCount: 2 },
-        { color: COLORS.accent, startFrame: 240, pulseCount: 2 },       // OCR 橙
-        { color: '#2C7DA0', startFrame: 330, pulseCount: 2 },
-        { color: COLORS.primary, startFrame: 420, pulseCount: 3, retain: true }, // 时间轴 3 次
-      ].map((feat, i) => (
-        <AbsoluteFill key={i} style={{ pointerEvents: 'none' }}>
+        {/* 4 个 feature 卡 · 依次脉冲（对齐 Cue 1/2/3） */}
+        {[
+          { color: COLORS.primary, startFrame: 80, pulseCount: 2 },           // Cue 1 f60 "四种入口"
+          { color: COLORS.accent, startFrame: 231, pulseCount: 2 },           // Cue 2 f231 "OCR 识别"
+          { color: '#2C7DA0', startFrame: 321, pulseCount: 2 },               // after Feat 2 ends (f321)
+          { color: COLORS.primary, startFrame: 401, pulseCount: 3, retain: true }, // after Feat 3 ends (f401)
+        ].map((feat, i) => (
           <div
+            key={i}
             style={{
               position: 'absolute',
               left: FEAT_LEFT,
               top: FEAT_TOPS[i],
               width: FEAT_WIDTH,
               height: FEAT_HEIGHT,
+              pointerEvents: 'none',
             }}
           >
             <Highlight
@@ -134,27 +133,27 @@ export const P05RecordOrganize: React.FC = () => {
               />
             </Highlight>
           </div>
-        </AbsoluteFill>
-      ))}
+        ))}
 
-      {/* 底部 4 个录入模式 tag 快速连续脉冲（15 帧间隔） */}
-      {MODE_TAGS.map((tag, i) => (
-        <AbsoluteFill key={`mode-${i}`} style={{ pointerEvents: 'none' }}>
+        {/* 底部 4 个录入模式 tag 快速连续脉冲（语音后视觉回顾） */}
+        {MODE_TAGS.map((tag, i) => (
           <div
+            key={`mode-${i}`}
             style={{
               position: 'absolute',
               left: tag.left,
               top: MODE_TAG_TOP,
               width: tag.width,
               height: MODE_TAG_HEIGHT,
+              pointerEvents: 'none',
             }}
           >
             <Highlight
               mode="colorShift"
               colorShiftMaxAlpha={0.30}
               color={tag.color}
-              startFrame={580 + i * 30}
-              pulsePeriod={28}
+              startFrame={110 + i * 30}
+              pulsePeriod={25}
               pulseCount={2}
               display="block"
               borderRadius={MODE_TAG_RADIUS}
@@ -169,8 +168,8 @@ export const P05RecordOrganize: React.FC = () => {
               />
             </Highlight>
           </div>
-        </AbsoluteFill>
-      ))}
+        ))}
+      </KenBurns>
     </SceneTransition>
   );
 };

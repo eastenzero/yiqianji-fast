@@ -34,27 +34,27 @@ import { fileToDataURL, formatFriendlyDate, cn } from '@/lib/utils';
 import { hasValidAPIKey } from '@/lib/config';
 import type { MedicalReport, VitalRecord } from '@/types';
 
-type VitalMetric = 'bp' | 'bg' | 'weight' | 'hr';
+type VitalMetric = 'bp' | 'bg' | 'hr' | 'temp';
 
 const METRIC_LABELS: Record<VitalMetric, string> = {
   bp: '血压',
   bg: '血糖',
-  weight: '体重',
   hr: '心率',
+  temp: '体温',
 };
 
 const METRIC_UNITS: Record<VitalMetric, string> = {
   bp: 'mmHg',
   bg: 'mmol/L',
-  weight: 'kg',
   hr: 'bpm',
+  temp: '℃',
 };
 
 const NORMAL_RANGES: Record<VitalMetric, [number, number]> = {
   bp: [110, 135], // 收缩压正常区间
   bg: [3.9, 6.1],
-  weight: [50, 85],
   hr: [60, 100],
+  temp: [36, 37.2],
 };
 
 export default function Report() {
@@ -322,7 +322,7 @@ function VitalsTrendCard({
       <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
         <h3 className="text-xl font-bold font-headline">体征趋势 (30天)</h3>
         <div className="flex bg-surface-container rounded-2xl p-1 gap-1 overflow-x-auto hide-scrollbar">
-          {(['bp', 'bg', 'weight', 'hr'] as VitalMetric[]).map((m) => (
+          {(['bp', 'bg', 'hr', 'temp'] as VitalMetric[]).map((m) => (
             <button
               key={m}
               onClick={() => onChangeMetric(m)}
