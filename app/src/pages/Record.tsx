@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { Activity, Stethoscope, Pill, Utensils, Plus, ChevronRight } from 'lucide-react';
+import { Activity, Stethoscope, Pill, Utensils, Plus } from 'lucide-react';
 import { db, getRepositories } from '@/services/storage';
 import { useAppStore } from '@/stores/app-store';
 import { cn, formatFriendlyDate } from '@/lib/utils';
@@ -167,29 +167,42 @@ function VitalTab() {
         {recent.length === 0 ? (
           <EmptyHint text="还没有体征记录" />
         ) : (
-          <ul className="divide-y divide-surface-container-high">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {recent.map((v) => {
               const label = { bp: '血压', bg: '血糖', hr: '心率', temp: '体温', weight: '体重', spo2: '血氧' }[v.kind];
-              const val =
+              const value =
                 typeof v.value === 'number'
-                  ? `${v.value} ${v.unit}`
-                  : `${v.value.systolic}/${v.value.diastolic} ${v.unit}`;
+                  ? `${v.value}`
+                  : `${v.value.systolic}/${v.value.diastolic}`;
+              const tone = getVitalTone(v.kind);
               return (
-                <li key={v.id} className="py-3 flex items-center justify-between">
-                  <div>
-                    <div className="font-semibold text-on-surface">
-                      {label} · {val}
+                <article
+                  key={v.id}
+                  className={cn(
+                    'relative overflow-hidden rounded-2xl border p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md',
+                    tone.card,
+                  )}
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <div className="text-xs font-bold text-secondary tracking-widest uppercase">{label}</div>
+                      <div className="mt-2 flex items-end gap-1">
+                        <span className="text-2xl font-extrabold text-on-surface">{value}</span>
+                        <span className="pb-1 text-xs font-semibold text-outline">{v.unit}</span>
+                      </div>
                     </div>
-                    <div className="text-xs text-outline mt-0.5">
-                      {formatFriendlyDate(v.occurredAt)}
-                      {v.note ? ` · ${v.note}` : ''}
+                    <div className={cn('h-10 w-10 rounded-full flex items-center justify-center text-sm font-extrabold', tone.badge)}>
+                      {tone.mark}
                     </div>
                   </div>
-                  <ChevronRight className="w-4 h-4 text-outline" />
-                </li>
+                  <div className="mt-4 flex items-center justify-between gap-3 text-xs text-outline">
+                    <span>{formatFriendlyDate(v.occurredAt)}</span>
+                    {v.note ? <span className="truncate text-secondary">{v.note}</span> : null}
+                  </div>
+                </article>
               );
             })}
-          </ul>
+          </div>
         )}
       </Card>
     </div>
@@ -280,26 +293,49 @@ function SymptomTab() {
         {!list?.length ? (
           <EmptyHint text="还没有症状记录" />
         ) : (
-          <ul className="divide-y divide-surface-container-high">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {list.map((s) => (
-              <li key={s.id} className="py-3">
+              <article key={s.id} className="rounded-2xl border border-tertiary/15 bg-tertiary-fixed/40 p-4 shadow-sm">
                 <div className="flex items-center justify-between">
                   <div className="font-semibold text-on-surface">
                     {s.title}
-                    <span className="ml-2 text-xs text-tertiary">程度 {s.severity}/5</span>
                   </div>
                   <div className="text-xs text-outline">{formatFriendlyDate(s.occurredAt)}</div>
                 </div>
+                <div className="mt-3 flex items-center gap-1.5">
+                  {([1, 2, 3, 4, 5] as const).map((n) => (
+                    <span
+                      key={n}
+                      className={cn(
+                        'h-2 flex-1 rounded-full',
+                        n <= s.severity ? 'bg-tertiary' : 'bg-white/70',
+                      )}
+                    />
+                  ))}
+                  <span className="ml-2 text-xs font-bold text-tertiary">程度 {s.severity}/5</span>
+                </div>
                 {s.triggers?.length ? (
-                  <div className="text-xs text-secondary mt-1">诱因：{s.triggers.join('、')}</div>
+                  <div className="mt-3 flex flex-wrap gap-1.5">
+                    {s.triggers.map((trigger) => (
+                      <span key={trigger} className="rounded-full bg-white/75 px-2 py-1 text-xs text-secondary">
+                        诱因：{trigger}
+                      </span>
+                    ))}
+                  </div>
                 ) : null}
                 {s.reliefs?.length ? (
-                  <div className="text-xs text-secondary">缓解：{s.reliefs.join('、')}</div>
+                  <div className="mt-2 flex flex-wrap gap-1.5">
+                    {s.reliefs.map((relief) => (
+                      <span key={relief} className="rounded-full bg-primary-fixed/70 px-2 py-1 text-xs text-primary">
+                        缓解：{relief}
+                      </span>
+                    ))}
+                  </div>
                 ) : null}
-                {s.note ? <div className="text-xs text-secondary">{s.note}</div> : null}
-              </li>
+                {s.note ? <div className="mt-3 text-xs text-secondary leading-relaxed">{s.note}</div> : null}
+              </article>
             ))}
-          </ul>
+          </div>
         )}
       </Card>
     </div>
@@ -379,18 +415,25 @@ function MedicationTab() {
         {!list?.length ? (
           <EmptyHint text="还没有用药记录" />
         ) : (
-          <ul className="divide-y divide-surface-container-high">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {list.slice(0, 20).map((m) => (
-              <li key={m.id} className="py-3 flex items-center justify-between">
-                <div>
-                  <div className="font-semibold text-on-surface">
-                    {m.name} <span className="text-secondary text-sm font-normal">{m.dosage} {m.frequency}</span>
+              <article key={m.id} className="rounded-2xl border border-primary/10 bg-primary-fixed/35 p-4 shadow-sm">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <div className="text-xs font-bold text-primary tracking-widest uppercase">用药</div>
+                    <div className="mt-2 font-bold text-on-surface">{m.name}</div>
+                    <div className="mt-1 text-sm text-secondary">
+                      {[m.dosage, m.frequency].filter(Boolean).join(' · ')}
+                    </div>
                   </div>
-                  <div className="text-xs text-outline">{formatFriendlyDate(m.takenAt)}</div>
+                  <div className="rounded-full bg-white/75 px-2.5 py-1 text-xs font-bold text-primary">
+                    {formatFriendlyDate(m.takenAt)}
+                  </div>
                 </div>
-              </li>
+                {m.note ? <div className="mt-3 text-xs text-secondary leading-relaxed">{m.note}</div> : null}
+              </article>
             ))}
-          </ul>
+          </div>
         )}
       </Card>
     </div>
@@ -470,19 +513,24 @@ function LifestyleTab() {
         {!list?.length ? (
           <EmptyHint text="还没有生活记录" />
         ) : (
-          <ul className="divide-y divide-surface-container-high">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {list.slice(0, 20).map((l) => (
-              <li key={l.id} className="py-3">
+              <article key={l.id} className="rounded-2xl border border-secondary/10 bg-surface-container-low p-4 shadow-sm">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs text-primary font-semibold">
+                  <span className="rounded-full bg-white px-2.5 py-1 text-xs text-primary font-semibold">
                     {{ diet: '饮食', exercise: '运动', sleep: '睡眠' }[l.kind]}
                   </span>
                   <span className="text-xs text-outline">{formatFriendlyDate(l.occurredAt)}</span>
                 </div>
-                <div className="text-on-surface mt-1">{l.content}</div>
-              </li>
+                <div className="text-on-surface mt-3 font-medium leading-relaxed">{l.content}</div>
+                {l.durationMinutes ? (
+                  <div className="mt-3 inline-flex rounded-full bg-primary-fixed/60 px-2.5 py-1 text-xs font-semibold text-primary">
+                    {l.durationMinutes} 分钟
+                  </div>
+                ) : null}
+              </article>
             ))}
-          </ul>
+          </div>
         )}
       </Card>
     </div>
@@ -524,6 +572,15 @@ function Field({
       />
     </div>
   );
+}
+
+function getVitalTone(kind: string) {
+  if (kind === 'bp') return { mark: '压', card: 'bg-primary-fixed/35 border-primary/10', badge: 'bg-primary text-white' };
+  if (kind === 'bg') return { mark: '糖', card: 'bg-tertiary-fixed/40 border-tertiary/15', badge: 'bg-tertiary text-white' };
+  if (kind === 'hr') return { mark: '心', card: 'bg-error-container/25 border-error/10', badge: 'bg-error text-white' };
+  if (kind === 'temp') return { mark: '温', card: 'bg-surface-container-low border-surface-container-high', badge: 'bg-secondary text-white' };
+  if (kind === 'weight') return { mark: '重', card: 'bg-primary-fixed/25 border-primary/10', badge: 'bg-primary-container text-white' };
+  return { mark: '氧', card: 'bg-surface-container-low border-surface-container-high', badge: 'bg-secondary text-white' };
 }
 
 function EmptyHint({ text }: { text: string }) {

@@ -36,11 +36,11 @@ export function BpTrendCard({
 
   const max = Math.max(...values);
   const min = Math.min(...values);
-  const hasHigh = values.some((v) => v > highThreshold);
+  const hasHigh = values.some((v) => v >= highThreshold);
   const hasLow = values.some((v) => v < lowThreshold);
   const hasAnomaly = hasHigh || hasLow;
   const latest = values[values.length - 1];
-  const latestAbnormal = latest > highThreshold || latest < lowThreshold;
+  const latestAbnormal = latest >= highThreshold || latest < lowThreshold;
 
   return (
     <section
@@ -101,7 +101,7 @@ export function BpTrendCard({
             {values.map((v, idx) => {
               const range = Math.max(20, max - min + 10);
               const pct = ((v - (min - 5)) / range) * 100;
-              const abnormal = v > highThreshold || v < lowThreshold;
+              const abnormal = v >= highThreshold || v < lowThreshold;
               const isLatest = idx === values.length - 1;
               return (
                 <div

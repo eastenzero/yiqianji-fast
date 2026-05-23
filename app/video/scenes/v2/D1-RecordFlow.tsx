@@ -41,14 +41,14 @@ const PHONE_SCREEN_WIDTH = 408;
 const PHONE_SCREEN_HEIGHT = 820;
 
 // 关键帧 · A2 重整后（1650→1140 帧 · 0.69x）
-const HOME1_FADE_OUT_START = 269;
-const HOME1_FADE_OUT_END = 318;
-const RECORD_FADE_IN_START = 269;
-const RECORD_FADE_IN_END = 318;
-const RECORD_FADE_OUT_START = 760;
-const RECORD_FADE_OUT_END = 815;
-const HOME2_FADE_IN_START = 760;
-const HOME2_FADE_IN_END = 815;
+const HOME1_FADE_OUT_START = 295;
+const HOME1_FADE_OUT_END = 335;
+const RECORD_FADE_IN_START = 295;
+const RECORD_FADE_IN_END = 335;
+const RECORD_FADE_OUT_START = 445;
+const RECORD_FADE_OUT_END = 480;
+const HOME2_FADE_IN_START = 445;
+const HOME2_FADE_IN_END = 480;
 
 // "测体征" Quick Card 点击位置（滚动后 Quick Cards 出现在屏幕中下部）
 const RIPPLE_VITAL = { x: PHONE_SCREEN_WIDTH * 0.25, y: PHONE_SCREEN_HEIGHT * 0.62 };
@@ -127,56 +127,56 @@ export const D1RecordFlow: React.FC = () => {
   );
 
   // === 滚动（Home V1） · 35-242 帧从顶部滚到 QuickCards（A2 0.69x） ===
-  const home1ScrollY = interpolate(frame, [35, 242], [0, -360], {
+  const home1ScrollY = interpolate(frame, [30, 200], [0, -360], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
 
-  // === 滚动（Home V2） · 815 帧起从 BP 卡附近开始，轻推 120px · A3 压缩后 815-880 ===
-  const home2ScrollY = interpolate(frame, [815, 880], [-280, -400], {
+  // === 滚动（Home V2） · 从快捷记录区起，滚到 BP TREND 柱状图完全可见 · Cue 6 f606 前完成 ===
+  const home2ScrollY = interpolate(frame, [490, 600], [-350, -620], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
 
   // === 滚动（Record） · 跟随输入位置让 BP 输入框保持可见（A2 · 原 [460,1000] 0.69x）===
-  const recordScrollY = interpolate(frame, [318, 691], [0, -120], {
+  const recordScrollY = interpolate(frame, [335, 430], [0, -120], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
 
   // === 输入“打字”效果（收缩压 135 / 舒张压 90）· A2 0.69x ===
   // 收缩压 359-460：每秒 2.6 字符（加速以适应短 duration）
-  const systolic = typeInto('135', frame, 359, 2.6);
-  // 舒张压 497-575：每秒 2.6 字符
-  const diastolic = typeInto('90', frame, 497, 2.6);
-  // saving 状态 · 622-732
-  const saving = frame >= 622 && frame < 732;
+  const systolic = typeInto('135', frame, 338, 5.0);
+  // 舒张压（Cue 4 "舒张压90” 语音 f409）
+  const diastolic = typeInto('90', frame, 403, 5.0);
+  // saving 状态（Cue 4 "保存" 语音 f423）
+  const saving = frame >= 423 && frame < 445;
 
   // === 左右浮动文案（A2 · 0.69x）===
-  const a1Opacity = interpolate(frame, [41, 90, 249, 297], [0, 1, 1, 0], {
+  const a1Opacity = interpolate(frame, [35, 75, 270, 295], [0, 1, 1, 0], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
-  const a1Tx = interpolate(frame, [41, 90], [-40, 0], {
+  const a1Tx = interpolate(frame, [35, 75], [-40, 0], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
 
-  const a2Opacity = interpolate(frame, [359, 414, 725, 774], [0, 1, 1, 0], {
+  const a2Opacity = interpolate(frame, [335, 370, 425, 445], [0, 1, 1, 0], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
-  const a2Tx = interpolate(frame, [359, 414], [40, 0], {
+  const a2Tx = interpolate(frame, [335, 370], [40, 0], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
 
   // A3 文案 · 贴合 Cue 6 "BP ALERT 自动触发"（Cue 6 scene 626-805）
-  const a3Opacity = interpolate(frame, [790, 810, 850, 870], [0, 1, 1, 0], {
+  const a3Opacity = interpolate(frame, [500, 540, 840, 870], [0, 1, 1, 0], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
-  const a3Tx = interpolate(frame, [790, 810], [40, 0], {
+  const a3Tx = interpolate(frame, [500, 540], [40, 0], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
@@ -243,7 +243,7 @@ export const D1RecordFlow: React.FC = () => {
         <TouchRipple
           x={RIPPLE_VITAL.x}
           y={RIPPLE_VITAL.y}
-          triggerFrame={263}
+          triggerFrame={280}
           maxRadius={90}
           durationFrames={30}
           color={COLORS.primary}
@@ -253,7 +253,7 @@ export const D1RecordFlow: React.FC = () => {
         <TouchRipple
           x={RIPPLE_SAVE.x}
           y={RIPPLE_SAVE.y}
-          triggerFrame={608}
+          triggerFrame={420}
           maxRadius={110}
           durationFrames={34}
           color={COLORS.accent}

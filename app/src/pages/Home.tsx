@@ -7,7 +7,7 @@ import {
 import { Link } from 'react-router-dom';
 import { db } from '@/services/storage';
 import { useAppStore } from '@/stores/app-store';
-import { hasValidAPIKey } from '@/lib/config';
+import { getPlatformTrialTotal, hasPlatformTrialKey, hasValidUserAPIKey } from '@/lib/config';
 import { cn } from '@/lib/utils';
 import { loadDemoData, ensureEmptyPatient, wipeRecordsOnly } from '@/services/seed';
 import { importFromFile } from '@/services/data-io';
@@ -101,7 +101,8 @@ export default function Home() {
 
   const name = patient?.name ?? '朋友';
   const conditions = patient?.conditions ?? [];
-  const apiKeyOk = hasValidAPIKey();
+  const userKeyOk = hasValidUserAPIKey();
+  const platformTrialReady = !userKeyOk && hasPlatformTrialKey();
   const hasAnyData = (vitals?.length ?? 0) > 0;
 
   return (
@@ -134,17 +135,27 @@ export default function Home() {
         />
       )}
 
-      {!apiKeyOk && (
-        <Link
-          to="/settings"
-          className="flex items-center gap-3 rounded-xl bg-tertiary-fixed/80 text-on-tertiary-fixed px-5 py-4 border border-tertiary/20 hover:bg-tertiary-fixed transition"
-        >
-          <KeyRound className="w-5 h-5 text-tertiary" />
-          <div className="flex-1">
-            <div className="font-bold text-sm">先去设置里填一下 API Key</div>
-            <div className="text-xs opacity-80">AI 摘要和报告 OCR 需要，点我前往设置页。</div>
+      {!userKeyOk && (
+        platformTrialReady ? (
+          <div className="flex items-center gap-3 rounded-xl bg-primary-fixed/80 text-primary px-5 py-4 border border-primary/10">
+            <Sparkles className="w-5 h-5" />
+            <div className="flex-1">
+              <div className="font-bold text-sm">免费试用 {getPlatformTrialTotal()} 次 AI 摘要</div>
+              <div className="text-xs opacity-80">未填 API Key 仍可免费生成摘要，试用后需自行配置</div>
+            </div>
           </div>
-        </Link>
+        ) : (
+          <Link
+            to="/settings"
+            className="flex items-center gap-3 rounded-xl bg-tertiary-fixed/80 text-on-tertiary-fixed px-5 py-4 border border-tertiary/20 hover:bg-tertiary-fixed transition"
+          >
+            <KeyRound className="w-5 h-5 text-tertiary" />
+            <div className="flex-1">
+              <div className="font-bold text-sm">先去设置里填一下 API Key</div>
+              <div className="text-xs opacity-80">AI 摘要和报告 OCR 需要，点我前往设置页。</div>
+            </div>
+          </Link>
+        )
       )}
 
       {/* 问候 + 连续记录 */}

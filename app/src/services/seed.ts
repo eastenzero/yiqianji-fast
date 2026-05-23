@@ -90,6 +90,30 @@ export async function loadDemoData(patientId: string): Promise<void> {
   await repo.vitals.create({ patientId, kind: 'bg', value: 6.1, unit: 'mmol/L', occurredAt: now - 5 * day });
   await repo.vitals.create({ patientId, kind: 'bg', value: 5.8, unit: 'mmol/L', occurredAt: now - 9 * day });
 
+  const heartRates = [76, 78, 74, 82, 80, 86, 84, 88, 85, 90, 87, 92, 89, 94];
+  for (let i = 13; i >= 0; i--) {
+    await repo.vitals.create({
+      patientId,
+      kind: 'hr',
+      value: heartRates[13 - i],
+      unit: 'bpm',
+      note: i <= 4 ? '活动后偏快' : '静息',
+      occurredAt: now - i * day - 9 * 60 * 60 * 1000,
+    });
+  }
+
+  const temperatures = [36.4, 36.5, 36.6, 36.5, 36.7, 36.8, 36.6, 36.9, 37.1, 37.4, 37.2, 36.9, 36.7, 36.6];
+  for (let i = 13; i >= 0; i--) {
+    await repo.vitals.create({
+      patientId,
+      kind: 'temp',
+      value: temperatures[13 - i],
+      unit: '℃',
+      note: temperatures[13 - i] > 37.2 ? '午后测量' : '晨起',
+      occurredAt: now - i * day - 8 * 60 * 60 * 1000,
+    });
+  }
+
   // 症状
   await repo.symptoms.create({
     patientId,

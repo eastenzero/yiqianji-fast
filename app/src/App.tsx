@@ -24,6 +24,7 @@ export default function App() {
         <Route path="/onboarding" element={<Onboarding />} />
 
         {/* 医生端分享视图（独立全屏，无底部导航） */}
+        <Route path="/s/:shareToken" element={<DoctorView />} />
         <Route path="/doctor-view/:summaryId" element={<DoctorView />} />
 
         {/* 主应用（带底部导航） */}

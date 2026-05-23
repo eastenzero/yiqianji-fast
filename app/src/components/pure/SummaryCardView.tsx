@@ -182,7 +182,7 @@ export function SummaryCardView({
         visible('focusPoints') && (
           <div>
             <h3 className="text-xs font-bold text-primary-container mb-2 uppercase tracking-widest">
-              {variant === 'doctor' ? '建议重点关注' : '建议医生重点关注'}
+              供医生核对的信息
             </h3>
             {variant === 'doctor' ? (
               <ol className="space-y-2 list-decimal list-inside">

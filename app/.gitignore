@@ -15,3 +15,8 @@ dist-ssr
 
 # Vite / PWA
 dev-dist
+.netlify
+
+# Large binaries
+public/downloads/*.apk
+release/

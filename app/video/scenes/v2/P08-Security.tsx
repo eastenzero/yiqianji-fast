@@ -1,4 +1,4 @@
-import { AbsoluteFill, staticFile } from 'remotion';
+import { staticFile } from 'remotion';
 import { AmbientBackground } from '../../components/AmbientBackground';
 import { Highlight } from '../../components/Highlight';
 import { KenBurns } from '../../components/KenBurns';
@@ -50,11 +50,11 @@ const SEC_HEIGHT = 138;
 const SEC_RADIUS = 12;
 
 const SECURITY_LAYERS = [
-  // Core 最先点亮（由内向外）· A2 · 1350→1050 帧 · 0.778x
-  { top: 727.5, color: COLORS.primary, startFrame: 47, pulseCount: 2 },
-  { top: 570, color: '#2C7DA0', startFrame: 140, pulseCount: 2 },       // L1
-  { top: 412.5, color: COLORS.primary, startFrame: 233, pulseCount: 2 }, // L2
-  { top: 255, color: COLORS.accent, startFrame: 327, pulseCount: 3, retain: true }, // L3 国产 AI 合规
+  // Core 最先点亮（由内向外）· period=40 · 严格顺序无重叠
+  { top: 727.5, color: COLORS.primary, startFrame: 60, pulseCount: 2 },   // Cue 1 "数据本地优先" · ends f140
+  { top: 570, color: '#2C7DA0', startFrame: 145, pulseCount: 2 },         // L1 "端到端加密" · ends f225
+  { top: 412.5, color: COLORS.primary, startFrame: 230, pulseCount: 2 },  // L2 "权限控制" · ends f310
+  { top: 255, color: COLORS.accent, startFrame: 315, pulseCount: 3, retain: true }, // Cue 2 "国产AI合规" · ends f435
 ];
 
 // 右栏 · 4 个创新卡
@@ -64,11 +64,11 @@ const INNOV_HEIGHT = 162;
 const INNOV_RADIUS = 18;
 
 const INNOVATIONS = [
-  // A2 · 0.778x 缩放
-  { top: 210, color: COLORS.accent, startFrame: 140, pulseCount: 3, retain: true }, // 首创
-  { top: 390, color: COLORS.primary, startFrame: 265, pulseCount: 2 },
-  { top: 570, color: '#2C7DA0', startFrame: 389, pulseCount: 2 },
-  { top: 750, color: COLORS.primary, startFrame: 513, pulseCount: 2 },
+  // 对齐 Cue 3-5（“四大首创”）
+  { top: 210, color: COLORS.accent, startFrame: 378, pulseCount: 3, retain: true }, // Cue 3 "多模态时序建模"
+  { top: 390, color: COLORS.primary, startFrame: 537, pulseCount: 2 },              // Cue 4 "三屏串联"
+  { top: 570, color: '#2C7DA0', startFrame: 640, pulseCount: 2 },                   // mid Cue 4-5
+  { top: 750, color: COLORS.primary, startFrame: 738, pulseCount: 2 },              // Cue 5 "PWA 零安装"
 ];
 
 export const P08Security: React.FC = () => {
@@ -88,24 +88,24 @@ export const P08Security: React.FC = () => {
         from={{ scale: 1.0, x: 0, y: 0 }}
         to={{ scale: 1.03, x: 0, y: 0 }}
         fit="cover"
-      />
-
-      {/* === 左栏 4 层安全防御卡（由内向外依次点亮） === */}
-      {SECURITY_LAYERS.map((layer, i) => (
-        <AbsoluteFill key={`sec-${i}`} style={{ pointerEvents: 'none' }}>
+      >
+        {/* === 左栏 4 层安全防御卡（Cue 1-2） === */}
+        {SECURITY_LAYERS.map((layer, i) => (
           <div
+            key={`sec-${i}`}
             style={{
               position: 'absolute',
               left: SEC_LEFT,
               top: layer.top,
               width: SEC_WIDTH,
               height: SEC_HEIGHT,
+              pointerEvents: 'none',
             }}
           >
             <Highlight
               color={layer.color}
               startFrame={layer.startFrame}
-              pulsePeriod={45}
+              pulsePeriod={40}
               pulseCount={layer.pulseCount}
               retainAfter={layer.retain}
               maxGlowSize={36}
@@ -123,19 +123,19 @@ export const P08Security: React.FC = () => {
               />
             </Highlight>
           </div>
-        </AbsoluteFill>
-      ))}
+        ))}
 
-      {/* === 右栏 4 创新卡依次脉冲（第一个"首创"橙色） === */}
-      {INNOVATIONS.map((innov, i) => (
-        <AbsoluteFill key={`innov-${i}`} style={{ pointerEvents: 'none' }}>
+        {/* === 右栏 4 创新卡（Cue 3-5 "四大首创"） === */}
+        {INNOVATIONS.map((innov, i) => (
           <div
+            key={`innov-${i}`}
             style={{
               position: 'absolute',
               left: INNOV_LEFT,
               top: innov.top,
               width: INNOV_WIDTH,
               height: INNOV_HEIGHT,
+              pointerEvents: 'none',
             }}
           >
             <Highlight
@@ -159,14 +159,14 @@ export const P08Security: React.FC = () => {
               />
             </Highlight>
           </div>
-        </AbsoluteFill>
-      ))}
+        ))}
+      </KenBurns>
 
-      {/* 末尾全屏 ltr Sweep · 总结感（A2 0.778x） */}
+      {/* Sweep（Cue 6 f828 "每一条都有代码为证"） */}
       <Sweep
         direction="ltr"
-        startFrame={700}
-        durationFrames={117}
+        startFrame={828}
+        durationFrames={100}
         color="#FFFFFF"
         intensity={0.3}
         beamWidthPercent={22}

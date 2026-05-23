@@ -1,4 +1,4 @@
-import { AbsoluteFill, staticFile } from 'remotion';
+import { staticFile } from 'remotion';
 import { AmbientBackground } from '../../components/AmbientBackground';
 import { Highlight } from '../../components/Highlight';
 import { KenBurns } from '../../components/KenBurns';
@@ -73,10 +73,8 @@ export const P06SummarySharing: React.FC = () => {
         from={{ scale: 1.0, x: 0, y: 0 }}
         to={{ scale: 1.03, x: 0, y: 0 }}
         fit="cover"
-      />
-
-      {/* 左侧 phone 区域 · Sweep */}
-      <AbsoluteFill style={{ pointerEvents: 'none' }}>
+      >
+        {/* 左侧 phone 区域 · Sweep */}
         <div
           style={{
             position: 'absolute',
@@ -85,6 +83,7 @@ export const P06SummarySharing: React.FC = () => {
             width: PHONE_AREA.width,
             height: PHONE_AREA.height,
             overflow: 'hidden',
+            pointerEvents: 'none',
           }}
         >
           <Sweep
@@ -96,23 +95,23 @@ export const P06SummarySharing: React.FC = () => {
             beamWidthPercent={40}
           />
         </div>
-      </AbsoluteFill>
 
-      {/* 4 feature cards（A2 · 900→600 帧 · 0.667x）*/}
-      {[
-        { color: COLORS.accent, startFrame: 100, pulseCount: 3, retain: true },
-        { color: COLORS.primary, startFrame: 160, pulseCount: 2 },
-        { color: '#2C7DA0', startFrame: 220, pulseCount: 2 },
-        { color: COLORS.primary, startFrame: 280, pulseCount: 2 },
-      ].map((feat, i) => (
-        <AbsoluteFill key={i} style={{ pointerEvents: 'none' }}>
+        {/* 4 feature cards（对齐 Cue 1-4） */}
+        {[
+          { color: COLORS.accent, startFrame: 70, pulseCount: 3, retain: true },   // Cue 1 f60 · dur=105 · ends f175
+          { color: COLORS.primary, startFrame: 180, pulseCount: 2 },               // after Feat 1 · dur=70 · ends f250
+          { color: '#2C7DA0', startFrame: 255, pulseCount: 2 },                    // after Feat 2 · dur=70 · ends f325
+          { color: COLORS.primary, startFrame: 330, pulseCount: 2 },               // after Feat 3 · dur=70 · ends f400
+        ].map((feat, i) => (
           <div
+            key={i}
             style={{
               position: 'absolute',
               left: FEAT_LEFT,
               top: FEAT_TOPS[i],
               width: FEAT_WIDTH,
               height: FEAT_HEIGHT,
+              pointerEvents: 'none',
             }}
           >
             <Highlight
@@ -136,12 +135,10 @@ export const P06SummarySharing: React.FC = () => {
               />
             </Highlight>
           </div>
-        </AbsoluteFill>
-      ))}
+        ))}
 
-      {/* 底部 Share Flow 三段 · 患者 / QR / 医生 */}
-      {/* 患者 pill */}
-      <AbsoluteFill style={{ pointerEvents: 'none' }}>
+        {/* 底部 Share Flow · 患者 / QR / 医生（Cue 4 f366 "一张码的距离"） */}
+        {/* 患者 pill */}
         <div
           style={{
             position: 'absolute',
@@ -149,11 +146,12 @@ export const P06SummarySharing: React.FC = () => {
             top: SHARE_Y,
             width: 195,
             height: SHARE_HEIGHT,
+            pointerEvents: 'none',
           }}
         >
           <Highlight
             color={COLORS.primary}
-            startFrame={360}
+            startFrame={375}
             pulsePeriod={35}
             pulseCount={2}
             maxGlowSize={30}
@@ -171,10 +169,8 @@ export const P06SummarySharing: React.FC = () => {
             />
           </Highlight>
         </div>
-      </AbsoluteFill>
 
-      {/* QR card · 核心 · 橙色 3 脉冲（A2 · 0.667x）*/}
-      <AbsoluteFill style={{ pointerEvents: 'none' }}>
+        {/* QR card · 核心 · 橙色 3 脉冲 */}
         <div
           style={{
             position: 'absolute',
@@ -182,12 +178,13 @@ export const P06SummarySharing: React.FC = () => {
             top: SHARE_Y,
             width: 156,
             height: SHARE_HEIGHT,
+            pointerEvents: 'none',
           }}
         >
           <Highlight
             color={COLORS.accent}
-            startFrame={380}
-            pulsePeriod={45}
+            startFrame={410}
+            pulsePeriod={40}
             pulseCount={3}
             retainAfter
             maxGlowSize={48}
@@ -205,10 +202,8 @@ export const P06SummarySharing: React.FC = () => {
             />
           </Highlight>
         </div>
-      </AbsoluteFill>
 
-      {/* 医生 pill */}
-      <AbsoluteFill style={{ pointerEvents: 'none' }}>
+        {/* 医生 pill */}
         <div
           style={{
             position: 'absolute',
@@ -216,11 +211,12 @@ export const P06SummarySharing: React.FC = () => {
             top: SHARE_Y,
             width: 195,
             height: SHARE_HEIGHT,
+            pointerEvents: 'none',
           }}
         >
           <Highlight
             color="#2C7DA0"
-            startFrame={413}
+            startFrame={450}
             pulsePeriod={35}
             pulseCount={2}
             maxGlowSize={30}
@@ -238,13 +234,13 @@ export const P06SummarySharing: React.FC = () => {
             />
           </Highlight>
         </div>
-      </AbsoluteFill>
+      </KenBurns>
 
-      {/* 收尾 diagonal Sweep（A2 0.667x）*/}
+      {/* 收尾 diagonal Sweep */}
       <Sweep
         direction="diagonal"
         angle={-18}
-        startFrame={507}
+        startFrame={470}
         durationFrames={67}
         color={COLORS.accent}
         intensity={0.32}

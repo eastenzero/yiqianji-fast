@@ -1,4 +1,4 @@
-import { AbsoluteFill, staticFile } from 'remotion';
+import { staticFile } from 'remotion';
 import { AmbientBackground } from '../../components/AmbientBackground';
 import { Highlight } from '../../components/Highlight';
 import { KenBurns } from '../../components/KenBurns';
@@ -73,18 +73,102 @@ export const P02Background: React.FC = () => {
         seed={120}
       />
 
-      {/* SVG 主画面 · 全程极缓慢推近 · 无平移保证 overlay 精准对齐 */}
+      {/* SVG 主画面 · Highlight 作为 children 共享 KenBurns transform */}
       <KenBurns
         src={staticFile('ppt/02_项目背景.svg')}
         from={{ scale: 1.0, x: 0, y: 0 }}
         to={{ scale: 1.03, x: 0, y: 0 }}
         fit="cover"
-      />
+      >
+        {/* ============ KPI 数据轰炸（Cue 1-2：“先看三组数字” f60-348） ============ */}
 
-      {/* ============ 痛点卡高亮序列（0-16 秒） ============ */}
+        {/* KPI bar 整体白色柔和脉冲 */}
+        <div
+          style={{
+            position: 'absolute',
+            left: KPI_BAR.left,
+            top: KPI_BAR.top,
+            width: KPI_BAR.width,
+            height: KPI_BAR.height,
+            pointerEvents: 'none',
+          }}
+        >
+          <Highlight
+            mode="colorShift"
+            colorShiftMaxAlpha={0.14}
+            color="#FFFFFF"
+            startFrame={60}
+            pulsePeriod={60}
+            pulseCount={2}
+            display="block"
+            borderRadius={KPI_BAR.radius}
+            style={{ width: '100%', height: '100%' }}
+          >
+            <div
+              style={{
+                width: '100%',
+                height: '100%',
+                borderRadius: KPI_BAR.radius,
+              }}
+            />
+          </Highlight>
+        </div>
 
-      {/* 痛点 1 · 资料散落四方 · 蓝色温和脉冲 */}
-      <AbsoluteFill style={{ pointerEvents: 'none' }}>
+        {/* KPI · 2.45 亿高血压 · 单数字脉冲 */}
+        <div
+          style={{
+            position: 'absolute',
+            left: 1110 - KPI_NUM_WIDTH / 2,
+            top: KPI_NUM_TOP,
+            width: KPI_NUM_WIDTH,
+            height: KPI_NUM_HEIGHT,
+            pointerEvents: 'none',
+          }}
+        >
+          <Highlight
+            mode="colorShift"
+            colorShiftMaxAlpha={0.38}
+            color="#F7A072"
+            startFrame={90}
+            pulsePeriod={40}
+            pulseCount={2}
+            display="block"
+            borderRadius={12}
+            style={{ width: '100%', height: '100%' }}
+          >
+            <div style={{ width: '100%', height: '100%', borderRadius: 12 }} />
+          </Highlight>
+        </div>
+
+        {/* KPI · 1.18 亿糖尿病 · 单数字脉冲 */}
+        <div
+          style={{
+            position: 'absolute',
+            left: 1560 - KPI_NUM_WIDTH / 2,
+            top: KPI_NUM_TOP,
+            width: KPI_NUM_WIDTH,
+            height: KPI_NUM_HEIGHT,
+            pointerEvents: 'none',
+          }}
+        >
+          <Highlight
+            mode="colorShift"
+            colorShiftMaxAlpha={0.38}
+            color="#F7A072"
+            startFrame={180}
+            pulsePeriod={40}
+            pulseCount={2}
+            display="block"
+            borderRadius={12}
+            style={{ width: '100%', height: '100%' }}
+          >
+            <div style={{ width: '100%', height: '100%', borderRadius: 12 }} />
+          </Highlight>
+        </div>
+
+        {/* ============ 痛点卡高亮（Cue 3-7：“三件头疼事” f348-987） ============ */}
+
+        {/* 痛点 1 · 资料散落四方 · 蓝色（Cue 3 f348） */}
         <div
           style={{
             position: 'absolute',
@@ -92,13 +176,14 @@ export const P02Background: React.FC = () => {
             top: PAIN_CARD.card1Top,
             width: PAIN_CARD.width,
             height: PAIN_CARD.height,
+            pointerEvents: 'none',
           }}
         >
           <Highlight
             mode="colorShift"
             colorShiftMaxAlpha={0.22}
             color={COLORS.primary}
-            startFrame={39}
+            startFrame={348}
             pulsePeriod={40}
             pulseCount={2}
             display="block"
@@ -114,10 +199,8 @@ export const P02Background: React.FC = () => {
             />
           </Highlight>
         </div>
-      </AbsoluteFill>
 
-      {/* 痛点 2 · 话到嘴边讲不清 · 次蓝脉冲 */}
-      <AbsoluteFill style={{ pointerEvents: 'none' }}>
+        {/* 痛点 2 · 话到嘴边讲不清 · 次蓝（Cue 5 f645） */}
         <div
           style={{
             position: 'absolute',
@@ -125,13 +208,14 @@ export const P02Background: React.FC = () => {
             top: PAIN_CARD.card2Top,
             width: PAIN_CARD.width,
             height: PAIN_CARD.height,
+            pointerEvents: 'none',
           }}
         >
           <Highlight
             mode="colorShift"
             colorShiftMaxAlpha={0.22}
             color="#2C7DA0"
-            startFrame={146}
+            startFrame={645}
             pulsePeriod={40}
             pulseCount={2}
             display="block"
@@ -147,10 +231,8 @@ export const P02Background: React.FC = () => {
             />
           </Highlight>
         </div>
-      </AbsoluteFill>
 
-      {/* 痛点 3 · 3 分钟说完半年 · RED 强脉冲（情绪高点） */}
-      <AbsoluteFill style={{ pointerEvents: 'none' }}>
+        {/* 痛点 3 · 3 分钟说完半年 · RED（Cue 6 f783） */}
         <div
           style={{
             position: 'absolute',
@@ -158,13 +240,14 @@ export const P02Background: React.FC = () => {
             top: PAIN_CARD.card3Top,
             width: PAIN_CARD.width,
             height: PAIN_CARD.height,
+            pointerEvents: 'none',
           }}
         >
           <Highlight
             mode="colorShift"
             colorShiftMaxAlpha={0.32}
             color="#BA1A1A"
-            startFrame={254}
+            startFrame={783}
             pulsePeriod={56}
             pulseCount={3}
             retainAfter
@@ -181,114 +264,23 @@ export const P02Background: React.FC = () => {
             />
           </Highlight>
         </div>
-      </AbsoluteFill>
+      </KenBurns>
 
-      {/* ============ 情绪切换扫光（痛点 → 数据） ============ */}
+      {/* ============ 情绪切换扫光（数据 → 痛点） ============ */}
       <Sweep
         direction="ltr"
-        startFrame={439}
+        startFrame={300}
         durationFrames={60}
         color="#FFFFFF"
         intensity={0.32}
         beamWidthPercent={22}
       />
 
-      {/* ============ KPI 数据轰炸序列（17-40 秒） ============ */}
-
-      {/* KPI bar 整体白色柔和脉冲 */}
-      <AbsoluteFill style={{ pointerEvents: 'none' }}>
-        <div
-          style={{
-            position: 'absolute',
-            left: KPI_BAR.left,
-            top: KPI_BAR.top,
-            width: KPI_BAR.width,
-            height: KPI_BAR.height,
-          }}
-        >
-          <Highlight
-            mode="colorShift"
-            colorShiftMaxAlpha={0.14}
-            color="#FFFFFF"
-            startFrame={533}
-            pulsePeriod={60}
-            pulseCount={2}
-            display="block"
-            borderRadius={KPI_BAR.radius}
-            style={{ width: '100%', height: '100%' }}
-          >
-            <div
-              style={{
-                width: '100%',
-                height: '100%',
-                borderRadius: KPI_BAR.radius,
-              }}
-            />
-          </Highlight>
-        </div>
-      </AbsoluteFill>
-
-      {/* KPI 3 · 2.45 亿高血压 · 单数字脉冲 */}
-      <AbsoluteFill style={{ pointerEvents: 'none' }}>
-        <div
-          style={{
-            position: 'absolute',
-            // text-anchor middle，中心 x = 740*1.5 = 1110
-            left: 1110 - KPI_NUM_WIDTH / 2,
-            top: KPI_NUM_TOP,
-            width: KPI_NUM_WIDTH,
-            height: KPI_NUM_HEIGHT,
-          }}
-        >
-          <Highlight
-            mode="colorShift"
-            colorShiftMaxAlpha={0.38}
-            color="#F7A072"
-            startFrame={748}
-            pulsePeriod={40}
-            pulseCount={2}
-            display="block"
-            borderRadius={12}
-            style={{ width: '100%', height: '100%' }}
-          >
-            <div style={{ width: '100%', height: '100%', borderRadius: 12 }} />
-          </Highlight>
-        </div>
-      </AbsoluteFill>
-
-      {/* KPI 4 · 1.18 亿糖尿病 · 单数字脉冲 */}
-      <AbsoluteFill style={{ pointerEvents: 'none' }}>
-        <div
-          style={{
-            position: 'absolute',
-            // 中心 x = 1040*1.5 = 1560
-            left: 1560 - KPI_NUM_WIDTH / 2,
-            top: KPI_NUM_TOP,
-            width: KPI_NUM_WIDTH,
-            height: KPI_NUM_HEIGHT,
-          }}
-        >
-          <Highlight
-            mode="colorShift"
-            colorShiftMaxAlpha={0.38}
-            color="#F7A072"
-            startFrame={877}
-            pulsePeriod={40}
-            pulseCount={2}
-            display="block"
-            borderRadius={12}
-            style={{ width: '100%', height: '100%' }}
-          >
-            <div style={{ width: '100%', height: '100%', borderRadius: 12 }} />
-          </Highlight>
-        </div>
-      </AbsoluteFill>
-
       {/* ============ 收尾 diagonal 扫光 ============ */}
       <Sweep
         direction="diagonal"
         angle={-18}
-        startFrame={1015}
+        startFrame={918}
         durationFrames={69}
         color="#FFFFFF"
         intensity={0.22}

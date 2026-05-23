@@ -1,4 +1,4 @@
-import { AbsoluteFill, staticFile } from 'remotion';
+import { staticFile } from 'remotion';
 import { AmbientBackground } from '../../components/AmbientBackground';
 import { Highlight } from '../../components/Highlight';
 import { KenBurns } from '../../components/KenBurns';
@@ -48,13 +48,13 @@ const PILL_MIDDLE = { left: 705, top: 642, width: 360, height: 60, radius: 30 };
 const PILL_AFTER = { left: 1140, top: 642, width: 570, height: 60, radius: 30 };
 
 // === 合规 tag 三个（video 坐标）===
-// SVG width 164, height 36, y=620
-const TAG_WIDTH = 246;  // 164 * 1.5
+// SVG 全宽（含圆角）200, height 36, y=620
+const TAG_WIDTH = 300;  // 200 * 1.5
 const TAG_HEIGHT = 54;  // 36 * 1.5
 const TAG_TOP = 930;    // 620 * 1.5
 const TAG_RADIUS = 27;
 
-// tag 1 SVG x=310-490, tag 2 SVG x=535-715, tag 3 SVG x=760-940
+// tag 1 SVG x=310-510, tag 2 SVG x=535-735, tag 3 SVG x=760-960
 const TAG_1_LEFT = 465;   // 310 * 1.5
 const TAG_2_LEFT = 802;   // 535 * 1.5 (≈802.5)
 const TAG_3_LEFT = 1140;  // 760 * 1.5
@@ -77,16 +77,14 @@ export const P03Positioning: React.FC = () => {
         seed={230}
       />
 
-      {/* SVG 主画面 · 极缓慢推近 */}
+      {/* SVG 主画面 · 极缓慢推近 · Highlight 遮罩作为 children 共享 transform */}
       <KenBurns
         src={staticFile('ppt/03_产品定位.svg')}
         from={{ scale: 1.0, x: 0, y: 0 }}
         to={{ scale: 1.04, x: 0, y: 0 }}
         fit="cover"
-      />
-
-      {/* ============ BEFORE pill · 红色脉冲（痛点的余音） ============ */}
-      <AbsoluteFill style={{ pointerEvents: 'none' }}>
+      >
+        {/* ============ BEFORE pill · 红色脉冲（痛点的余音） ============ */}
         <div
           style={{
             position: 'absolute',
@@ -94,6 +92,7 @@ export const P03Positioning: React.FC = () => {
             top: PILL_BEFORE.top,
             width: PILL_BEFORE.width,
             height: PILL_BEFORE.height,
+            pointerEvents: 'none',
           }}
         >
           <Highlight
@@ -116,21 +115,8 @@ export const P03Positioning: React.FC = () => {
             />
           </Highlight>
         </div>
-      </AbsoluteFill>
 
-      {/* ============ AI 变换 ltr Sweep · 核心仪式（对应 cue 1「整理成专业摘要」） ============ */}
-      <Sweep
-        direction="ltr"
-        startFrame={100}
-        durationFrames={100}
-        color="#F7A072"
-        intensity={0.42}
-        beamWidthPercent={16}
-        blendMode="screen"
-      />
-
-      {/* ============ MIDDLE AI pill · 暖橙脉冲 ============ */}
-      <AbsoluteFill style={{ pointerEvents: 'none' }}>
+        {/* ============ MIDDLE AI pill · 暖橙脉冲 ============ */}
         <div
           style={{
             position: 'absolute',
@@ -138,6 +124,7 @@ export const P03Positioning: React.FC = () => {
             top: PILL_MIDDLE.top,
             width: PILL_MIDDLE.width,
             height: PILL_MIDDLE.height,
+            pointerEvents: 'none',
           }}
         >
           <Highlight
@@ -160,10 +147,8 @@ export const P03Positioning: React.FC = () => {
             />
           </Highlight>
         </div>
-      </AbsoluteFill>
 
-      {/* ============ AFTER pill · 蓝色脉冲（解决方案落地） ============ */}
-      <AbsoluteFill style={{ pointerEvents: 'none' }}>
+        {/* ============ AFTER pill · 蓝色脉冲（解决方案落地） ============ */}
         <div
           style={{
             position: 'absolute',
@@ -171,6 +156,7 @@ export const P03Positioning: React.FC = () => {
             top: PILL_AFTER.top,
             width: PILL_AFTER.width,
             height: PILL_AFTER.height,
+            pointerEvents: 'none',
           }}
         >
           <Highlight
@@ -194,22 +180,22 @@ export const P03Positioning: React.FC = () => {
             />
           </Highlight>
         </div>
-      </AbsoluteFill>
 
-      {/* ============ 底部合规 tag 依次白色 colorShift · 对齐 Cue 3 "辅助医生而不替代医生" ============ */}
-      {[
-        { left: TAG_1_LEFT, startFrame: 370, pulsePeriod: 40 }, // Cue 3 前半
-        { left: TAG_2_LEFT, startFrame: 395, pulsePeriod: 40 },
-        { left: TAG_3_LEFT, startFrame: 420, pulsePeriod: 30 }, // 贴合出场
-      ].map((tag, i) => (
-        <AbsoluteFill key={i} style={{ pointerEvents: 'none' }}>
+        {/* ============ 底部合规 tag 依次白色 colorShift · 对齐 Cue 3 “辅助医生而不替代医生” ============ */}
+        {[
+          { left: TAG_1_LEFT, startFrame: 370, pulsePeriod: 40 }, // Cue 3 前半
+          { left: TAG_2_LEFT, startFrame: 395, pulsePeriod: 40 },
+          { left: TAG_3_LEFT, startFrame: 420, pulsePeriod: 30 }, // 贴合出场
+        ].map((tag, i) => (
           <div
+            key={i}
             style={{
               position: 'absolute',
               left: tag.left,
               top: TAG_TOP,
               width: TAG_WIDTH,
               height: TAG_HEIGHT,
+              pointerEvents: 'none',
             }}
           >
             <Highlight
@@ -233,8 +219,19 @@ export const P03Positioning: React.FC = () => {
               />
             </Highlight>
           </div>
-        </AbsoluteFill>
-      ))}
+        ))}
+      </KenBurns>
+
+      {/* ============ AI 变换 ltr Sweep · 核心仪式（对应 cue 1「整理成专业摘要」） ============ */}
+      <Sweep
+        direction="ltr"
+        startFrame={100}
+        durationFrames={100}
+        color="#F7A072"
+        intensity={0.42}
+        beamWidthPercent={16}
+        blendMode="screen"
+      />
     </SceneTransition>
   );
 };

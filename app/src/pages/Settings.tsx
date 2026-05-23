@@ -43,6 +43,14 @@ import { cn } from '@/lib/utils';
 
 type TabKey = 'custom' | 'membership';
 
+const ANDROID_APK_URL = '/downloads/yiqianji-android.apk';
+
+interface BeforeInstallPromptEvent extends Event {
+  readonly platforms: string[];
+  readonly userChoice: Promise<{ outcome: 'accepted' | 'dismissed'; platform: string }>;
+  prompt(): Promise<void>;
+}
+
 export default function Settings() {
   const setCurrentPatientId = useAppStore((s) => s.setCurrentPatientId);
   const currentPatientId = useAppStore((s) => s.currentPatientId);
@@ -59,6 +67,9 @@ export default function Settings() {
   const [showKey, setShowKey] = useState(false);
   const [showOcrKey, setShowOcrKey] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [installPrompt, setInstallPrompt] = useState<BeforeInstallPromptEvent | null>(null);
+  const [installHelpOpen, setInstallHelpOpen] = useState(false);
+  const [installed, setInstalled] = useState(false);
 
   useEffect(() => {
     const cfg = getRuntimeConfig();
@@ -69,6 +80,30 @@ export default function Settings() {
     setVlModel(cfg.qwenVlModel);
     setOcrUseSeparateKey(cfg.ocrUseSeparateKey);
     setOcrKey(cfg.ocrQwenApiKey);
+  }, []);
+
+  useEffect(() => {
+    const standalone =
+      window.matchMedia('(display-mode: standalone)').matches ||
+      (navigator as Navigator & { standalone?: boolean }).standalone === true;
+    setInstalled(standalone);
+
+    const handleBeforeInstallPrompt = (event: Event) => {
+      event.preventDefault();
+      setInstallPrompt(event as BeforeInstallPromptEvent);
+    };
+    const handleInstalled = () => {
+      setInstalled(true);
+      setInstallPrompt(null);
+      setInstallHelpOpen(false);
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    window.addEventListener('appinstalled', handleInstalled);
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+      window.removeEventListener('appinstalled', handleInstalled);
+    };
   }, []);
 
   const onPickProvider = (key: ProviderKey) => {
@@ -95,6 +130,19 @@ export default function Settings() {
     setTimeout(() => setSaved(false), 2000);
   };
 
+  const installApp = async () => {
+    if (!installPrompt) {
+      setInstallHelpOpen((v) => !v);
+      return;
+    }
+    await installPrompt.prompt();
+    const choice = await installPrompt.userChoice;
+    if (choice.outcome === 'accepted') {
+      setInstallPrompt(null);
+      setInstalled(true);
+    }
+  };
+
   const meta = PROVIDERS[provider];
   const keyValid = hasValidAPIKey();
 
@@ -110,6 +158,13 @@ export default function Settings() {
         </Link>
         <h2 className="text-3xl font-extrabold text-on-surface font-headline">设置</h2>
       </header>
+
+      <InstallAppSection
+        installed={installed}
+        canPrompt={!!installPrompt}
+        helpOpen={installHelpOpen}
+        onInstall={installApp}
+      />
 
       {/* Tab Bar */}
       <div className="bg-surface-container rounded-2xl p-1.5 flex gap-1.5 shadow-inner">
@@ -402,6 +457,67 @@ export default function Settings() {
 }
 
 /* ============== 子组件 ============== */
+
+function InstallAppSection({
+  installed,
+  canPrompt,
+  helpOpen,
+  onInstall,
+}: {
+  installed: boolean;
+  canPrompt: boolean;
+  helpOpen: boolean;
+  onInstall: () => void;
+}) {
+  return (
+    <section className="bg-gradient-to-br from-primary to-primary-container rounded-3xl p-6 text-white shadow-xl relative overflow-hidden">
+      <div className="absolute -right-12 -top-12 w-48 h-48 bg-white/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="space-y-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/15 rounded-full text-xs font-bold tracking-widest uppercase">
+            <Download className="w-4 h-4" />
+            Mobile App
+          </div>
+          <h3 className="text-2xl font-extrabold font-headline">
+            {installed ? '已作为 APP 安装' : '下载 / 安装医前记 APP'}
+          </h3>
+          <p className="text-sm text-white/85 leading-relaxed max-w-xl">
+            当前版本已封装为 PWA，可安装到手机桌面，以独立窗口运行，支持离线访问本地记录。
+          </p>
+        </div>
+        <div className="flex flex-col sm:flex-row gap-2 shrink-0">
+          <button
+            onClick={onInstall}
+            className="h-12 px-5 rounded-xl bg-white text-primary font-bold shadow-lg active:scale-[0.98] transition flex items-center justify-center gap-2"
+          >
+            {installed ? <Check className="w-4 h-4" /> : <Download className="w-4 h-4" />}
+            {installed ? '已安装' : canPrompt ? '立即安装' : '查看安装方式'}
+          </button>
+          <a
+            href={ANDROID_APK_URL}
+            download
+            className="h-12 px-5 rounded-xl bg-white/15 text-white border border-white/25 font-bold active:scale-[0.98] transition flex items-center justify-center gap-2"
+          >
+            <Download className="w-4 h-4" />
+            下载 APK
+          </a>
+        </div>
+      </div>
+
+      {helpOpen && !installed && (
+        <div className="relative z-10 mt-5 rounded-2xl bg-white/12 border border-white/20 p-4 text-sm text-white/90 space-y-2">
+          <div className="font-bold text-white">如果没有弹出安装窗口：</div>
+          <div>安卓 / Chrome：点击浏览器菜单，选择“安装应用”或“添加到主屏幕”。</div>
+          <div>安卓 APK：如果浏览器安装入口不可用，也可以点击上方“下载 APK”手动安装。</div>
+          <div>iPhone / Safari：点击分享按钮，选择“添加到主屏幕”。</div>
+          <div className="pt-1 text-xs text-white/70">
+            说明：安装入口由浏览器根据 HTTPS、manifest 和访问频率自动开放。
+          </div>
+        </div>
+      )}
+    </section>
+  );
+}
 
 function TabButton({
   active,
