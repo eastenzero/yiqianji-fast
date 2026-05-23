@@ -6,7 +6,7 @@
   "description": "医前记 - 诊前信息整理与沟通辅助系统（纯本地化版本）",
   "scripts": {
     "dev": "vite --port=3000 --host=0.0.0.0",
-    "build": "tsc --noEmit && vite build",
+    "build": "tsc --noEmit -p tsconfig.build.json && vite build",
     "preview": "vite preview --port=3000 --host=0.0.0.0",
     "lint": "tsc --noEmit",
     "video:studio": "remotion studio video/index.ts",
