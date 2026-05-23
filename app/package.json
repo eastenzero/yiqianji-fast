@@ -31,7 +31,6 @@
     "@netlify/blobs": "^10.7.8",
     "@remotion/bundler": "^4.0.450",
     "@remotion/cli": "^4.0.450",
-    "@remotion/compositor-win32-x64-msvc": "^4.0.450",
     "@remotion/licensing": "^4.0.450",
     "@remotion/media-parser": "^4.0.450",
     "@remotion/media-utils": "^4.0.450",
@@ -74,6 +73,7 @@
     "vite-plugin-pwa": "^0.21.1"
   },
   "optionalDependencies": {
+    "@remotion/compositor-win32-x64-msvc": "^4.0.450",
     "@rspack/binding-win32-x64-msvc": "^1.7.11"
   }
 }
