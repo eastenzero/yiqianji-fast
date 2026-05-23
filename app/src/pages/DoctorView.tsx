@@ -31,7 +31,7 @@ export default function DoctorView() {
   const [patient, setPatient] = useState<Patient | undefined>();
   const [sharedPatientName, setSharedPatientName] = useState<string | undefined>();
   const [publishedShare, setPublishedShare] = useState<PublishedDoctorShare | null>(null);
-  const [useOfflineQr, setUseOfflineQr] = useState(true);
+  const [useOfflineQr, setUseOfflineQr] = useState(false);
   const [publishing, setPublishing] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [shareCopied, setShareCopied] = useState(false);
@@ -42,7 +42,7 @@ export default function DoctorView() {
     let cancelled = false;
     setLoadError(null);
     setPublishedShare(null);
-    setUseOfflineQr(true);
+    setUseOfflineQr(false);
     (async () => {
       if (shareToken) {
         try {
@@ -117,6 +117,33 @@ export default function DoctorView() {
   const activeQrUrl = publishedShare?.url ?? (useOfflineQr && canShowOfflineQr ? offlineQrUrl : '');
   const shareUrl = activeQrUrl || offlineShareUrl;
   const isUsingOfflineQr = !publishedShare && Boolean(activeQrUrl);
+
+  useEffect(() => {
+    if (!summary || isDoctorView || publishedShare || useOfflineQr || publishing) return;
+    let cancelled = false;
+    (async () => {
+      setShareError(null);
+      setPublishing(true);
+      try {
+        const published = await publishDoctorShare(summary, patient?.name ?? sharedPatientName);
+        if (cancelled) return;
+        setPublishedShare(published);
+      } catch (e) {
+        if (cancelled) return;
+        const message = e instanceof Error ? e.message : '短链生成失败';
+        if (canShowOfflineQr) {
+          setUseOfflineQr(true);
+          setShareError(`${message}。已自动切换为离线备用二维码。`);
+        } else {
+          setShareError(`${message}。离线备用链接较长，请展开下方备用链接手动复制。`);
+        }
+      } finally {
+        if (!cancelled) setPublishing(false);
+      }
+    })();
+    return () => { cancelled = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [summary, isDoctorView]);
 
   const handlePublishShare = async () => {
     if (!summary || publishing) return;
