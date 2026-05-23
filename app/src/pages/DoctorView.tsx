@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { QRCodeSVG } from 'qrcode.react';
 import { Stethoscope, ChevronLeft, AlertCircle, Info, Copy, Check, Share2, Loader2 } from 'lucide-react';
 import { db } from '@/services/storage';
-import { fetchDoctorShare, publishDoctorShare, type PublishedDoctorShare } from '@/services/doctor-share';
+import { fetchDoctorShare, publishDoctorShare, hasShareApiBackend, type PublishedDoctorShare } from '@/services/doctor-share';
 import type { ConsultationSummary, Patient } from '@/types';
 import { formatFriendlyDate } from '@/lib/utils';
 
@@ -31,7 +31,8 @@ export default function DoctorView() {
   const [patient, setPatient] = useState<Patient | undefined>();
   const [sharedPatientName, setSharedPatientName] = useState<string | undefined>();
   const [publishedShare, setPublishedShare] = useState<PublishedDoctorShare | null>(null);
-  const [useOfflineQr, setUseOfflineQr] = useState(false);
+  const shareApiAvailable = hasShareApiBackend();
+  const [useOfflineQr, setUseOfflineQr] = useState(!shareApiAvailable);
   const [publishing, setPublishing] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [shareCopied, setShareCopied] = useState(false);
@@ -42,7 +43,7 @@ export default function DoctorView() {
     let cancelled = false;
     setLoadError(null);
     setPublishedShare(null);
-    setUseOfflineQr(false);
+    setUseOfflineQr(!shareApiAvailable);
     (async () => {
       if (shareToken) {
         try {
@@ -119,7 +120,7 @@ export default function DoctorView() {
   const isUsingOfflineQr = !publishedShare && Boolean(activeQrUrl);
 
   useEffect(() => {
-    if (!summary || isDoctorView || publishedShare || useOfflineQr || publishing) return;
+    if (!shareApiAvailable || !summary || isDoctorView || publishedShare || useOfflineQr || publishing) return;
     let cancelled = false;
     (async () => {
       setShareError(null);
@@ -143,7 +144,7 @@ export default function DoctorView() {
     })();
     return () => { cancelled = true; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [summary, isDoctorView]);
+  }, [summary, isDoctorView, shareApiAvailable]);
 
   const handlePublishShare = async () => {
     if (!summary || publishing) return;
@@ -264,7 +265,7 @@ export default function DoctorView() {
               )}
               <div className="flex-1 space-y-2 text-sm text-secondary">
                 <p className="text-on-surface font-semibold">
-                  {publishedShare ? '短链已生成' : isUsingOfflineQr ? '离线备用二维码已生成' : '可生成短链二维码'}
+                  {publishedShare ? '短链已生成' : isUsingOfflineQr ? '离线备用二维码已生成' : shareApiAvailable ? '可生成短链二维码' : '准备生成二维码'}
                 </p>
                 {isUsingOfflineQr ? (
                   <ul className="list-disc pl-5 space-y-1">
@@ -314,19 +315,21 @@ export default function DoctorView() {
                     </>
                   ) : (
                     <>
-                      <button
-                        onClick={handlePublishShare}
-                        disabled={publishing}
-                        className="inline-flex items-center gap-1.5 rounded-lg bg-primary text-white px-3 py-2 font-semibold active:scale-95 transition disabled:opacity-60"
-                      >
-                        {publishing ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Share2 className="w-3.5 h-3.5" />}
-                        {publishing ? '生成中…' : '生成短链二维码'}
-                      </button>
+                      {shareApiAvailable && (
+                        <button
+                          onClick={handlePublishShare}
+                          disabled={publishing}
+                          className="inline-flex items-center gap-1.5 rounded-lg bg-primary text-white px-3 py-2 font-semibold active:scale-95 transition disabled:opacity-60"
+                        >
+                          {publishing ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Share2 className="w-3.5 h-3.5" />}
+                          {publishing ? '生成中…' : '生成短链二维码'}
+                        </button>
+                      )}
                       <button
                         onClick={handleUseOfflineQr}
                         className="inline-flex items-center gap-1.5 rounded-lg bg-primary-fixed text-primary px-3 py-2 font-semibold active:scale-95 transition"
                       >
-                        使用备用二维码
+                        {shareApiAvailable ? '使用备用二维码' : '生成离线二维码'}
                       </button>
                     </>
                   )}

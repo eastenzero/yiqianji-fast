@@ -84,6 +84,11 @@ export function createPublishedShareUrl(token: string): string {
   return new URL(`/s/${encodeURIComponent(token)}`, window.location.origin).toString();
 }
 
+export function hasShareApiBackend(): boolean {
+  const env = (import.meta as unknown as { env?: Record<string, string | undefined> }).env || {};
+  return Boolean(env.VITE_DOCTOR_SHARE_API_BASE);
+}
+
 function getShareApiUrl(token?: string): string {
   const env = (import.meta as unknown as { env?: Record<string, string | undefined> }).env || {};
   const base = (env.VITE_DOCTOR_SHARE_API_BASE || '/api/share-summary').replace(/\/+$/, '');
