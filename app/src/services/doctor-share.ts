@@ -92,7 +92,7 @@ export function hasShareApiBackend(): boolean {
 function getShareApiUrl(token?: string): string {
   const env = (import.meta as unknown as { env?: Record<string, string | undefined> }).env || {};
   const base = (env.VITE_DOCTOR_SHARE_API_BASE || '/api/share-summary').replace(/\/+$/, '');
-  return token ? `${base}/${encodeURIComponent(token)}` : base;
+  return token ? `${base}?token=${encodeURIComponent(token)}` : base;
 }
 
 async function readError(response: Response, fallback: string): Promise<string> {
